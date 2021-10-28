@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "sakura-app",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

@@ -1,0 +1,7 @@
+{
+  "name": "sakura-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
