@@ -1,0 +1,38 @@
+ion-content{
+    --padding-top: 3em;
+}
+
+ion-card{
+    padding: 1.5em;
+    margin: 1.5em;
+    border-radius: 25px;
+}
+
+img{
+    width: 150px;
+    display: block;
+    margin: auto;
+    margin-bottom: 2em;
+}
+
+.login-button{
+    width: 50%;
+    margin: auto;
+    color: #fff;
+    --background: #C22E48
+}
+
+.errors {
+    font-size: small;
+    color: #fff;
+    background: var(--ion-color-danger);
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.no-ripple{
+    --ripple-color: transparent;
+}

@@ -1,0 +1,29 @@
+<ion-content>
+  <!-- <ion-avatar> -->
+  <img src="assets/logos/sakura-logo.png">
+  <!-- </ion-avatar> -->
+
+  <form (ngSubmit)="login()" [formGroup]="loginForm">
+    <ion-card>
+      <ion-item>
+        <ion-input type="text" placeholder="Username or email" formControlName="user"></ion-input>
+      </ion-item>
+      <div *ngIf="user.touched && user.errors" class="errors">
+        <span>Username or email is required</span>
+      </div>
+      <br>
+      <ion-item>
+        <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+      </ion-item>
+      <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
+        <span *ngIf="password.errors?.required">Password is required</span>
+        <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
+      </div>
+      <br>
+      <br>
+      <ion-button type="submit" expand="block" [disabled]="!loginForm.valid" shape="round" class="login-button">Log in</ion-button>
+      <br>
+      <ion-button type="button" expand="block" color="dark" fill="clear" class="no-ripple">Not yet a member? Sign up!</ion-button>
+    </ion-card>
+  </form>
+</ion-content>
