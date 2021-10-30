@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { IntroGuard } from './guards/intro.guard';
 import { LoginGuard } from './guards/login.guard';
+import { RegisterGuard } from './guards/register.guard';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -21,14 +22,15 @@ const routes: Routes = [
     canLoad: [LoginGuard]
   },
   {
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule),
+    canLoad: [RegisterGuard]
+  },
+  {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
-  },  {
-    path: 'register',
-    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   }
-
 ];
 @NgModule({
   imports: [
