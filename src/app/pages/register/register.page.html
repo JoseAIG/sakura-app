@@ -1,0 +1,47 @@
+<ion-content>
+  <ion-buttons>
+    <ion-back-button defaultHref="/login"></ion-back-button>
+  </ion-buttons>
+  <div class="container">
+    <ion-card>
+      <form (ngSubmit)="register()" [formGroup]="registerForm">
+        <h3><b>Sign up to Sakura</b></h3>
+        <hr />
+        <ion-item>
+          <ion-input type="text" placeholder="Username" formControlName="user">
+          </ion-input>
+        </ion-item>
+        <div *ngIf="user.touched && user.errors" class="errors">
+          <span>Username is required</span>
+        </div>
+        <ion-item>
+          <ion-input type="email" placeholder="example@mail.com" formControlName="email">
+          </ion-input>
+        </ion-item>
+        <div *ngIf="email.touched && email.errors" class="errors">
+          <span>E-mail is required</span>
+        </div>
+        <ion-item>
+          <ion-input type="password" placeholder="Enter your Password" formControlName="password"
+            (ionChange)="passwordVerifier()">
+          </ion-input>
+        </ion-item>
+        <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
+          <span *ngIf="password.errors?.required">Password is required</span>
+          <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
+        </div>
+        <ion-item>
+          <ion-input type="password" placeholder="Confirm your Password" formControlName="confirmedPassword"
+            (ionChange)="passwordVerifier()">
+          </ion-input>
+        </ion-item>
+        <div *ngIf="(confirmedPassword.dirty || confirmedPassword.touched) && !equalPasswords" class="errors">
+          <span *ngIf="!equalPasswords">Passwords do not match</span>
+        </div>
+        <ion-button type="submit" [disabled]="!registerForm.valid" expand="block" shape="round" class="register-button">
+          Sign Up!
+        </ion-button>
+      </form>
+    </ion-card>
+  </div>
+</ion-content>

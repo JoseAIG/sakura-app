@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
     let loading = await this.loadingController.create();
     await loading.present();
 
-    let formData: FormData = new FormData()
+    let formData: FormData = new FormData();
     formData.append("user", this.loginForm.get("user").value)
     formData.append("password", this.loginForm.get("password").value)
 

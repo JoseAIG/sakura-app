@@ -32,6 +32,11 @@ export class AuthService {
     return this.http.post<any>('https://sakura-mv.herokuapp.com/login', formData)
   }
 
+  register(formData: FormData): Observable<any>{
+    return this.http.post<any>('https://sakura-mv.herokuapp.com/register', formData)
+  }
+  //https://sakura-mv.herokuapp.com/register
+
   storeToken(token: string){
     localStorage.setItem('TOKEN', token)
     this.token = token

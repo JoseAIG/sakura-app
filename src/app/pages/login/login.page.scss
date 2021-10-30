@@ -4,15 +4,21 @@ ion-content{
 
 ion-card{
     padding: 1.5em;
-    margin: 1.5em;
+    margin: 2em;
     border-radius: 25px;
 }
 
 img{
     width: 150px;
-    display: block;
-    margin: auto;
-    margin-bottom: 2em;
+}
+
+.container{
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-flow: wrap;
 }
 
 .login-button{
