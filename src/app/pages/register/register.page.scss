@@ -1,0 +1,35 @@
+ion-card{
+  padding: 1.5em;
+  margin: 1.5em;
+  border-radius: 25px;
+}
+
+h3{
+  text-align: center;
+  color: #C22E48;
+}
+
+.container{
+  height: 85%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-button{
+  margin: auto;
+  margin-top: 1em;
+  color: #fff;
+  --background: #C22E48
+}
+
+.errors {
+  font-size: small;
+  color: #fff;
+  background: var(--ion-color-danger);
+  padding-left: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
