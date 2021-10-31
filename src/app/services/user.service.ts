@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -7,20 +7,28 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private BASE_URL = ''
+  private BASE_URL = 'https://sakura-mv.herokuapp.com/user'
 
-  constructor(private http:HttpClient) { }
-
+  constructor(private http:HttpClient) {
+   }
   //data getting methods
   getUserData():Observable<any>{
-    return this.http.get(`${this.BASE_URL}`)
+    return this.http.get(`${this.BASE_URL}`, this.userHeader())
   }
 
   updateUserData(formData:FormData):Observable<any>{
-    return this.http.put(`${this.BASE_URL}`,formData)
+    return this.http.put(`${this.BASE_URL}`,formData, this.userHeader())
   }
 
-  deleteUser(formData:FormData):Observable<any>{
-    return this.http.post(`${this.BASE_URL}`, formData)
+  deleteUser():Observable<any>{
+    return this.http.delete(`${this.BASE_URL}`, this.userHeader())
+  }
+
+  userHeader(){
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('TOKEN')}`)
+    }
+    return header;
   }
 }

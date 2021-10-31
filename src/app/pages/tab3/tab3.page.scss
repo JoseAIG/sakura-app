@@ -1,0 +1,41 @@
+ion-card{
+  padding: 1.5em;
+  margin: 1em;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+ion-avatar{
+  height: 100px;
+  width: 100px;
+  border-style: solid;
+  border-width: 3px;
+  border-color:  #C22E48;
+  border-radius: 50%;
+  animation: mymove 5s infinite;
+}
+ion-button{
+  --background: #C22E48;
+  color: white;
+}
+.logout{
+  border-style: solid;
+  border-width: 0.5px;
+  border-color: white;
+  border-radius: 5px;
+}
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes mymove {
+  0% {border-color: #F78DA9}
+  25% {border-color: #9064F5}
+  50% {border-color: #D66477}
+  75% {border-color: #F54373}
+}

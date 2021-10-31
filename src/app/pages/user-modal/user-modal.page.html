@@ -1,0 +1,59 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-item>
+      <ion-title>
+        Edit your Profile
+      </ion-title>
+      <ion-button type="button" (click) ="dismiss()">Close</ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <form [formGroup]="userForm">
+      <ion-card-title  style="text-align: center;">Your Credentials</ion-card-title>
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Username:</ion-label>
+          <ion-input type="text" value={{username}} formControlName="user"></ion-input>
+        </ion-item>
+        <div *ngIf="user.touched && user.errors" class="errors">
+          <span>Username is required</span>
+        </div>
+
+        <ion-item>
+          <ion-label position="floating">Email:</ion-label>
+          <ion-input type="email" value={{email}} formControlName="email"></ion-input>
+        </ion-item>
+        <div *ngIf="email.touched && email.errors" class="errors">
+          <span>E-mail is required</span>
+        </div>
+
+        <ion-item>
+          <ion-label position="floating">New Password:</ion-label>
+          <ion-input type="password" formControlName="password" (ionChange)="passwordVerifier()"></ion-input>
+        </ion-item>
+        <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
+          <span *ngIf="password.errors?.required">Password is required</span>
+          <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
+        </div>
+
+        <ion-item>
+          <ion-label position="floating">Confirm your new password:</ion-label>
+          <ion-input type='password' formControlName="confirmedPassword" (ionChange)="passwordVerifier()"></ion-input>
+        </ion-item>
+        <div *ngIf="(confirmedPassword.dirty || confirmedPassword.touched) && !equalPasswords" class="errors">
+          <span *ngIf="!equalPasswords">Passwords do not match</span>
+        </div>
+
+      </ion-list>
+      <div  id="updateButton">
+        <ion-button type="submit" [disabled]="!userForm.valid" expand="block" (click)= "updateUser()">Update your credentials</ion-button>
+      </div>
+      <div  id="deleteButton">
+        <ion-button type="submit" color="danger" expand="block" (click) = "deleteUser()">Delete your account</ion-button>
+      </div>
+      </form>
+  </ion-card>
+</ion-content>
