@@ -16,6 +16,7 @@ export class UserModalPage implements OnInit {
   @Input() email: string;
 
   userForm: FormGroup;
+  passwordForm: FormGroup;
   equalPasswords: boolean;
 
   constructor(
@@ -31,9 +32,12 @@ export class UserModalPage implements OnInit {
   ngOnInit() {
     this.userForm = this.formBuilder.group({
       email: [this.email, [Validators.required, Validators.email]],
-      user: [this.username, [Validators.required]],
-      password: [null, [Validators.required, Validators.minLength(6)]],
-      confirmedPassword: [null, [Validators.required, Validators.minLength(6)]]
+      user: [this.username, [Validators.required]]
+    })
+
+    this.passwordForm = this.formBuilder.group({
+      password: ["", [Validators.minLength(6)]],
+      confirmedPassword: ["", [Validators.minLength(6)]]
     }, { validator: this.checkPasswords })
   }
 
@@ -47,11 +51,11 @@ export class UserModalPage implements OnInit {
   }
 
   get password() {
-    return this.userForm.get('password')
+    return this.passwordForm.get('password')
   }
 
   get confirmedPassword() {
-    return this.userForm.get('confirmedPassword')
+    return this.passwordForm.get('confirmedPassword')
   }
 
   //closing the user settings modal
@@ -69,7 +73,7 @@ export class UserModalPage implements OnInit {
     let formData: FormData = new FormData();
     formData.append("username", this.userForm.get("user").value);
     formData.append("email", this.userForm.get("email").value);
-    formData.append("password", this.userForm.get("password").value);
+    formData.append("password", this.passwordForm.get("password").value);
 
     this.userService.updateUserData(formData)
       .subscribe(
@@ -77,7 +81,7 @@ export class UserModalPage implements OnInit {
           this.authService.storeToken(res.token)
           await loading.dismiss()
           const alert = await this.alertController.create({
-            header: 'User updated successfuly',
+            header: 'Success',
             message: res.message,
             buttons: ['OK'],
           });
@@ -87,10 +91,9 @@ export class UserModalPage implements OnInit {
         },
         async (res) => {
           await loading.dismiss()
-          console.log(res.error);
           const alert = await this.alertController.create({
             header: 'User update failed',
-            message: res.message,
+            message: res.error.message,
             buttons: ['OK'],
           });
           alert.present()
@@ -128,10 +131,10 @@ export class UserModalPage implements OnInit {
             message: res.message,
             buttons: ['OK'],
           });
-          alert.present(),
-            this.authService.clearToken()
-            this.dismiss()
-            this.router.navigateByUrl('/login', { replaceUrl: true })
+          alert.present()
+          this.authService.clearToken()
+          this.dismiss()
+          this.router.navigateByUrl('/login', { replaceUrl: true })
         },
         async (res) => {
           const alert = await this.alertController.create({
@@ -155,8 +158,8 @@ export class UserModalPage implements OnInit {
   //method for passing password validator message using
   //property binding
   passwordVerifier() {
-    let pass = this.userForm.get('password').value
-    let confirmPass = this.userForm.get('confirmedPassword').value
+    let pass = this.passwordForm.get('password').value
+    let confirmPass = this.passwordForm.get('confirmedPassword').value
     if (pass === confirmPass) {
       this.equalPasswords = true;
     } else {

@@ -1,62 +1,62 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-      <ion-title>
-        Edit your profile
-      </ion-title>
-      <ion-buttons slot="end">
-        <ion-button (click)="dismiss()">Close</ion-button>
-      </ion-buttons>
+    <ion-title>
+      Edit your profile
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="container">
-  <ion-card>
-    <form [formGroup]="userForm">
-      <ion-card-title class="ion-text-center">Your Credentials</ion-card-title>
+    <ion-card>
       <ion-list>
-        <ion-item>
-          <ion-label position="floating">Username:</ion-label>
-          <ion-input type="text" value={{username}} formControlName="user"></ion-input>
-        </ion-item>
-        <div *ngIf="user.errors" class="errors">
-          <span>Username is required</span>
-        </div>
+        <form [formGroup]="userForm">
+          <ion-card-title class="ion-text-center">Your Credentials</ion-card-title>
+          <ion-item>
+            <ion-label position="floating">Username:</ion-label>
+            <ion-input type="text" value={{username}} formControlName="user"></ion-input>
+          </ion-item>
+          <div *ngIf="user.errors" class="errors">
+            <span>Username is required</span>
+          </div>
+          <ion-item>
+            <ion-label position="floating">Email:</ion-label>
+            <ion-input type="email" value={{email}} formControlName="email"></ion-input>
+          </ion-item>
+          <div *ngIf="newEmail.errors" class="errors">
+            <span>Provide a valid e-mail</span>
+          </div>
+        </form>
 
-        <ion-item>
-          <ion-label position="floating">Email:</ion-label>
-          <ion-input type="email" value={{email}} formControlName="email"></ion-input>
-        </ion-item>
-        <div *ngIf="newEmail.errors" class="errors">
-          <span>Provide a valid e-mail</span>
-        </div>
-
-        <ion-item>
-          <ion-label position="floating">New Password:</ion-label>
-          <ion-input type="password" formControlName="password" (ionChange)="passwordVerifier()"></ion-input>
-        </ion-item>
-        <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
-          <span *ngIf="password.errors?.required">Password is required</span>
-          <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
-        </div>
-
-        <ion-item>
-          <ion-label position="floating">Confirm your new password:</ion-label>
-          <ion-input type='password' formControlName="confirmedPassword" (ionChange)="passwordVerifier()"></ion-input>
-        </ion-item>
-        <div *ngIf="(confirmedPassword.dirty || confirmedPassword.touched) && !equalPasswords" class="errors">
-          <span *ngIf="!equalPasswords">Passwords do not match</span>
-        </div>
+        <form [formGroup]="passwordForm">
+          <ion-item>
+            <ion-label position="floating">New Password:</ion-label>
+            <ion-input type="password" formControlName="password" (ionChange)="passwordVerifier()"></ion-input>
+          </ion-item>
+          <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
+            <span *ngIf="password.errors?.required">Password is required</span>
+            <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
+          </div>
+          <ion-item>
+            <ion-label position="floating">Confirm your new password:</ion-label>
+            <ion-input type='password' formControlName="confirmedPassword" (ionChange)="passwordVerifier()"></ion-input>
+          </ion-item>
+          <div *ngIf="(confirmedPassword.dirty || confirmedPassword.touched) && !equalPasswords" class="errors">
+            <span *ngIf="!equalPasswords">Passwords do not match</span>
+          </div>
+        </form>
       </ion-list>
       <br>
-      <div  id="updateButton">
-        <ion-button type="submit" [disabled]="!userForm.valid" expand="block" (click)= "updateUser()" shape="round" color="medium">Update your credentials</ion-button>
+      <div id="updateButton">
+        <ion-button type="submit" [disabled]="userForm.valid && passwordForm.valid ? false : true" expand="block" (click)="updateUser()" shape="round" color="medium">Update your credentials</ion-button>
       </div>
       <br>
-      <div  id="deleteButton">
-        <ion-button type="submit" color="danger" expand="block" (click) = "confirmUserDeletion()" shape="round">Delete your account</ion-button>
+      <div id="deleteButton">
+        <ion-button type="submit" color="danger" expand="block" (click)="confirmUserDeletion()" shape="round">Delete your account</ion-button>
       </div>
-      </form>
-  </ion-card>
+    </ion-card>
   </div>
 </ion-content>

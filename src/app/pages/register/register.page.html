@@ -38,9 +38,8 @@
         <div *ngIf="(confirmedPassword.dirty || confirmedPassword.touched) && !equalPasswords" class="errors">
           <span *ngIf="!equalPasswords">Passwords do not match</span>
         </div>
-        <ion-button type="submit" [disabled]="!registerForm.valid" expand="block" shape="round" class="register-button">
-          Sign Up!
-        </ion-button>
+        <br>
+        <ion-button type="submit" [disabled]="!registerForm.valid" expand="block" shape="round" class="register-button">Sign Up!</ion-button>
       </form>
     </ion-card>
   </div>
