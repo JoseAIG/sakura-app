@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { UserModalPage } from '../user-modal/user-modal.page';
 
@@ -11,44 +13,71 @@ import { UserModalPage } from '../user-modal/user-modal.page';
 })
 export class Tab3Page implements OnInit {
 
-  email:string;
-  username:string;
+  email: string;
+  username: string;
   registerForm: FormGroup;
 
   constructor(
-    private userService:UserService,
-    private modalController: ModalController
-  ) {}
+    private userService: UserService,
+    private authService: AuthService,
+    private modalController: ModalController,
+    private loadingController: LoadingController,
+    private alertController: AlertController,
+    private router: Router
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getData()
   }
 
   //Obtain user data from the BE API
-  getData(){
+  getData() {
     this.userService.getUserData()
-    .subscribe(
-      async (res) => {
-      this.username = res.username;
-      this.email = res.email;
-      },
-      async (res) => {
-        console.log(res.error)
-      }
-    )
+      .subscribe(
+        async (res) => {
+          this.username = res.username;
+          this.email = res.email;
+        },
+        async (res) => {
+          console.log(res.error)
+        }
+      )
   }
 
-  //Update user data and send it to the BE
-  updateData(){
+  async confirmLogout(){
+    const alert = await this.alertController.create({
+      header: 'Do you want to log out?',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.logout()
+          }
+        },
+        {
+          text: 'CANCEL',
+          role: 'cancel'
+        }
+      ],
+    });
 
+    await alert.present();
   }
 
-  async openSettings(){
+  private async logout() {
+    let loading = await this.loadingController.create();
+    await loading.present();
+    this.authService.clearToken();
+    loading.dismiss();
+    this.router.navigateByUrl('/login', { replaceUrl: true })
+  }
+
+  async openSettings() {
     const modal = this.modalController.create({
       component: UserModalPage,
-      componentProps:{
-        'username':this.username,
-        'email':this.email
+      componentProps: {
+        'username': this.username,
+        'email': this.email
       }
     });
 

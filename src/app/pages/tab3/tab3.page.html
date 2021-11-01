@@ -1,31 +1,26 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-item>
-      <ion-title>
-        Profile
-      </ion-title>
-      <ion-button color="dark" shape="round">
-        Logout
-      </ion-button>
-    </ion-item>
+    <ion-title>
+      Profile
+    </ion-title>
+    <ion-button shape="round" color="medium" slot="end" (click)="confirmLogout()">
+      Logout
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
-      <ion-toolbar>
-        <ion-title size="large">Tab 3</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Tab 3</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-    <div class="container">
+  <div class="container">
     <ion-card>
-
-        <ion-avatar class="ion-align-self-center">
-          <ion-img src="../../assets/logos/sakura-logo-only.png"></ion-img>
-        </ion-avatar>
-
-
+      <ion-avatar class="ion-align-self-center">
+        <ion-img src="../../assets/logos/sakura-logo-only.png"></ion-img>
+      </ion-avatar>
       <ion-card-content>
         <ion-card-title>
           {{username}}
@@ -34,8 +29,7 @@
           {{email}}
         </ion-card-subtitle>
       </ion-card-content>
-      <ion-button (click)='openSettings()'>Manage your Account</ion-button>
-      <!-- <app-explore-container name="Tab 3 page"></app-explore-container> -->
+      <ion-button (click)='openSettings()' shape="round">Manage your Account</ion-button>
     </ion-card>
-    </div>
+  </div>
 </ion-content>

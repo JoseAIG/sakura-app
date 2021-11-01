@@ -1,10 +1,15 @@
-ion-button{
-  --background: white;
-  color: black;
-}
 ion-card{
-  border-radius: 1em;
-  padding: 1em;
+  padding: 1.5em;
+  margin: 1.5em;
+  border-radius: 25px;
+}
+
+ion-item{
+  margin-top: 1em;
+}
+
+ion-item.item-has-focus > ion-label{
+  color:  gray  !important;
 }
 
 #updateButton{
@@ -12,8 +17,27 @@ ion-card{
   justify-content: center;
   align-items: center;
 }
+
 #deleteButton{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.errors {
+  font-size: small;
+  color: #fff;
+  background: var(--ion-color-danger);
+  padding-left: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.container{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -13,17 +13,17 @@ import { UserService } from 'src/app/services/user.service';
 export class UserModalPage implements OnInit {
 
   @Input() username: string;
-  @Input() email;
+  @Input() email: string;
 
-  userForm:FormGroup;
-  equalPasswords:boolean;
+  userForm: FormGroup;
+  equalPasswords: boolean;
 
   constructor(
     private authService: AuthService,
-    private modalController:ModalController,
-    private formBuilder: FormBuilder,
     private userService: UserService,
+    private formBuilder: FormBuilder,
     private router: Router,
+    private modalController: ModalController,
     private loadingController: LoadingController,
     private alertController: AlertController
   ) { }
@@ -37,8 +37,8 @@ export class UserModalPage implements OnInit {
     }, { validator: this.checkPasswords })
   }
 
-   //getters
-   get newEmail() {
+  //getters
+  get newEmail() {
     return this.userForm.get('email')
   }
 
@@ -54,15 +54,15 @@ export class UserModalPage implements OnInit {
     return this.userForm.get('confirmedPassword')
   }
 
-  //closing the user settings method
-  dismiss(){
+  //closing the user settings modal
+  dismiss() {
     this.modalController.dismiss({
       'dismissed': true
     })
   }
 
   //updating user method
-  async updateUser(){
+  async updateUser() {
     let loading = await this.loadingController.create();
     await loading.present();
 
@@ -73,53 +73,76 @@ export class UserModalPage implements OnInit {
 
     this.userService.updateUserData(formData)
       .subscribe(
-        async(res) => {
+        async (res) => {
+          this.authService.storeToken(res.token)
           await loading.dismiss()
-            const alert = await this.alertController.create({
-              header: 'User updated successfuly',
-              message: res.message,
-              buttons: ['OK'],
-            });
-            alert.present(),
+          const alert = await this.alertController.create({
+            header: 'User updated successfuly',
+            message: res.message,
+            buttons: ['OK'],
+          });
+          alert.present(),
             this.router.navigateByUrl('/tabs/home', { replaceUrl: true }),
             this.dismiss()
-          },
-          async(res) => {
-            await loading.dismiss()
-            console.log(res.error);
-            const alert = await this.alertController.create({
-              header: 'User update failed',
-              message: res.message,
-              buttons: ['OK'],
-            });
-            alert.present()
-          })
+        },
+        async (res) => {
+          await loading.dismiss()
+          console.log(res.error);
+          const alert = await this.alertController.create({
+            header: 'User update failed',
+            message: res.message,
+            buttons: ['OK'],
+          });
+          alert.present()
+        })
 
   }
+
+  async confirmUserDeletion() {
+    const alert = await this.alertController.create({
+      header: 'Are you sure?',
+      message: 'This action can not be undone.',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.deleteUser()
+          }
+        },
+        {
+          text: 'CANCEL',
+          role: 'cancel'
+        }
+      ],
+    });
+    await alert.present();
+  }
+
   //deleting user method
-  async deleteUser(){
+  private async deleteUser() {
     this.userService.deleteUser()
-    .subscribe(
-      async(res) => {
-        const alert = await this.alertController.create({
-          header: 'User Deleted',
-              message: res.message,
-              buttons: ['OK'],
-        });
-        alert.present(),
-        this.authService.clearToken(),
-        this.router.navigateByUrl('/login', { replaceUrl: true })
-      },
-      async(res) => {
-        const alert = await this.alertController.create({
-          header: 'Could not delete user',
-              message: res.message,
-              buttons: ['OK'],
-        });
-        alert.present(),
-        this.router.navigateByUrl('/login', { replaceUrl: true })
-      }
-    )
+      .subscribe(
+        async (res) => {
+          const alert = await this.alertController.create({
+            header: 'User Deleted',
+            message: res.message,
+            buttons: ['OK'],
+          });
+          alert.present(),
+            this.authService.clearToken()
+            this.dismiss()
+            this.router.navigateByUrl('/login', { replaceUrl: true })
+        },
+        async (res) => {
+          const alert = await this.alertController.create({
+            header: 'Could not delete user',
+            message: res.message,
+            buttons: ['OK'],
+          });
+          alert.present(),
+            this.router.navigateByUrl('/login', { replaceUrl: true })
+        }
+      )
   }
 
   //password confirmation custom validator
@@ -139,6 +162,5 @@ export class UserModalPage implements OnInit {
     } else {
       this.equalPasswords = false;
     }
-    console.log(pass, confirmPass, this.equalPasswords)
   }
 }
