@@ -13,6 +13,10 @@ ion-item{
   margin-top: 1em;
 }
 
+ion-item.item-has-focus > ion-label{
+  color:  gray  !important;
+}
+
 .container{
   height: 85%;
   display: flex;

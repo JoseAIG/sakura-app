@@ -12,6 +12,14 @@ img{
     width: 150px;
 }
 
+ion-item{
+  margin-top: 1em;
+}
+
+ion-item.item-has-focus > ion-label{
+  color:  gray  !important;
+}
+
 .container{
     height: 80%;
     display: flex;

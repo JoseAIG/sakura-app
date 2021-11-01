@@ -8,6 +8,7 @@
         <h3><b>Sign up to Sakura</b></h3>
         <hr />
         <ion-item>
+          <ion-label position = "floating">Username:</ion-label>
           <ion-input type="text" placeholder="Username" formControlName="user">
           </ion-input>
         </ion-item>
@@ -15,6 +16,7 @@
           <span>Username is required</span>
         </div>
         <ion-item>
+          <ion-label position = "floating">Email:</ion-label>
           <ion-input type="email" placeholder="example@mail.com" formControlName="email">
           </ion-input>
         </ion-item>
@@ -22,6 +24,7 @@
           <span>E-mail is required</span>
         </div>
         <ion-item>
+          <ion-label position = "floating">Password:</ion-label>
           <ion-input type="password" placeholder="Enter your Password" formControlName="password"
             (ionChange)="passwordVerifier()">
           </ion-input>
@@ -31,6 +34,7 @@
           <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
         </div>
         <ion-item>
+          <ion-label position = "floating">Confirm your password:</ion-label>
           <ion-input type="password" placeholder="Confirm your Password" formControlName="confirmedPassword"
             (ionChange)="passwordVerifier()">
           </ion-input>
