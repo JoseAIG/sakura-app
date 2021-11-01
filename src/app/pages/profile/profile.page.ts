@@ -7,11 +7,11 @@ import { UserService } from 'src/app/services/user.service';
 import { UserModalPage } from '../user-modal/user-modal.page';
 
 @Component({
-  selector: 'app-tab3',
-  templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss']
+  selector: 'app-profile',
+  templateUrl: 'profile.page.html',
+  styleUrls: ['profile.page.scss']
 })
-export class Tab3Page implements OnInit {
+export class ProfilePage implements OnInit {
 
   email: string;
   username: string;
