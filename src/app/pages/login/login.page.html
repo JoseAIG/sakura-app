@@ -7,6 +7,7 @@
       <form (ngSubmit)="login()" [formGroup]="loginForm">
 
         <ion-item>
+          <ion-label position = "floating"> Enter your username or email:</ion-label>
           <ion-input type="text" placeholder="Username or email" formControlName="user"></ion-input>
         </ion-item>
         <div *ngIf="user.touched && user.errors" class="errors">
@@ -14,6 +15,7 @@
         </div>
         <br>
         <ion-item>
+          <ion-label position = "floating"> Enter your password:</ion-label>
           <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
         </ion-item>
         <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
