@@ -65,7 +65,7 @@ export class RegisterPage implements OnInit {
         async (res) => {
           await loading.dismiss()
           const alert = await this.alertController.create({
-            header: 'Register failed',
+            header: 'Register completed',
             message: res.message,
             buttons: ['OK'],
           });
@@ -91,6 +91,8 @@ export class RegisterPage implements OnInit {
     return pass === confirmPass ? null : { notSame: true }
   }
 
+  //method for passing password validator message using
+  //property binding
   passwordVerifier() {
     let pass = this.registerForm.get('password').value
     let confirmPass = this.registerForm.get('confirmedPassword').value

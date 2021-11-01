@@ -30,7 +30,11 @@ const routes: Routes = [
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
+  },  {
+    path: 'user-modal',
+    loadChildren: () => import('./pages/user-modal/user-modal.module').then( m => m.UserModalPageModule)
   }
+
 ];
 @NgModule({
   imports: [
