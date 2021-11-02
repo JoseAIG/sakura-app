@@ -30,6 +30,11 @@ ion-button{
   align-items: center;
 }
 
+.settingsButton{
+  --background: none;
+  --color: gray;
+}
+
 @keyframes mymove {
   0% {border-color: #F78DA9}
   25% {border-color: #9064F5}
