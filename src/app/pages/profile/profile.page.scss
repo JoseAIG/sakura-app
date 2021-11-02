@@ -35,6 +35,11 @@ ion-button{
   --color: gray;
 }
 
+.newMangaButton{
+  --background: white;
+  --color: black;
+}
+
 @keyframes mymove {
   0% {border-color: #F78DA9}
   25% {border-color: #9064F5}

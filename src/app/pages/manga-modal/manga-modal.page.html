@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create a New Manga</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <ion-card>
+      <ion-item>
+        <ion-label position="floating">Manga Title:</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Manga Author:</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Number of Chapters:</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Manga status:</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Manga Description:</ion-label>
+        <ion-textarea></ion-textarea>
+      </ion-item>
+
+
+      <br>
+
+      <ion-label>Upload Manga Cover</ion-label>
+      <ion-item>
+        <ion-input type="file" accept="image/*"></ion-input>
+      </ion-item>
+
+      <div class="episodeButton">
+        <ion-button shape="round" color="medium" >
+          Create Manga
+        </ion-button>
+
+      </div>
+    </ion-card>
+  </div>
+
+</ion-content>

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController, AlertInput, IonRadio, LoadingController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
+import { MangaModalPage } from '../manga-modal/manga-modal.page';
 import { UserModalPage } from '../user-modal/user-modal.page';
 
 @Component({
@@ -87,12 +88,22 @@ export class ProfilePage implements OnInit {
     await (await modal).present();
   }
 
+  //function for creating mangas
+  async newManga(){
+    const modal = this.modalController.create({
+      component: MangaModalPage
+    });
+
+    await (await modal).present();
+  }
+
   //MANGA VIEWER READ MODE SETTINGS
   async readModeSettings() {
     //console.log(localStorage.getItem('READ_MODE'))
     let currentReadMode = localStorage.getItem('READ_MODE')
     const readModeSettingsAlert = this.alertController.create({
       header: "Set the reading direction",
+      cssClass: "readAlert",
       inputs: [
         {
           type: 'radio',
@@ -125,6 +136,10 @@ export class ProfilePage implements OnInit {
           handler: data => {
             localStorage.setItem('READ_MODE', data)
           }
+        },
+        {
+          text: 'CANCEL',
+          role: 'cancel'
         }
       ]
     });
