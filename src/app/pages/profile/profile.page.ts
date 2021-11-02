@@ -16,7 +16,6 @@ export class ProfilePage implements OnInit {
   email: string;
   username: string;
   registerForm: FormGroup;
-  readingAlert:HTMLIonAlertElement
 
   constructor(
     private userService: UserService,
@@ -25,55 +24,10 @@ export class ProfilePage implements OnInit {
     private loadingController: LoadingController,
     private alertController: AlertController,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit(){
-    this.getData(),
-    console.log(localStorage.getItem('READ_MODE')),
-    this.readingAlert = this.alertController.create({
-      header: 'Do you want to log out?',
-      buttons: [
-        {
-          text: 'OK',
-          handler: () => {
-          }
-        }]
-    });
-    // const alert = this.alertController.create({
-    //   header:"Set the reading direction"
-    //   ,
-    //   inputs: [
-    //     {
-    //       type: 'radio',
-    //       value: 'topToBottom',
-    //       label: 'From Top to Bottom'
-    //     },
-    //     {
-    //       type: 'radio',
-    //       value: 'bottomToTop',
-    //       label: 'From Bottom to Top'
-    //     },
-    //     {
-    //       type: 'radio',
-    //       value: 'leftToRight',
-    //       label: 'Left to Right'
-    //     },
-    //     {
-    //       type: 'radio',
-    //       value: 'rightToLeft',
-    //       label: 'Right to Left'
-    //     }
-    //   ],
-    //   buttons:[
-    //       {
-    //         text: 'OK',
-    //         handler: data => {
-    //           this.saveReadingDirection(data)
-    //         }
-    //       }
-    //   ]
-    // });
-
+  ngOnInit() {
+    this.getData()
   }
 
   //Obtain user data from the BE API
@@ -91,7 +45,7 @@ export class ProfilePage implements OnInit {
   }
 
   //logout confirmation prompt
-  async confirmLogout(){
+  async confirmLogout() {
     const alert = await this.alertController.create({
       header: 'Do you want to log out?',
       buttons: [
@@ -133,22 +87,49 @@ export class ProfilePage implements OnInit {
     await (await modal).present();
   }
 
-  //Manga readMode function
-  readMode(){
-     this.readingAlert.present()
+  //MANGA VIEWER READ MODE SETTINGS
+  async readModeSettings() {
+    //console.log(localStorage.getItem('READ_MODE'))
+    let currentReadMode = localStorage.getItem('READ_MODE')
+    const readModeSettingsAlert = this.alertController.create({
+      header: "Set the reading direction",
+      inputs: [
+        {
+          type: 'radio',
+          value: 'topToBottom',
+          label: 'From Top to Bottom',
+          checked: currentReadMode == 'topToBottom' ? true : false
+        },
+        {
+          type: 'radio',
+          value: 'bottomToTop',
+          label: 'From Bottom to Top',
+          checked: currentReadMode == 'bottomToTop' ? true : false
+        },
+        {
+          type: 'radio',
+          value: 'leftToRight',
+          label: 'Left to Right',
+          checked: currentReadMode == 'leftToRight' ? true : false
+        },
+        {
+          type: 'radio',
+          value: 'rightToLeft',
+          label: 'Right to Left',
+          checked: currentReadMode == 'rightToLeft' ? true : false
+        }
+      ],
+      buttons: [
+        {
+          text: 'OK',
+          handler: data => {
+            localStorage.setItem('READ_MODE', data)
+          }
+        }
+      ]
+    });
+
+    await (await readModeSettingsAlert).present()
   }
 
-  //function for setting the radioButtton
-  setRadioButton(){
-  }
-
-  //saving Reading Direction function
-  saveReadingDirection(data){
-    localStorage.setItem('READ_MODE',data)
-  }
-
-  //getting read mode
-  getReadMode(){
-    return localStorage.getItem('READ_MODE')
-  }
 }
