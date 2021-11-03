@@ -12,6 +12,14 @@ import { MangaService } from 'src/app/services/manga.service';
 export class MangaModalPage implements OnInit {
 
   @Input() edit: boolean;
+  @Input() id: number;
+  @Input() title: string;
+  @Input() author: string;
+  @Input() year: string;
+  @Input() status: string;
+  @Input() chapters: number;
+  @Input() description: string;
+  @Input() cover: string;
 
   mangaForm: FormGroup
   mangaCover: string = null
@@ -27,14 +35,18 @@ export class MangaModalPage implements OnInit {
 
   ngOnInit() {
     this.mangaForm = this.formBuilder.group({
-      title: [null, [Validators.required]],
-      description: [null, [Validators.required]],
-      author: [null, [Validators.required]],
-      status: [null, [Validators.required]],
-      year: [null, [Validators.required]],
-      chapters: [null, [Validators.required]],
+      title: [!this.edit ? null : this.title, [Validators.required]],
+      description: [!this.edit ? null : this.description, [Validators.required]],
+      author: [!this.edit ? null : this.author, [Validators.required]],
+      status: [!this.edit ? null : this.status, [Validators.required]],
+      year: [!this.edit ? null : this.year, [Validators.required]],
+      chapters: [!this.edit ? null : this.chapters, [Validators.required]],
       cover: !this.edit ? [null, [Validators.required]] : [null]
     })
+
+    if (this.cover) {
+      this.mangaCover = this.cover
+    }
   }
 
   //closing the manga creation modal
@@ -63,8 +75,6 @@ export class MangaModalPage implements OnInit {
   }
 
   async createManga() {
-    console.log('create manga')
-
     let loading = await this.loadingController.create();
     await loading.present();
 
@@ -104,7 +114,50 @@ export class MangaModalPage implements OnInit {
       )
   }
 
-  uploadManga() {
-    console.log('upload manga')
+  async updateManga() {
+    let loading = await this.loadingController.create();
+    await loading.present();
+
+    let formData: FormData = new FormData();
+    formData.append("id", this.id.toString())
+    formData.append("title", this.mangaForm.get("title").value);
+    formData.append("description", this.mangaForm.get("description").value);
+    formData.append("author", this.mangaForm.get("author").value);
+    formData.append("status", this.mangaForm.get("status").value);
+    formData.append("year", this.mangaForm.get("year").value);
+    formData.append("chapters", this.mangaForm.get("chapters").value);
+
+    //CHECK IF NEW FILE WAS SELECTED, IF NOT, APPEND EMPTY FILE
+    if(this.mangaForm.get("cover").value){
+      formData.append("cover", this.mangaForm.get("cover").value);
+    }else{
+      formData.append("cover", new File([""],""), "");
+    }
+
+    this.mangaService.updateManga(formData)
+      .subscribe(
+        async (res) => {
+          console.log(res)
+          await loading.dismiss();
+          const alert = await this.alertController.create({
+            header: 'Success',
+            message: res.message,
+            buttons: ['OK'],
+          });
+          alert.present()
+          this.router.navigateByUrl('/tabs/profile', { replaceUrl: true })
+          this.dismiss()
+        },
+        async (res) => {
+          console.log(res)
+          await loading.dismiss()
+          const alert = await this.alertController.create({
+            header: 'Manga creation failed',
+            message: res.error.message,
+            buttons: ['OK'],
+          });
+          alert.present()
+        }
+      )
   }
 }

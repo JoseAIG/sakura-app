@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, AlertInput, IonRadio, LoadingController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { MangaService } from 'src/app/services/manga.service';
 import { UserService } from 'src/app/services/user.service';
 import { MangaModalPage } from '../manga-modal/manga-modal.page';
 import { UserModalPage } from '../user-modal/user-modal.page';
@@ -16,11 +17,12 @@ export class ProfilePage implements OnInit {
 
   email: string;
   username: string;
-  registerForm: FormGroup;
+  userMangas: object;
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    private mangaService: MangaService,
     private modalController: ModalController,
     private loadingController: LoadingController,
     private alertController: AlertController,
@@ -28,16 +30,30 @@ export class ProfilePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getData()
+    this.getUserData()
+    this.getUserMangas()
   }
 
   //Obtain user data from the BE API
-  getData() {
+  getUserData() {
     this.userService.getUserData()
       .subscribe(
         async (res) => {
           this.username = res.username;
           this.email = res.email;
+        },
+        async (res) => {
+          console.log(res.error)
+        }
+      )
+  }
+
+  getUserMangas() {
+    this.mangaService.getUserMangas()
+      .subscribe(
+        async (res) => {
+          this.userMangas = res.user_mangas
+          console.log(this.userMangas)
         },
         async (res) => {
           console.log(res.error)
@@ -89,10 +105,10 @@ export class ProfilePage implements OnInit {
   }
 
   //function for creating mangas
-  async newManga(){
+  async newManga() {
     const modal = this.modalController.create({
       component: MangaModalPage,
-      componentProps:{
+      componentProps: {
         edit: false
       }
     });
@@ -101,16 +117,8 @@ export class ProfilePage implements OnInit {
   }
 
   //function for creating chapters
-  async newChapter(){
+  async newChapter() {
     console.log("Create new chapter")
-    const modal = this.modalController.create({
-      component: MangaModalPage,
-      componentProps:{
-        edit: true
-      }
-    });
-
-    await (await modal).present();
   }
 
   //MANGA VIEWER READ MODE SETTINGS

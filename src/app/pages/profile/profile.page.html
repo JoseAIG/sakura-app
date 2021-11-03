@@ -38,6 +38,10 @@
     </ion-label>
   </ion-item-divider>
 
+  <div *ngFor="let manga of userMangas; index as i">
+    <app-manga-card id={{manga.manga_id}} cover={{manga.cover_image}} title={{manga.title}} author={{manga.author}} chapters={{manga.chapters}} description={{manga.description}} year={{manga.year}} status={{manga.status}} dateCreated={{manga.date_created}} editable="true"></app-manga-card>
+  </div>
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button class="newMangaButton" color="medium">
       <ion-icon name="add"></ion-icon>
