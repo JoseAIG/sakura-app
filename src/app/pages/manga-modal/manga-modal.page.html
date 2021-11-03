@@ -1,55 +1,58 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Create a New Manga</ion-title>
+    <ion-title *ngIf="!edit">Create new manga</ion-title>
+    <ion-title *ngIf="edit">Edit manga</ion-title>
     <ion-buttons slot="end">
-      <ion-button color="danger" (click)="dismiss()">Close</ion-button>
+      <ion-button (click)="dismiss()">Close</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen>
   <div class="container">
     <ion-card>
-      <ion-item>
-        <ion-label position="floating">Manga Title:</ion-label>
-        <ion-input type="text"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Manga Author:</ion-label>
-        <ion-input type="text"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Number of Chapters:</ion-label>
-        <ion-input type="number"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Manga status:</ion-label>
-        <ion-input type="text"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Manga Description:</ion-label>
-        <ion-textarea></ion-textarea>
-      </ion-item>
-
-
+      <ion-list>
+        <ion-item *ngIf="mangaCover">
+          <img src="{{mangaCover}}" width="100px">
+        </ion-item>
+        <form [formGroup]="mangaForm">
+          <ion-item>
+            <ion-label position="floating">Title:</ion-label>
+            <ion-input type="text" formControlName="title"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Author:</ion-label>
+            <ion-input type="text" formControlName="author"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Year:</ion-label>
+            <ion-input type="number" min="1900" max="2099" step="1" formControlName="year"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Number of chapters:</ion-label>
+            <ion-input type="number" formControlName="chapters"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Status:</ion-label>
+            <ion-select interface="popover" formControlName="status">
+              <ion-select-option value="Ongoing">Ongoing</ion-select-option>
+              <ion-select-option value="Finished">Finished</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Description:</ion-label>
+            <ion-textarea formControlName="description"></ion-textarea>
+          </ion-item>
+          <br>
+          <ion-item>
+            <ion-label position="floating">Upload Manga Cover</ion-label>
+            <ion-input type="file" accept="image/*" formControlName="cover" (change)="setCoverPreview($event)"></ion-input>
+          </ion-item>
+        </form>
+      </ion-list>
       <br>
-
-      <ion-label>Upload Manga Cover</ion-label>
-      <ion-item>
-        <ion-input type="file" accept="image/*"></ion-input>
-      </ion-item>
-
-      <div class="episodeButton">
-        <ion-button shape="round" color="medium" >
-          Create Manga
-        </ion-button>
-
-      </div>
+      <ion-button *ngIf="!edit" [disabled]=!mangaForm.valid shape="round" (click)="createManga()">Create Manga</ion-button>
+      <ion-button *ngIf="edit" [disabled]=!mangaForm.valid shape="round" (click)="updateManga()">Update Manga</ion-button>
     </ion-card>
   </div>
-
 </ion-content>

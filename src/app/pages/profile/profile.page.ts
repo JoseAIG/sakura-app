@@ -91,7 +91,23 @@ export class ProfilePage implements OnInit {
   //function for creating mangas
   async newManga(){
     const modal = this.modalController.create({
-      component: MangaModalPage
+      component: MangaModalPage,
+      componentProps:{
+        edit: false
+      }
+    });
+
+    await (await modal).present();
+  }
+
+  //function for creating chapters
+  async newChapter(){
+    console.log("Create new chapter")
+    const modal = this.modalController.create({
+      component: MangaModalPage,
+      componentProps:{
+        edit: true
+      }
     });
 
     await (await modal).present();
