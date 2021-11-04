@@ -1,0 +1,33 @@
+ion-card{
+  padding: 1.5em;
+  margin: 1.5em;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+ion-item.item-has-focus > ion-label{
+  color:  gray  !important;
+}
+
+.container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageInput{
+  margin-top: 10%  ;
+}
+
+.wrapper{
+  padding: 2%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+  grid-gap: 2%;
+  justify-items: center;
+  align-items: center;
+}

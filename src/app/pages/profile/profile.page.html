@@ -1,20 +1,16 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Profile
-    </ion-title>
-    <ion-button shape="round" color="medium" slot="end" (click)="confirmLogout()">
-      Logout
-    </ion-button>
-  </ion-toolbar>
-</ion-header>
+<ion-fab vertical="top" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="readModeSettings()" class="settingsButton">
+    <ion-icon name="settings"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+<br><br><br>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Tab 3</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
 
   <div class="container">
     <ion-card>
@@ -30,6 +26,36 @@
         </ion-card-subtitle>
       </ion-card-content>
       <ion-button (click)='openSettings()' shape="round">Manage your Account</ion-button>
+      <ion-button shape="round" color="medium" (click)="confirmLogout()">
+        Logout
+      </ion-button>
     </ion-card>
   </div>
+
+  <ion-item-divider>
+    <ion-label>
+      Your Mangas
+    </ion-label>
+  </ion-item-divider>
+
+  <div class="wrapper">
+    <ng-container *ngFor="let manga of userMangas; index as i">
+      <app-manga-card id={{manga.manga_id}} cover={{manga.cover_image}} title={{manga.title}} author={{manga.author}} chapters={{manga.chapters.length}} description={{manga.description}} year={{manga.year}} status={{manga.status}} dateCreated={{manga.date_created}} editable="true"></app-manga-card>
+    </ng-container>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="newMangaButton" color="medium">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="light" (click)="newChapter()">
+        <ion-icon name="document-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light" (click)="newManga()">
+        <ion-icon name="book-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
 </ion-content>
