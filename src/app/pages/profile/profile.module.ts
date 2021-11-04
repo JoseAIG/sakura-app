@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProfilePage } from './profile.page';
 import { ExploreContainerComponentModule } from '../../components/explore-container/explore-container.module';
+import { MangaCardComponentModule } from 'src/app/components/manga-card/manga-card.module';
 
 import { ProfilePageRoutingModule } from './profile-routing.module';
 
@@ -16,6 +17,7 @@ import { ProfilePageRoutingModule } from './profile-routing.module';
     ExploreContainerComponentModule,
     RouterModule.forChild([{ path: '', component: ProfilePage }]),
     ProfilePageRoutingModule,
+    MangaCardComponentModule
   ],
   declarations: [ProfilePage]
 })
