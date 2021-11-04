@@ -136,7 +136,6 @@ export class ProfilePage implements OnInit {
     let currentReadMode = localStorage.getItem('READ_MODE')
     const readModeSettingsAlert = this.alertController.create({
       header: "Set the reading direction",
-      cssClass: "readAlert",
       inputs: [
         {
           type: 'radio',
