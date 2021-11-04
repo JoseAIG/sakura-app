@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>chapter-form-modal</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <div class="container">
+    <ion-card>
+      <ion-list>
+
+        <form [formGroup]="chapterForm">
+          <ion-item>
+            <ion-label position="floating">Select the manga:</ion-label>
+            <ion-select formControlName="manga">
+              <!-- ngFor select option -->
+              <ion-select-option></ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Enter the chapter number:</ion-label>
+            <ion-input type="number" formControlName="number"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Upload the chapter images:</ion-label>
+            <ion-input class="imageInput" type="file" accept="image/*" formControlName="images" (change)="chapterPreview($event)" multiple></ion-input>
+          </ion-item>
+        </form>
+
+        <ion-item-divider>
+          <ion-label>Chapter Preview</ion-label>
+        </ion-item-divider>
+
+        <ion-item>
+          <div style=" align-content: center;">
+            <ng-container class="wrapper" *ngFor="let image of chapterImages">
+                <img [src]="image" width="80px" style="margin: 10px;">
+            </ng-container>
+          </div>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-button shape="round">Upload Chapter</ion-button>
+    </ion-card>
+  </div>
+
+</ion-content>

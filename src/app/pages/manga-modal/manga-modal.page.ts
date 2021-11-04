@@ -17,7 +17,6 @@ export class MangaModalPage implements OnInit {
   @Input() author: string;
   @Input() year: string;
   @Input() status: string;
-  @Input() chapters: number;
   @Input() description: string;
   @Input() cover: string;
 
@@ -40,7 +39,6 @@ export class MangaModalPage implements OnInit {
       author: [!this.edit ? null : this.author, [Validators.required]],
       status: [!this.edit ? null : this.status, [Validators.required]],
       year: [!this.edit ? null : this.year, [Validators.required]],
-      chapters: [!this.edit ? null : this.chapters, [Validators.required]],
       cover: !this.edit ? [null, [Validators.required]] : [null]
     })
 
@@ -84,7 +82,6 @@ export class MangaModalPage implements OnInit {
     formData.append("author", this.mangaForm.get("author").value);
     formData.append("status", this.mangaForm.get("status").value);
     formData.append("year", this.mangaForm.get("year").value);
-    formData.append("chapters", this.mangaForm.get("chapters").value);
     formData.append("cover", this.mangaForm.get("cover").value);
 
     this.mangaService.createManga(formData)
@@ -125,7 +122,6 @@ export class MangaModalPage implements OnInit {
     formData.append("author", this.mangaForm.get("author").value);
     formData.append("status", this.mangaForm.get("status").value);
     formData.append("year", this.mangaForm.get("year").value);
-    formData.append("chapters", this.mangaForm.get("chapters").value);
 
     //CHECK IF NEW FILE WAS SELECTED, IF NOT, APPEND EMPTY FILE
     if(this.mangaForm.get("cover").value){

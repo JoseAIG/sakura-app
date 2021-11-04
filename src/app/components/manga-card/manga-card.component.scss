@@ -1,11 +1,12 @@
 ion-card{
     padding: 0.5em;
     margin: 5px;
-    float: left;
+    height: auto;
     width: 150px;
+    border-radius: 2em;
 }
 
 ion-card img{
-    width: 100%;
-    height: auto;
+    width: 80%;
+    height: 125px;
 }

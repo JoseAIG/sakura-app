@@ -5,6 +5,7 @@ import { AlertController, AlertInput, IonRadio, LoadingController, ModalControll
 import { AuthService } from 'src/app/services/auth.service';
 import { MangaService } from 'src/app/services/manga.service';
 import { UserService } from 'src/app/services/user.service';
+import { ChapterFormModalPage } from '../chapter-form-modal/chapter-form-modal.page';
 import { MangaModalPage } from '../manga-modal/manga-modal.page';
 import { UserModalPage } from '../user-modal/user-modal.page';
 
@@ -53,7 +54,7 @@ export class ProfilePage implements OnInit {
       .subscribe(
         async (res) => {
           this.userMangas = res.user_mangas
-          console.log(this.userMangas)
+          console.log('Mis mangas'+this.userMangas)
         },
         async (res) => {
           console.log(res.error)
@@ -119,6 +120,14 @@ export class ProfilePage implements OnInit {
   //function for creating chapters
   async newChapter() {
     console.log("Create new chapter")
+    const modal = this.modalController.create({
+      component: ChapterFormModalPage,
+      componentProps:{
+        edit: false
+      }
+    });
+
+    await (await modal).present();
   }
 
   //MANGA VIEWER READ MODE SETTINGS
