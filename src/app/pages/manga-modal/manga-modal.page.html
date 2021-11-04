@@ -13,7 +13,7 @@
     <ion-card>
       <ion-list>
         <ion-item *ngIf="mangaCover">
-          <img src="{{mangaCover}}" width="100px">
+          <img src="{{mangaCover}}">
         </ion-item>
         <form [formGroup]="mangaForm">
           <ion-item>
@@ -48,7 +48,11 @@
       </ion-list>
       <br>
       <ion-button *ngIf="!edit" [disabled]=!mangaForm.valid shape="round" (click)="createManga()">Create Manga</ion-button>
-      <ion-button *ngIf="edit" [disabled]=!mangaForm.valid shape="round" (click)="updateManga()">Update Manga</ion-button>
+      <ng-container *ngIf="edit">
+        <ion-button [disabled]=!mangaForm.valid shape="round" (click)="updateManga()" color="medium">Update Manga</ion-button>
+        <br>
+        <ion-button shape="round" (click)="confirmDeletion()" color="danger">Delete</ion-button>
+      </ng-container>
     </ion-card>
   </div>
 </ion-content>

@@ -89,13 +89,7 @@ export class MangaModalPage implements OnInit {
         async (res) => {
           console.log(res)
           await loading.dismiss();
-          const alert = await this.alertController.create({
-            header: 'Success',
-            message: res.message,
-            buttons: ['OK'],
-          });
-          alert.present()
-          this.router.navigateByUrl('/tabs/profile', { replaceUrl: true })
+          location.reload()
           this.dismiss()
         },
         async (res) => {
@@ -124,10 +118,10 @@ export class MangaModalPage implements OnInit {
     formData.append("year", this.mangaForm.get("year").value);
 
     //CHECK IF NEW FILE WAS SELECTED, IF NOT, APPEND EMPTY FILE
-    if(this.mangaForm.get("cover").value){
+    if (this.mangaForm.get("cover").value) {
       formData.append("cover", this.mangaForm.get("cover").value);
-    }else{
-      formData.append("cover", new File([""],""), "");
+    } else {
+      formData.append("cover", new File([""], ""), "");
     }
 
     this.mangaService.updateManga(formData)
@@ -135,20 +129,14 @@ export class MangaModalPage implements OnInit {
         async (res) => {
           console.log(res)
           await loading.dismiss();
-          const alert = await this.alertController.create({
-            header: 'Success',
-            message: res.message,
-            buttons: ['OK'],
-          });
-          alert.present()
-          this.router.navigateByUrl('/tabs/profile', { replaceUrl: true })
+          location.reload()
           this.dismiss()
         },
         async (res) => {
           console.log(res)
           await loading.dismiss()
           const alert = await this.alertController.create({
-            header: 'Manga creation failed',
+            header: 'Manga update failed',
             message: res.error.message,
             buttons: ['OK'],
           });
@@ -156,4 +144,51 @@ export class MangaModalPage implements OnInit {
         }
       )
   }
+
+  async confirmDeletion() {
+    const alert = await this.alertController.create({
+      header: 'Delete this manga?',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.deleteManga()
+          }
+        },
+        {
+          text: 'CANCEL',
+          role: 'cancel'
+        }
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async deleteManga() {
+    let loading = await this.loadingController.create();
+    await loading.present();
+
+    this.mangaService.deleteManga(this.id)
+      .subscribe(
+        async (res) => {
+          console.log(res)
+          await loading.dismiss()
+          location.reload()
+          this.dismiss()
+        },
+        async (res) => {
+          console.log(res)
+          await loading.dismiss()
+          const alert = await this.alertController.create({
+            header: 'Could not delete manga',
+            message: res.error.message,
+            buttons: ['OK'],
+          });
+          alert.present()
+        }
+      )
+  }
+
+
 }
