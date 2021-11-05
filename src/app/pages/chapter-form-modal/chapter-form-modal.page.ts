@@ -59,15 +59,23 @@ export class ChapterFormModalPage implements OnInit {
 
     let formData:FormData = new FormData();
     formData.append("number", this.chapterForm.get('number').value);
-    formData.append("images", this.chapterForm.get('images').value)
+    for(let i = 0; i<this.chapterForm.get('images').value.length; i++){
+      formData.append("images[]", this.chapterForm.get('images').value[i]);
+    }
 
     this.chapterService.createChapter(formData,mangaID)
     .subscribe(
       async (res) => {
         console.log(res)
-          await loading.dismiss();
-          location.reload()
-          this.dismiss()
+        await loading.dismiss();
+        location.reload()
+        this.dismiss()
+        const alert = await this.alertController.create({
+          header: 'Success',
+          message: res.message,
+          buttons: ['OK'],
+        });
+        alert.present()
       },
       async (res) => {
         console.log(res)

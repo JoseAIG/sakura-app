@@ -9,7 +9,7 @@ export class ChapterService {
 
   // http://127.0.0.1:5000/
   // https://sakura-mv.herokuapp.com
-  private BASE_URL = 'http://127.0.0.1:5000'
+  private BASE_URL = 'https://sakura-mv.herokuapp.com'
 
   constructor(private http:HttpClient) { }
 
