@@ -30,7 +30,8 @@ const routes: Routes = [
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
-  },  {
+  },
+  {
     path: 'user-modal',
     loadChildren: () => import('./pages/user-modal/user-modal.module').then( m => m.UserModalPageModule)
   },
@@ -41,6 +42,10 @@ const routes: Routes = [
   {
     path: 'chapter-form-modal',
     loadChildren: () => import('./pages/chapter-form-modal/chapter-form-modal.module').then( m => m.ChapterFormModalPageModule)
+  },
+  {
+    path: 'viewer',
+    loadChildren: () => import('./pages/viewer/viewer.module').then( m => m.ViewerPageModule)
   }
 
 ];

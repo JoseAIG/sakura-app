@@ -1,0 +1,34 @@
+ion-toolbar {
+    --background: #C22E48;
+    color: white;
+}
+
+ion-tab-button{
+    --color-selected: #C2345A;
+}
+
+.show-toolbar {
+    border-style: none;
+    background: #C22E48;
+    opacity: 100%;
+    transition: opacity 0.5s;
+}
+
+.hide-toolbar {
+    opacity: 0%;
+    transition: opacity 0.5s;
+}
+
+/* Remove bottom border on md */
+.header-md::after {
+    background-image: none;
+}
+
+/* Remove bottom border on ios */
+.header-ios ion-toolbar:last-child {
+    --border-width: 0;
+}
+
+.subtitle{
+    font-size: small;
+}
