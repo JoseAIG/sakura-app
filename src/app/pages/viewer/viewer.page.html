@@ -10,12 +10,20 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen (ionScroll)="onScroll($event)" [scrollEvents]="true">
-
+<ion-content *ngIf="readMode==='topToBottom' || readMode==='bottomToTop' || !readMode" fullscreen (ionScroll)="onScroll($event)" [scrollEvents]="true">
   <div *ngFor="let i of images">
-    <img src={{i}}>
+    <img src={{i}} class="vertical-image">
   </div>
+</ion-content>
 
+<ion-content *ngIf="readMode==='leftToRight' || readMode==='rightToLeft'">
+  <ion-slides pager="true">
+    <ng-container *ngFor="let i of images">
+      <ion-slide>
+          <img src={{i}}>
+      </ion-slide>
+    </ng-container>
+  </ion-slides>
 </ion-content>
 
 <ion-toolbar [class.show-toolbar]="showToolbar" [class.hide-toolbar]="!showToolbar">

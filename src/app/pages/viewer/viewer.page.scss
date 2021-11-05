@@ -32,3 +32,13 @@ ion-tab-button{
 .subtitle{
     font-size: small;
 }
+
+.vertical-image{
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+ion-slides{
+    height: 80vh;
+    --bullet-background-active: #C22E48;
+}
