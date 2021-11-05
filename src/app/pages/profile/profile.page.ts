@@ -54,7 +54,7 @@ export class ProfilePage implements OnInit {
       .subscribe(
         async (res) => {
           this.userMangas = res.user_mangas
-          console.log('Mis mangas'+this.userMangas)
+          // console.log('Mis mangas'+this.userMangas)
         },
         async (res) => {
           console.log(res.error)
@@ -123,7 +123,7 @@ export class ProfilePage implements OnInit {
     const modal = this.modalController.create({
       component: ChapterFormModalPage,
       componentProps:{
-        edit: false
+        'mangas':this.userMangas
       }
     });
 
