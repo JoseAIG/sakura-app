@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, AlertInput, IonRadio, LoadingController, ModalController } from '@ionic/angular';
+import { Manga } from 'src/app/interfaces/manga';
 import { AuthService } from 'src/app/services/auth.service';
 import { MangaService } from 'src/app/services/manga.service';
 import { UserService } from 'src/app/services/user.service';
@@ -18,7 +19,7 @@ export class ProfilePage implements OnInit {
 
   email: string;
   username: string;
-  userMangas: object;
+  userMangas: Manga[]
 
   constructor(
     private userService: UserService,
@@ -54,7 +55,6 @@ export class ProfilePage implements OnInit {
       .subscribe(
         async (res) => {
           this.userMangas = res.user_mangas
-          console.log('Mis mangas'+this.userMangas)
         },
         async (res) => {
           console.log(res.error)
@@ -123,7 +123,8 @@ export class ProfilePage implements OnInit {
     const modal = this.modalController.create({
       component: ChapterFormModalPage,
       componentProps:{
-        edit: false
+        'mangas':this.userMangas,
+        edit:false
       }
     });
 

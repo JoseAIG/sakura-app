@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>chapter-form-modal</ion-title>
+    <ion-title *ngIf="!edit">Create a new chapter</ion-title>
+    <ion-title *ngIf="edit">Edit chapter</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">Close</ion-button>
     </ion-buttons>
@@ -13,22 +14,32 @@
       <ion-list>
 
         <form [formGroup]="chapterForm">
-          <ion-item>
+          <ion-item *ngIf="!edit">
             <ion-label position="floating">Select the manga:</ion-label>
-            <ion-select formControlName="manga">
-              <!-- ngFor select option -->
-              <ion-select-option></ion-select-option>
+            <ion-select interface="popover" formControlName="manga">
+              <ion-select-option *ngFor="let manga of mangas" [value]="manga.manga_id">{{manga.title}}</ion-select-option>
             </ion-select>
+          </ion-item>
+          <div *ngIf="manga.errors && manga.touched" class="errors">
+            <span>Select the manga</span>
+          </div>
+          <ion-item *ngIf="edit">
+            <ion-label position="floating">Manga:</ion-label>
+            <ion-input formControlName="manga" value=manga.manga_id readonly = true></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label position="floating">Enter the chapter number:</ion-label>
             <ion-input type="number" formControlName="number"></ion-input>
           </ion-item>
+          <div *ngIf="chapterInput.errors && chapterInput.touched" class="errors">
+            <span>Enter the chapter</span>
+          </div>
 
           <ion-item>
-            <ion-label position="floating">Upload the chapter images:</ion-label>
-            <ion-input class="imageInput" type="file" accept="image/*" formControlName="images" (change)="chapterPreview($event)" multiple></ion-input>
+            <ion-label *ngIf="!edit" position="floating">Upload the chapter images:</ion-label>
+            <ion-label *ngIf="edit" position="floating">Re-upload the chapter images:</ion-label>
+            <ion-input class="imageInput" type="file" accept="image/*" name="images[]" formControlName="images" (change)="chapterPreview($event)" multiple></ion-input>
           </ion-item>
         </form>
 
@@ -46,7 +57,9 @@
 
       </ion-list>
 
-      <ion-button shape="round">Upload Chapter</ion-button>
+      <ion-button *ngIf="!edit" [disabled]=!chapterForm.valid shape="round" (click)="createChapter()" color="medium">Upload Chapter</ion-button>
+      <ion-button *ngIf="edit" [disabled]=!chapterForm.valid shape="round" (click)="editChapter()" color="medium">Edit Chapter</ion-button>
+      <ion-button *ngIf="edit" shape="round" (click)="confirmDeletion(chapter.number)" color="danger">Delete Chapter</ion-button>
     </ion-card>
   </div>
 

@@ -41,6 +41,10 @@ const routes: Routes = [
   {
     path: 'chapter-form-modal',
     loadChildren: () => import('./pages/chapter-form-modal/chapter-form-modal.module').then( m => m.ChapterFormModalPageModule)
+  },
+  {
+    path: 'manga-preview',
+    loadChildren: () => import('./pages/manga-preview/manga-preview.module').then( m => m.MangaPreviewPageModule)
   }
 
 ];

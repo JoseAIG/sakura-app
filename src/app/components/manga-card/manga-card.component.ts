@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Manga } from 'src/app/interfaces/manga';
 import { MangaModalPage } from 'src/app/pages/manga-modal/manga-modal.page';
+import { MangaPreviewPage } from 'src/app/pages/manga-preview/manga-preview.page';
 
 @Component({
   selector: 'app-manga-card',
@@ -9,40 +11,33 @@ import { MangaModalPage } from 'src/app/pages/manga-modal/manga-modal.page';
 })
 export class MangaCardComponent implements OnInit {
 
-  @Input() id: number
-  @Input() cover: string
-  @Input() title: string
-  @Input() author: string
-  @Input() description: string
-  @Input() chapters: number
-  @Input() year: number
-  @Input() status: string
-  @Input() dateCreated: string
+  @Input() manga: Manga
   @Input() editable: boolean
 
   constructor(private modalController: ModalController) { }
 
   ngOnInit() { }
 
-  openManga() {
-    console.log("open manga", this.id)
+  async openManga() {
+    console.log("open manga", this.manga.manga_id)
+    const modal = this.modalController.create({
+      component: MangaPreviewPage,
+      componentProps: {
+        manga: this.manga
+      }
+    });
+
+    await (await modal).present();
   }
 
   async editManga(event: Event) {
     event.stopPropagation()
-    console.log("edit manga", this.id)
+    console.log("edit manga", this.manga.manga_id)
     const modal = this.modalController.create({
       component: MangaModalPage,
       componentProps: {
         edit: true,
-        id: this.id,
-        cover: this.cover,
-        title: this.title,
-        author: this.author,
-        chapters: this.chapters,
-        year: this.year,
-        status: this.status,
-        description: this.description
+        manga: this.manga
       }
     });
 
