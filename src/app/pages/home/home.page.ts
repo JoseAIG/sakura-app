@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,11 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  constructor(private router: Router) { }
+
+  openViewer() {
+    console.log("open viewer")
+    this.router.navigate(['viewer'], { queryParams: { title: "title in query parameters", mangaID: 5, chapterNumber: 1 }})
+  }
 
 }

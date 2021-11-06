@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar [class.show-toolbar]="showToolbar" [class.hide-toolbar]="!showToolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" (click)="backButtonEvent()" slot="start" [disabled]="!showToolbar"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <div>{{title}}</div>
+      <div class="subtitle">Chapter: {{chapterNumber}}</div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="readMode==='topToBottom' || readMode==='bottomToTop' || !readMode" fullscreen (ionScroll)="onScroll($event)" [scrollEvents]="true">
+  <div *ngFor="let i of images">
+    <img src={{i}} class="vertical-image">
+  </div>
+</ion-content>
+
+<ion-content *ngIf="readMode==='leftToRight' || readMode==='rightToLeft'">
+  <ion-slides pager="true">
+    <ng-container *ngFor="let i of images">
+      <ion-slide>
+          <img src={{i}}>
+      </ion-slide>
+    </ng-container>
+  </ion-slides>
+</ion-content>
+
+<ion-toolbar [class.show-toolbar]="showToolbar" [class.hide-toolbar]="!showToolbar">
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button (click)="openComments()">
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        <ion-label>Comments</ion-label>
+      </ion-tab-button>
+      <ion-tab-button (click)="readModeSettings()">
+        <ion-icon name="settings-outline"></ion-icon>
+        <ion-label>Settings</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>
