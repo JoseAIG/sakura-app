@@ -123,7 +123,8 @@ export class ProfilePage implements OnInit {
     const modal = this.modalController.create({
       component: ChapterFormModalPage,
       componentProps:{
-        'mangas':this.userMangas
+        'mangas':this.userMangas,
+        edit:false
       }
     });
 

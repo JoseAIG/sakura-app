@@ -25,8 +25,8 @@ export class ChapterService {
     return this.http.post<any>(`${this.BASE_URL}/manga/${mangaID}/chapters`, formData, this.userHeader())
   }
 
-  updateChapter(formData:FormData,mangaID:number):Observable<any>{
-    return this.http.put<any>(`${this.BASE_URL}/manga/${mangaID}/chapters`, formData, this.userHeader())
+  updateChapter(formData:FormData,mangaID:number, chapterNumber:number):Observable<any>{
+    return this.http.put<any>(`${this.BASE_URL}/manga/${mangaID}/chapter/${chapterNumber}`, formData, this.userHeader())
   }
 
   deleteChapter(chapterNumber:number, mangaID:number):Observable<any>{

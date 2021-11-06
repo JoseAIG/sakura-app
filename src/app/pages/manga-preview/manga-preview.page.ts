@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { Chapter } from 'src/app/interfaces/chapter';
 import { Manga } from 'src/app/interfaces/manga';
 import { AuthService } from 'src/app/services/auth.service';
+import { ChapterFormModalPage } from '../chapter-form-modal/chapter-form-modal.page';
 import { MangaModalPage } from '../manga-modal/manga-modal.page';
 
 @Component({
@@ -12,12 +14,14 @@ import { MangaModalPage } from '../manga-modal/manga-modal.page';
 export class MangaPreviewPage implements OnInit {
 
   @Input() manga: Manga
+  @Input() chapter: Chapter
 
   userPermissions: object
 
   constructor(
     private modalController: ModalController,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertController: AlertController
   ) {
     this.userPermissions = authService.getUserPermissions()
   }
@@ -41,8 +45,18 @@ export class MangaPreviewPage implements OnInit {
     await (await modal).present();
   }
 
-  editChapter() {
-    console.log("edit chapter")
+
+  async editChapter(chapter:Chapter) {
+    console.log("edit chapter ", chapter.id)
+    const modal = this.modalController.create({
+      component: ChapterFormModalPage,
+      componentProps:{
+        edit: true,
+        'mangaToEdit': this.manga,
+        'chapter':chapter
+      }
+    });
+    await (await modal).present();
   }
 
   openViewer(mangaID: number, chapterNumber: number) {

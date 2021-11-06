@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen="true">
   <div class="container">
     <ion-card>
       <img src={{manga.cover_image}} width="250px">
@@ -26,10 +26,10 @@
   </ion-item-divider>
   <ion-title *ngIf="!manga.chapters.length">No chapters yet!</ion-title>
   <ion-list *ngIf="manga.chapters.length">
-    <ion-item *ngFor="let chapter of manga.chapters">
+    <ion-item *ngFor="let chapter of manga.chapters" class="wrapper">
       <ion-label>Chapter {{chapter.number}}</ion-label>
-      <ion-button *ngIf="userPermissions.id === manga.user_id || userPermissions.role === 'admin'" slot="end" color="medium" (click)="editChapter()">Edit</ion-button>
-      <ion-button slot="end" color="medium" (click)="openViewer(chapter.manga_id, chapter.number)">Read</ion-button>
+      <ion-button *ngIf="userPermissions.id === manga.user_id || userPermissions.role === 'admin'" color="medium" (click)="editChapter(chapter)">Edit</ion-button>
+      <ion-button color="medium" (click)="openViewer(chapter.manga_id, chapter.number)">Read</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
