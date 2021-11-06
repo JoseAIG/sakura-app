@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{manga.title}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <ion-card>
+      <img src={{manga.cover_image}} width="250px">
+      <ion-card-content>
+        <ion-card-title>{{manga.title}} ({{manga.year}})</ion-card-title>
+        <ion-card-subtitle>{{manga.author}}</ion-card-subtitle>
+        <ion-card-subtitle>{{manga.description}}</ion-card-subtitle>
+      </ion-card-content>
+      <div class="ion-text-center">
+        <ion-button *ngIf="userPermissions.id === manga.user_id || userPermissions.role === 'admin'" shape="round" color="medium" (click)="editManga()">Edit</ion-button>
+      </div>
+    </ion-card>
+  </div>
+  <ion-item-divider>
+    <ion-label>Chapters</ion-label>
+  </ion-item-divider>
+  <ion-title *ngIf="!manga.chapters.length">No chapters yet!</ion-title>
+  <ion-list *ngIf="manga.chapters.length">
+    <ion-item *ngFor="let chapter of manga.chapters">
+      <ion-label>Chapter {{chapter.number}}</ion-label>
+      <ion-button *ngIf="userPermissions.id === manga.user_id || userPermissions.role === 'admin'" slot="end" color="medium" (click)="editChapter()">Edit</ion-button>
+      <ion-button slot="end" color="medium" (click)="openViewer(chapter.manga_id, chapter.number)">Read</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

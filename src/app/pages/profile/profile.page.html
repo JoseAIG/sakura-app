@@ -39,8 +39,8 @@
   </ion-item-divider>
 
   <div class="wrapper">
-    <ng-container *ngFor="let manga of userMangas; index as i">
-      <app-manga-card id={{manga.manga_id}} cover={{manga.cover_image}} title={{manga.title}} author={{manga.author}} chapters={{manga.chapters.length}} description={{manga.description}} year={{manga.year}} status={{manga.status}} dateCreated={{manga.date_created}} editable="true"></app-manga-card>
+    <ng-container *ngFor="let manga of userMangas">
+      <app-manga-card [manga]=manga editable="true"></app-manga-card>
     </ng-container>
   </div>
 
