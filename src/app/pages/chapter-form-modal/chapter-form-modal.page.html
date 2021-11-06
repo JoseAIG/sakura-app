@@ -59,7 +59,7 @@
 
       <ion-button *ngIf="!edit" [disabled]=!chapterForm.valid shape="round" (click)="createChapter()" color="medium">Upload Chapter</ion-button>
       <ion-button *ngIf="edit" [disabled]=!chapterForm.valid shape="round" (click)="editChapter()" color="medium">Edit Chapter</ion-button>
-      <ion-button *ngIf="edit" shape="round" (click)="deleteChapter(chapter.number)" color="danger">Delete Chapter</ion-button>
+      <ion-button *ngIf="edit" shape="round" (click)="confirmDeletion(chapter.number)" color="danger">Delete Chapter</ion-button>
     </ion-card>
   </div>
 

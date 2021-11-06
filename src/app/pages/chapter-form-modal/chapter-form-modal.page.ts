@@ -35,12 +35,15 @@ export class ChapterFormModalPage implements OnInit {
    }
 
   ngOnInit() {
-
     this.chapterForm = this.formBuilder.group({
       manga:[!this.edit ? null : this.mangaToEdit.title, [Validators.required]],
       number:[!this.edit ? null : this.chapter.number, [Validators.required]],
       images:!this.edit ? [null, [Validators.required]] : [null]
     })
+
+    if(this.edit){
+      this.chapterImages = this.chapter.chapter_images
+    }
   }
 
   get manga() {
@@ -142,6 +145,26 @@ export class ChapterFormModalPage implements OnInit {
       }
     )
 
+  }
+
+  async confirmDeletion(chapterNumber: number) {
+    const alert = await this.alertController.create({
+      header: 'Delete this chapter?',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.deleteChapter(chapterNumber)
+          }
+        },
+        {
+          text: 'CANCEL',
+          role: 'cancel'
+        }
+      ],
+    });
+
+    await alert.present();
   }
 
   //chapter deletion
