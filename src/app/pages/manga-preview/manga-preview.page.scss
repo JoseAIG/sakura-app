@@ -1,0 +1,36 @@
+ion-card{
+    padding: 1em;
+    border-radius: 2em;
+}
+
+img{
+    border-radius: 1em;
+}
+
+ion-list{
+    margin: 1em;
+    margin-bottom: 2em;
+}
+
+ion-fab-button{
+    --background: #C22E48;
+}
+
+.read-button{
+    --background: #752037;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper{
+  padding: 2%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+  grid-gap: 2%;
+  justify-items: center;
+  align-items: center;
+}

@@ -44,8 +44,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/chapter-form-modal/chapter-form-modal.module').then( m => m.ChapterFormModalPageModule)
   },
   {
+    path: 'manga-preview',
+    loadChildren: () => import('./pages/manga-preview/manga-preview.module').then( m => m.MangaPreviewPageModule)
+  },
+  {
     path: 'viewer',
-    loadChildren: () => import('./pages/viewer/viewer.module').then( m => m.ViewerPageModule)
+    loadChildren: () => import('./pages/viewer/viewer.module').then( m => m.ViewerPageModule)    
   }
 
 ];

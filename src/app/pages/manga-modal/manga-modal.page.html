@@ -47,7 +47,7 @@
         </form>
       </ion-list>
       <br>
-      <ion-button *ngIf="!edit" [disabled]=!mangaForm.valid shape="round" (click)="createManga()">Create Manga</ion-button>
+      <ion-button *ngIf="!edit" [disabled]=!mangaForm.valid shape="round" (click)="createManga()" color="medium">Create Manga</ion-button>
       <ng-container *ngIf="edit">
         <ion-button [disabled]=!mangaForm.valid shape="round" (click)="updateManga()" color="medium">Update Manga</ion-button>
         <br>

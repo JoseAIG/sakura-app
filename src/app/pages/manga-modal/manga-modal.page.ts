@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { Manga } from 'src/app/interfaces/manga';
 import { MangaService } from 'src/app/services/manga.service';
 
 @Component({
@@ -11,14 +12,8 @@ import { MangaService } from 'src/app/services/manga.service';
 })
 export class MangaModalPage implements OnInit {
 
+  @Input() manga: Manga
   @Input() edit: boolean;
-  @Input() id: number;
-  @Input() title: string;
-  @Input() author: string;
-  @Input() year: string;
-  @Input() status: string;
-  @Input() description: string;
-  @Input() cover: string;
 
   mangaForm: FormGroup
   mangaCover: string = null
@@ -34,16 +29,16 @@ export class MangaModalPage implements OnInit {
 
   ngOnInit() {
     this.mangaForm = this.formBuilder.group({
-      title: [!this.edit ? null : this.title, [Validators.required]],
-      description: [!this.edit ? null : this.description, [Validators.required]],
-      author: [!this.edit ? null : this.author, [Validators.required]],
-      status: [!this.edit ? null : this.status, [Validators.required]],
-      year: [!this.edit ? null : this.year, [Validators.required]],
+      title: [!this.edit ? null : this.manga.title, [Validators.required]],
+      description: [!this.edit ? null : this.manga.description, [Validators.required]],
+      author: [!this.edit ? null : this.manga.author, [Validators.required]],
+      status: [!this.edit ? null : this.manga.status, [Validators.required]],
+      year: [!this.edit ? null : this.manga.year, [Validators.required]],
       cover: !this.edit ? [null, [Validators.required]] : [null]
     })
 
-    if (this.cover) {
-      this.mangaCover = this.cover
+    if (this.manga && this.manga.cover_image) {
+      this.mangaCover = this.manga.cover_image
     }
   }
 
@@ -110,7 +105,7 @@ export class MangaModalPage implements OnInit {
     await loading.present();
 
     let formData: FormData = new FormData();
-    formData.append("id", this.id.toString())
+    formData.append("id", this.manga.manga_id.toString())
     formData.append("title", this.mangaForm.get("title").value);
     formData.append("description", this.mangaForm.get("description").value);
     formData.append("author", this.mangaForm.get("author").value);
@@ -169,7 +164,7 @@ export class MangaModalPage implements OnInit {
     let loading = await this.loadingController.create();
     await loading.present();
 
-    this.mangaService.deleteManga(this.id)
+    this.mangaService.deleteManga(this.manga.manga_id)
       .subscribe(
         async (res) => {
           console.log(res)

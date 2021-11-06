@@ -49,4 +49,8 @@ export class AuthService {
     this.isAuthenticated.next(false)
   }
 
+  getUserPermissions(){
+    const tokenPayload: any = JSON.parse(atob(localStorage.getItem('TOKEN').split('.')[1]))
+    return {id: tokenPayload.id, role: tokenPayload.role}
+  }
 }

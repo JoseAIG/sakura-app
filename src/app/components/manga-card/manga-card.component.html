@@ -1,8 +1,8 @@
 <ion-card class="ion-text-center" (click)="openManga()">
-  <img src={{cover}} width="150px">
+  <img src={{manga.cover_image}} width="150px">
   <ion-card-header>
-    <ion-card-title>{{title}}</ion-card-title>
-    <ion-card-subtitle>chapters: {{chapters}}</ion-card-subtitle>
+    <ion-card-title>{{manga.title}}</ion-card-title>
+    <ion-card-subtitle>Chapters: {{manga.chapters.length}}</ion-card-subtitle>
   </ion-card-header>
   <ion-button *ngIf="editable" color="medium" (click)="editManga($event)">Edit</ion-button>
 </ion-card>
