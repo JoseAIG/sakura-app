@@ -12,6 +12,14 @@ ion-list{
     margin-bottom: 2em;
 }
 
+ion-fab-button{
+    --background: #C22E48;
+}
+
+.read-button{
+    --background: #752037;
+}
+
 .container{
     display: flex;
     justify-content: center;

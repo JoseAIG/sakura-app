@@ -25,9 +25,7 @@ export class MangaPreviewPage implements OnInit {
     this.userPermissions = authService.getUserPermissions()
   }
 
-  ngOnInit() {
-    console.log(this.userPermissions)
-  }
+  ngOnInit() { }
 
   dismiss() {
     this.modalController.dismiss()
@@ -52,6 +50,17 @@ export class MangaPreviewPage implements OnInit {
         edit: true,
         'mangaToEdit': this.manga,
         'chapter': chapter
+      }
+    });
+    await (await modal).present();
+  }
+
+  async createChapter(){
+    const modal = this.modalController.create({
+      component: ChapterFormModalPage,
+      componentProps: {
+        edit: false,
+        mangas: [this.manga]
       }
     });
     await (await modal).present();
