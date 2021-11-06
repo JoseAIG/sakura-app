@@ -1,9 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ScrollDetail } from '@ionic/core';
 import { Location } from '@angular/common';
-import { AlertController, IonContent, IonSlides } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
+import { AlertController, IonContent, IonSlides, LoadingController, ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { MangaPreviewPage } from '../manga-preview/manga-preview.page';
+import { ChapterService } from 'src/app/services/chapter.service';
+import { MangaService } from 'src/app/services/manga.service';
 
 @Component({
   selector: 'app-viewer',
@@ -27,8 +29,11 @@ export class ViewerPage implements OnInit {
   constructor(
     private location: Location,
     private alertController: AlertController,
-    private http: HttpClient,
-    private route: ActivatedRoute
+    private chapterService: ChapterService,
+    private mangaService: MangaService,
+    private route: ActivatedRoute,
+    private modalController: ModalController,
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit() {
@@ -42,10 +47,9 @@ export class ViewerPage implements OnInit {
       });
 
     // FETCH CHAPTER DATA
-    this.http.get(`https://sakura-mv.herokuapp.com/manga/${this.mangaID}/chapter/${this.chapterNumber}`)
+    this.chapterService.getChapter(this.chapterNumber, this.mangaID)
       .subscribe(
         (res: any) => {
-          console.log(res)
           this.images = res.chapter_images
           // REVERSE ARRAY IF READ MODE IS FROM BOTTOM TO TOP OR RIGHT TO LEFT
           if (this.readMode === "bottomToTop" || this.readMode === "rightToLeft") {
@@ -76,8 +80,26 @@ export class ViewerPage implements OnInit {
   }
 
   // GO TO PREVIOUS PAGE INSTEAD OF A FIXED HREF ON ion-back-button
-  backButtonEvent() {
-    this.location.back()
+  async backButtonEvent() {
+    let loading = await this.loadingController.create();
+    loading.present();
+
+    this.mangaService.getManga(this.mangaID)
+      .subscribe(
+        async (res: any) => {
+          loading.dismiss();
+          const modal = this.modalController.create({
+            component: MangaPreviewPage,
+            componentProps: {
+              manga: res
+            }
+          });
+          await (await modal).present();
+        },
+        async (res: any) => {
+          loading.dismiss();
+        }
+      )
   }
 
   openComments() {
