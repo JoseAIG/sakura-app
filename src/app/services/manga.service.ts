@@ -11,6 +11,10 @@ export class MangaService {
 
   constructor(private http: HttpClient) { }
 
+  getAllMangas():Observable<any> {
+    return this.http.get('https://sakura-mv.herokuapp.com/mangas')
+  }
+
   getManga(id: number): Observable<any> {
     return this.http.get(`${this.BASE_URL}/${id}`)
   }

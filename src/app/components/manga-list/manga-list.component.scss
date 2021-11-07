@@ -1,0 +1,23 @@
+ion-avatar{
+  width: 35%;
+  height: auto;
+}
+
+ion-item{
+  width:100%;
+  height: 25%;
+}
+
+ion-chip{
+  height: auto;
+  font-size: 10px;
+}
+
+.cover{
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 5px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -khtml-border-radius: 15px;
+}

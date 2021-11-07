@@ -7,6 +7,8 @@ import { Tab2Page } from './tab2.page';
 import { ExploreContainerComponentModule } from '../../components/explore-container/explore-container.module';
 
 import { Tab2PageRoutingModule } from './tab2-routing.module';
+import { MangaCardComponentModule } from 'src/app/components/manga-card/manga-card.module';
+import { MangaListComponentModule } from 'src/app/components/manga-list/manga-list.module';
 
 @NgModule({
   imports: [
@@ -14,7 +16,9 @@ import { Tab2PageRoutingModule } from './tab2-routing.module';
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    Tab2PageRoutingModule
+    Tab2PageRoutingModule,
+    MangaCardComponentModule,
+    MangaListComponentModule
   ],
   declarations: [Tab2Page]
 })
