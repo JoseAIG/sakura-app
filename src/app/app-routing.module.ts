@@ -30,7 +30,8 @@ const routes: Routes = [
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
-  },  {
+  },
+  {
     path: 'user-modal',
     loadChildren: () => import('./pages/user-modal/user-modal.module').then( m => m.UserModalPageModule)
   },
@@ -45,6 +46,10 @@ const routes: Routes = [
   {
     path: 'manga-preview',
     loadChildren: () => import('./pages/manga-preview/manga-preview.module').then( m => m.MangaPreviewPageModule)
+  },
+  {
+    path: 'viewer',
+    loadChildren: () => import('./pages/viewer/viewer.module').then( m => m.ViewerPageModule)    
   }
 
 ];

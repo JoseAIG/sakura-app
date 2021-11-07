@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Chapter } from 'src/app/interfaces/chapter';
 import { Manga } from 'src/app/interfaces/manga';
@@ -20,7 +21,8 @@ export class MangaPreviewPage implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.userPermissions = authService.getUserPermissions()
   }
@@ -66,8 +68,9 @@ export class MangaPreviewPage implements OnInit {
     await (await modal).present();
   }
 
-  openViewer(mangaID: number, chapterNumber: number) {
-    console.log("Open viewer, manga id:", mangaID, "chapter number", chapterNumber)
+  openViewer(manga: Manga, chapterNumber: number) {
+    this.router.navigate(['viewer'], { queryParams: { title: manga.title, mangaID: manga.manga_id, chapterNumber: chapterNumber }})
+    this.dismiss()
   }
 
 }

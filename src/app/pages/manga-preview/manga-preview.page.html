@@ -32,7 +32,7 @@
     <ion-item *ngFor="let chapter of manga.chapters" class="wrapper">
       <ion-label>Chapter {{chapter.number}}</ion-label>
       <ion-button *ngIf="userPermissions.id === manga.user_id || userPermissions.role === 'admin'" color="medium" (click)="editChapter(chapter)">Edit</ion-button>
-      <ion-button class="read-button" (click)="openViewer(chapter.manga_id, chapter.number)">Read</ion-button>
+      <ion-button class="read-button" (click)="openViewer(manga, chapter.number)">Read</ion-button>
     </ion-item>
   </ion-list>
 
