@@ -13,7 +13,9 @@ export class MangaListComponent implements OnInit {
   @Input() manga: Manga
   color:string
 
-  constructor(private modalController: ModalController) { }
+  constructor(
+    private modalController: ModalController
+    ) { }
 
   ngOnInit() {
     this.getState()

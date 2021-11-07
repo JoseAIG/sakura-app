@@ -12,10 +12,11 @@ import { MangaService } from 'src/app/services/manga.service';
 export class Tab2Page implements OnInit{
 
   allMangas: Manga[]
+  searchTerm: string
 
   constructor(
     private mangaService: MangaService,
-    private chapterService: ChapterService
+    private chapterService: ChapterService,
   ) {}
 
   ngOnInit() {
@@ -35,5 +36,4 @@ export class Tab2Page implements OnInit{
 
     )
   }
-
 }

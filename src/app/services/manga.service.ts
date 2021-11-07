@@ -35,6 +35,10 @@ export class MangaService {
     return this.http.delete<any>(`${this.BASE_URL}/${id}`, this.userHeader())
   }
 
+  searchManga(keyword:string): Observable<any> {
+    return this.http.get(`https://sakura-mv.herokuapp.com/mangas/${keyword}`)
+  }
+
   userHeader() {
     var header = {
       headers: new HttpHeaders()
