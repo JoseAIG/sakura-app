@@ -69,7 +69,7 @@ export class MangaPreviewPage implements OnInit {
   }
 
   openViewer(manga: Manga, chapterNumber: number) {
-    this.router.navigate(['viewer'], { queryParams: { title: manga.title, mangaID: manga.manga_id, chapterNumber: chapterNumber }})
+    this.router.navigate(['viewer'], { queryParams: { title: manga.title, mangaID: manga.manga_id, chapterNumber: chapterNumber, backURL: this.router.url }})
     this.dismiss()
   }
 
