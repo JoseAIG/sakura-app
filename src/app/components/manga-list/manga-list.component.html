@@ -1,0 +1,15 @@
+
+  <ion-item (click)="openManga()">
+    <ion-avatar slot="start">
+      <img class="cover" src={{manga.cover_image}}>
+    </ion-avatar>
+    <ion-label>
+      <h1>{{manga.title}}</h1>
+      <h4>Author: {{manga.author}}</h4>
+      <h4>Chapters: {{manga.chapters.length}}</h4>
+      <h4>Year: {{manga.year}}</h4>
+      <h4>Status: <ion-chip [color]="color">{{manga.status}}</ion-chip>
+      </h4>
+    </ion-label>
+  </ion-item>
+

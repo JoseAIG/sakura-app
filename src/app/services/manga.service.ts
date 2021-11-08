@@ -11,6 +11,10 @@ export class MangaService {
 
   constructor(private http: HttpClient) { }
 
+  getAllMangas():Observable<any> {
+    return this.http.get('https://sakura-mv.herokuapp.com/mangas')
+  }
+
   getManga(id: number): Observable<any> {
     return this.http.get(`${this.BASE_URL}/${id}`)
   }
@@ -29,6 +33,10 @@ export class MangaService {
 
   deleteManga(id: number): Observable<any> {
     return this.http.delete<any>(`${this.BASE_URL}/${id}`, this.userHeader())
+  }
+
+  searchManga(keyword:string): Observable<any> {
+    return this.http.get(`https://sakura-mv.herokuapp.com/mangas/${keyword}`)
   }
 
   userHeader() {

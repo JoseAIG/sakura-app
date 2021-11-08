@@ -1,8 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ScrollDetail } from '@ionic/core';
-import { Location } from '@angular/common';
 import { AlertController, IonContent, IonSlides, LoadingController, ModalController } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MangaPreviewPage } from '../manga-preview/manga-preview.page';
 import { ChapterService } from 'src/app/services/chapter.service';
 import { MangaService } from 'src/app/services/manga.service';
@@ -18,6 +17,7 @@ export class ViewerPage implements OnInit {
   chapterNumber: number
   title: string
   images: string[]
+  backURL: string
 
   private readMode: string = localStorage.getItem("READ_MODE")
   showToolbar = true;
@@ -27,7 +27,7 @@ export class ViewerPage implements OnInit {
   @ViewChild(IonSlides) slides: IonSlides;
 
   constructor(
-    private location: Location,
+    private router: Router,
     private alertController: AlertController,
     private chapterService: ChapterService,
     private mangaService: MangaService,
@@ -44,6 +44,7 @@ export class ViewerPage implements OnInit {
         this.title = e.params.title
         this.mangaID = e.params.mangaID
         this.chapterNumber = e.params.chapterNumber
+        this.backURL = e.params.backURL
       });
 
     // FETCH CHAPTER DATA
@@ -58,7 +59,7 @@ export class ViewerPage implements OnInit {
         },
         async (res) => {
           console.log(res.error)
-          this.location.back()
+          this.router.navigateByUrl(this.backURL, { replaceUrl: true })
           const alert = await this.alertController.create({
             header: 'Error',
             message: res.error.message,
@@ -69,13 +70,22 @@ export class ViewerPage implements OnInit {
       )
   }
 
-  ionViewDidEnter() {
+  async ionViewDidEnter() {
     // GO TO THE BOTTOM OF THE PAGE IF READ MODE IS FROM BOTTOM TO TOP
     if (this.readMode === "bottomToTop") {
       this.content.scrollToBottom(0);
     }
     else if (this.readMode === "rightToLeft") {
-      this.slides.slideTo(this.images.length, 0);
+      await this.slides.slideTo(this.images.length, 0);
+    }
+
+    // GET VIEWER STATE AND CHECK IF SETTINGS ARE EQUAL FOR RECOVERING THE STATE
+    const viewerState: any = JSON.parse(localStorage.getItem('VIEWER_STATE'))
+    if((this.readMode === viewerState.readMode && (this.readMode === "topToBottom" || this.readMode === "bottomToTop")) && this.mangaID === viewerState.mangaID && this.chapterNumber === viewerState.chapterNumber){
+      this.content.scrollToPoint(0, viewerState.location, 1000)
+    }
+    else if((this.readMode === viewerState.readMode && (this.readMode === "leftToRight" || this.readMode === "rightToLeft")) && this.mangaID === viewerState.mangaID && this.chapterNumber === viewerState.chapterNumber){
+      await this.slides.slideTo(viewerState.location, 1000)
     }
   }
 
@@ -88,6 +98,7 @@ export class ViewerPage implements OnInit {
       .subscribe(
         async (res: any) => {
           loading.dismiss();
+          this.router.navigateByUrl(this.backURL, { replaceUrl: true })
           const modal = this.modalController.create({
             component: MangaPreviewPage,
             componentProps: {
@@ -108,12 +119,12 @@ export class ViewerPage implements OnInit {
 
   // ON SCROLL EVENT FOR ADJUSTING TOOLBAR OPACITY
   onScroll($event: CustomEvent<ScrollDetail>) {
-    console.log("scroll")
     if (this.readMode === "topToBottom") {
       if ($event && $event.detail.scrollTop) {
         const scrollTop = $event.detail.scrollTop;
         this.showToolbar = scrollTop <= this.previousScroll;
         this.previousScroll = scrollTop
+        this.setViewerState(this.readMode, scrollTop)
       }
     }
     else if (this.readMode === "bottomToTop") {
@@ -124,8 +135,28 @@ export class ViewerPage implements OnInit {
         const scrollTop = $event.detail.scrollTop;
         this.showToolbar = scrollTop >= this.previousScroll;
         this.previousScroll = scrollTop
+        this.setViewerState(this.readMode, scrollTop)
       }
     }
+  }
+
+  slideChanged(){
+    this.slides.getActiveIndex().then(
+      (index: number)=>{
+        this.setViewerState(this.readMode, index)
+     });
+  }
+
+  setViewerState(readMode: string, location: number) {
+    // STORE VIEWER STATE IN LOCALSTORAGE
+    const state = {
+      mangaID: this.mangaID,
+      chapterNumber: this.chapterNumber,
+      title: this.title,
+      readMode: readMode,
+      location: location
+    }
+    localStorage.setItem("VIEWER_STATE", JSON.stringify(state))
   }
 
   // MANGA VIEWER READ MODE SETTINGS
