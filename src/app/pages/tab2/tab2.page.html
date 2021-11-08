@@ -1,17 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Explore
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content fullscreen>
+  <ion-searchbar animated showCancelButton="focus" [(ngModel)]="searchTerm"></ion-searchbar>
+  <ion-item-divider>
+    <ion-label>Sakura Manga World</ion-label>
+  </ion-item-divider>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+
+    <ion-list *ngFor="let manga of allMangas | filter:searchTerm">
+      <app-manga-list [manga]=manga></app-manga-list>
+    </ion-list>
+
+
 </ion-content>

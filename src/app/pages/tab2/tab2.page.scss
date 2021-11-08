@@ -1,0 +1,8 @@
+.wrapper{
+  padding: 2%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-gap: 2%;
+  justify-items: center;
+  align-items: center;
+}
