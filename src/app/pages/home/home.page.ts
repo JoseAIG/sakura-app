@@ -1,12 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Manga } from 'src/app/interfaces/manga';
+import { MangaService } from 'src/app/services/manga.service';
+import { ViewerService } from 'src/app/services/viewer.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss']
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
-  constructor() { }
+  viewerState: any
+  lastMangaRead: Manga
 
+  constructor(
+    private router: Router,
+    private viewerService: ViewerService,
+    private mangaService: MangaService
+  ) { }
+
+  ngOnInit() { }
+
+  ionViewWillEnter() {
+    this.viewerState = this.viewerService.getViewerState()
+
+    if (this.viewerState) {
+      this.mangaService.getManga(this.viewerState.mangaID)
+        .subscribe(
+          async (res: any) => {
+            this.lastMangaRead = res
+            console.log(this.lastMangaRead)
+          },
+          async (res: any) => {
+
+          }
+        )
+    }
+  }
+
+  openLastMangaRead() {
+    this.router.navigate(['viewer'], { queryParams: { title: this.lastMangaRead.title, mangaID: this.lastMangaRead.manga_id, chapterNumber: this.viewerState.chapterNumber, backURL: this.router.url }, replaceUrl:true })
+  }
+
+  doRefresh(event: any) {
+    this.ionViewWillEnter()
+    event.target.complete();
+  }
 }

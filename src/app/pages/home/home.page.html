@@ -13,5 +13,17 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Home page"></app-explore-container>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card id="viewer-state-card" *ngIf="viewerState && lastMangaRead" (click)="openLastMangaRead()">
+    <img src={{lastMangaRead.cover_image}} height="120px">
+    <div>
+      <h3>Continue reading</h3>
+      <h2>{{lastMangaRead.title}}</h2>
+      <h5>Chapter: {{viewerState.chapterNumber}}</h5>
+    </div>
+  </ion-card>
+
 </ion-content>

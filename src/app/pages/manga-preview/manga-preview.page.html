@@ -27,7 +27,7 @@
   <ion-item-divider>
     <ion-label>Chapters</ion-label>
   </ion-item-divider>
-  <ion-title *ngIf="!manga.chapters.length">No chapters yet!</ion-title>
+  <ion-title *ngIf="!manga.chapters.length" class="ion-text-center ion-margin-top">No chapters yet!</ion-title>
   <ion-list *ngIf="manga.chapters.length">
     <ion-item *ngFor="let chapter of manga.chapters" class="wrapper">
       <ion-label>Chapter {{chapter.number}}</ion-label>
