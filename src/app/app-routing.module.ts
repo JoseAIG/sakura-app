@@ -3,13 +3,11 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { IntroGuard } from './guards/intro.guard';
 import { LoginGuard } from './guards/login.guard';
 import { RegisterGuard } from './guards/register.guard';
-import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'tabs',
-    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
-    canLoad: [AuthGuard]
+    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
     path: 'intro',
@@ -25,11 +23,6 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule),
     canLoad: [RegisterGuard]
-  },
-  {
-    path: '',
-    redirectTo: '/login',
-    pathMatch: 'full'
   },
   {
     path: 'user-modal',
@@ -50,6 +43,11 @@ const routes: Routes = [
   {
     path: 'viewer',
     loadChildren: () => import('./pages/viewer/viewer.module').then( m => m.ViewerPageModule)    
+  },
+  {
+    path: '',
+    redirectTo: '/intro',
+    pathMatch: 'full'
   }
 
 ];

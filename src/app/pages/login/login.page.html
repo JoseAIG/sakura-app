@@ -1,5 +1,7 @@
 <ion-content>
-
+  <ion-buttons>
+    <ion-back-button defaultHref="/tabs/profile"></ion-back-button>
+  </ion-buttons>
   <div class="container">
     <img src="assets/logos/sakura-logo.png">
 
@@ -7,7 +9,7 @@
       <form (ngSubmit)="login()" [formGroup]="loginForm">
 
         <ion-item>
-          <ion-label position = "floating"> Enter your username or email:</ion-label>
+          <ion-label position="floating"> Enter your username or email:</ion-label>
           <ion-input type="text" placeholder="Username or email" formControlName="user"></ion-input>
         </ion-item>
         <div *ngIf="user.touched && user.errors" class="errors">
@@ -15,7 +17,7 @@
         </div>
         <br>
         <ion-item>
-          <ion-label position = "floating"> Enter your password:</ion-label>
+          <ion-label position="floating"> Enter your password:</ion-label>
           <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
         </ion-item>
         <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
@@ -27,9 +29,7 @@
         <ion-button type="submit" expand="block" [disabled]="!loginForm.valid" shape="round" class="login-button">Log in
         </ion-button>
         <br>
-        <ion-button type="button" expand="block" color="dark" fill="clear" class="no-ripple"
-          [routerLink]="['/register']">
-          Not yet a member? Sign up!</ion-button>
+        <ion-button type="button" expand="block" color="dark" fill="clear" class="no-ripple" [routerLink]="['/register']">Not yet a member? Sign up!</ion-button>
       </form>
 
     </ion-card>

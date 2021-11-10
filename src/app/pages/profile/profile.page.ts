@@ -17,6 +17,8 @@ import { UserModalPage } from '../user-modal/user-modal.page';
 })
 export class ProfilePage implements OnInit {
 
+  userPermissions: any;
+
   email: string;
   username: string;
   userMangas: Manga[]
@@ -29,11 +31,15 @@ export class ProfilePage implements OnInit {
     private loadingController: LoadingController,
     private alertController: AlertController,
     private router: Router
-  ) { }
+  ) {
+    this.userPermissions = authService.getUserPermissions()
+  }
 
   ngOnInit() {
-    this.getUserData()
-    this.getUserMangas()
+    if(!this.userPermissions.guest && this.userPermissions.id){
+      this.getUserData()
+      this.getUserMangas()
+    }
   }
 
   //Obtain user data from the BE API
@@ -54,7 +60,7 @@ export class ProfilePage implements OnInit {
     this.mangaService.getUserMangas()
       .subscribe(
         async (res) => {
-          if(this.userMangas != res.user_mangas){
+          if (this.userMangas != res.user_mangas) {
             this.userMangas = res.user_mangas
           }
         },
@@ -90,8 +96,9 @@ export class ProfilePage implements OnInit {
     let loading = await this.loadingController.create();
     await loading.present();
     this.authService.clearToken();
+    localStorage.removeItem('VIEWER_STATE')
     loading.dismiss();
-    this.router.navigateByUrl('/login', { replaceUrl: true })
+    this.router.navigateByUrl('/tabs/home', { replaceUrl: true })
   }
 
   //function to manage user account

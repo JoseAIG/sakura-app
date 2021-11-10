@@ -47,6 +47,7 @@ export class LoginPage implements OnInit {
     this.authService.login(formData)
       .subscribe(
         async (res) => {
+          localStorage.removeItem('VIEWER_STATE')
           this.authService.storeToken(res.token)
           await loading.dismiss()
           this.router.navigateByUrl('/tabs/home', { replaceUrl: true })

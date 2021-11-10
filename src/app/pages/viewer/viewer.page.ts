@@ -83,13 +83,15 @@ export class ViewerPage implements OnInit {
 
     // GET VIEWER STATE AND CHECK IF SETTINGS ARE EQUAL FOR RECOVERING THE STATE
     const viewerState: any = this.viewerService.getViewerState()
-    if(viewerState){
+    if(viewerState && viewerState.location){
       if((this.readMode === viewerState.readMode && (this.readMode === "topToBottom" || this.readMode === "bottomToTop")) && this.mangaID === viewerState.mangaID && this.chapterNumber === viewerState.chapterNumber){
         this.content.scrollToPoint(0, viewerState.location, 1000)
       }
       else if((this.readMode === viewerState.readMode && (this.readMode === "leftToRight" || this.readMode === "rightToLeft")) && this.mangaID === viewerState.mangaID && this.chapterNumber === viewerState.chapterNumber){
         await this.slides.slideTo(viewerState.location, 1000)
       }
+    }else{
+      this.viewerService.setViewerState(this.mangaID, this.chapterNumber, this.title, this.readMode, null)
     }
   }
 

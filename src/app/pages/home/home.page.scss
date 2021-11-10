@@ -1,4 +1,4 @@
-#viewer-state-card{
+.viewer-state-card{
     display: flex;
     width: 85%;
     height: max-content;
@@ -9,11 +9,28 @@
     align-items: center;
 }
 
+.no-viewer-state-card{
+    width: 85%;
+    height: max-content;
+    margin: auto;
+    margin-top: 1em;
+    border-radius: 2em;
+    padding: 2em;
+}
+
 img{
     border-radius: 1em;
     margin-right: 1em;
 }
 
-h3{
+h3, h4{
     margin: 0;
+}
+
+h5{
+    color: gray;
+}
+
+ion-icon{
+    font-size: 120px
 }

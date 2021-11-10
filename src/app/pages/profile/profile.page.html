@@ -15,43 +15,69 @@
       <ion-avatar class="ion-align-self-center">
         <ion-img src="../../assets/logos/sakura-logo-only.png"></ion-img>
       </ion-avatar>
-      <ion-card-content>
-        <ion-card-title>
-          {{username}}
-        </ion-card-title>
-        <ion-card-subtitle>
-          {{email}}
-        </ion-card-subtitle>
-      </ion-card-content>
-      <ion-button (click)='openSettings()' shape="round">Manage your Account</ion-button>
-      <ion-button shape="round" color="medium" (click)="confirmLogout()">Logout</ion-button>
+      <ng-container *ngIf="!userPermissions.guest">
+        <ion-card-content>
+          <ion-card-title>
+            {{username}}
+          </ion-card-title>
+          <ion-card-subtitle>
+            {{email}}
+          </ion-card-subtitle>
+          <ion-chip *ngIf="userPermissions.admin" color="danger">
+            <ion-label>Admin</ion-label>
+          </ion-chip>
+        </ion-card-content>
+        <ion-button (click)='openSettings()' shape="round">Manage your Account</ion-button>
+        <ion-button shape="round" color="medium" (click)="confirmLogout()">Logout</ion-button>
+      </ng-container>
+
+      <ng-container *ngIf="userPermissions.guest">
+        <ion-card-content>
+          <ion-card-title *ngIf="userPermissions.guest">
+            Guest user
+          </ion-card-title>
+          <ion-chip *ngIf="userPermissions.guest" color="danger">
+            <ion-label>Guest</ion-label>
+          </ion-chip>
+        </ion-card-content>
+        <ion-button shape="round" color="medium" [routerLink]="['/login']">Log in</ion-button>
+      </ng-container>
     </ion-card>
   </div>
 
-  <ion-item-divider>
-    <ion-label>
-      Your Mangas
-    </ion-label>
-  </ion-item-divider>
-
-  <div class="wrapper">
-    <ng-container *ngFor="let manga of userMangas">
-      <app-manga-card [manga]=manga editable="true"></app-manga-card>
-    </ng-container>
-  </div>
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button class="newMangaButton">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button color="light" (click)="newChapter()">
-        <ion-icon name="document-outline"></ion-icon>
+  <ng-container *ngIf="!userPermissions.guest">
+    <ion-item-divider>
+      <ion-label>
+        Your Mangas
+      </ion-label>
+    </ion-item-divider>
+  
+    <div class="wrapper">
+      <ng-container *ngFor="let manga of userMangas">
+        <app-manga-card [manga]=manga editable="true"></app-manga-card>
+      </ng-container>
+    </div>
+  
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button class="newMangaButton">
+        <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" (click)="newManga()">
-        <ion-icon name="book-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
+      <ion-fab-list side="top">
+        <ion-fab-button color="light" (click)="newChapter()">
+          <ion-icon name="document-outline"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="light" (click)="newManga()">
+          <ion-icon name="book-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
+  </ng-container>
+
+  <ng-container *ngIf="userPermissions.guest">
+    <ion-item-divider></ion-item-divider>
+    <div class="ion-text-center">
+      <h5>Log in and upload your mangas!</h5>
+    </div>
+  </ng-container>
 
 </ion-content>

@@ -50,7 +50,11 @@ export class AuthService {
   }
 
   getUserPermissions(){
-    const tokenPayload: any = JSON.parse(atob(localStorage.getItem('TOKEN').split('.')[1]))
-    return {id: tokenPayload.id, role: tokenPayload.role}
+    try {
+      const tokenPayload: any = JSON.parse(atob(localStorage.getItem('TOKEN').split('.')[1]))
+      return {id: tokenPayload.id, admin: tokenPayload.admin, guest: false}
+    } catch (error) {
+      return {id: null, admin: false, guest: true}
+    }
   }
 }

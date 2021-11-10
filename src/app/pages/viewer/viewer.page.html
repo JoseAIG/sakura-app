@@ -17,7 +17,7 @@
 </ion-content>
 
 <ion-content *ngIf="readMode==='leftToRight' || readMode==='rightToLeft'">
-  <ion-slides pager="true" (ionSlideDidChange)="slideChanged()">
+  <ion-slides (ionSlideDidChange)="slideChanged()">
     <ng-container *ngFor="let i of images">
       <ion-slide>
           <img src={{i}}>
