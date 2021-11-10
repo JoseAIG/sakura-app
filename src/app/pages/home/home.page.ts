@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Manga } from 'src/app/interfaces/manga';
 import { MangaService } from 'src/app/services/manga.service';
 import { ViewerService } from 'src/app/services/viewer.service';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,10 @@ export class HomePage implements OnInit {
     private mangaService: MangaService
   ) { }
 
-  ngOnInit() { }
+  async ngOnInit() {
+    await StatusBar.setBackgroundColor({ color: '#C22E48'})
+    await StatusBar.setStyle({ style: Style.Dark });
+  }
 
   ionViewWillEnter() {
     this.getLastMangaRead()

@@ -7,6 +7,11 @@
   align-items: center;
 }
 
+ion-toolbar{
+  --background: #C22E48;
+  color: white;
+}
+
 ion-searchbar{
   --border-radius: 25px;
 }
