@@ -93,6 +93,8 @@ export class ViewerPage implements OnInit {
       else{
         this.viewerService.setViewerState(this.mangaID, this.chapterNumber, this.title, this.readMode, null)
       }
+    }else{
+      this.viewerService.setViewerState(this.mangaID, this.chapterNumber, this.title, this.readMode, null)
     }
   }
 

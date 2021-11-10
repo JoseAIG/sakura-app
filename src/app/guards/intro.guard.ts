@@ -12,7 +12,7 @@ export class IntroGuard implements CanLoad {
     const hasSeenIntro = localStorage.getItem('INTRO_KEY');
 
     if (!!hasSeenIntro) {
-      this.router.navigateByUrl('/login', { replaceUrl: true });
+      this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
       return false;
     } else {
       return true;
