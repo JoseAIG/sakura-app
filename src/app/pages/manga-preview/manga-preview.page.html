@@ -19,7 +19,7 @@
         <ion-card-subtitle>{{manga.description}}</ion-card-subtitle>
       </ion-card-content>
       <div class="ion-text-center">
-        <ion-button *ngIf="userPermissions.id === manga.user_id || userPermissions.role === 'admin'" shape="round" color="medium" (click)="editManga()">Edit</ion-button>
+        <ion-button *ngIf="userPermissions.id === manga.user_id || userPermissions.admin" shape="round" color="medium" (click)="editManga()">Edit</ion-button>
       </div>
     </ion-card>
   </div>
@@ -27,16 +27,16 @@
   <ion-item-divider>
     <ion-label>Chapters</ion-label>
   </ion-item-divider>
-  <ion-title *ngIf="!manga.chapters.length">No chapters yet!</ion-title>
+  <ion-title *ngIf="!manga.chapters.length" class="ion-text-center ion-margin-top">No chapters yet!</ion-title>
   <ion-list *ngIf="manga.chapters.length">
     <ion-item *ngFor="let chapter of manga.chapters" class="wrapper">
       <ion-label>Chapter {{chapter.number}}</ion-label>
-      <ion-button *ngIf="userPermissions.id === manga.user_id || userPermissions.role === 'admin'" color="medium" (click)="editChapter(chapter)">Edit</ion-button>
+      <ion-button *ngIf="userPermissions.id === manga.user_id || userPermissions.admin" color="medium" (click)="editChapter(chapter)">Edit</ion-button>
       <ion-button class="read-button" (click)="openViewer(manga, chapter.number)">Read</ion-button>
     </ion-item>
   </ion-list>
 
-  <ion-fab *ngIf="userPermissions.id === manga.user_id || userPermissions.role === 'admin'" vertical="bottom" horizontal="end" slot="fixed" >
+  <ion-fab *ngIf="userPermissions.id === manga.user_id || userPermissions.admin" vertical="bottom" horizontal="end" slot="fixed" >
     <ion-fab-button (click)="createChapter()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>

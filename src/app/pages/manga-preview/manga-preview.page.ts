@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { Chapter } from 'src/app/interfaces/chapter';
 import { Manga } from 'src/app/interfaces/manga';
 import { AuthService } from 'src/app/services/auth.service';
+import { MangaService } from 'src/app/services/manga.service';
 import { ChapterFormModalPage } from '../chapter-form-modal/chapter-form-modal.page';
 import { MangaModalPage } from '../manga-modal/manga-modal.page';
 
@@ -21,6 +22,7 @@ export class MangaPreviewPage implements OnInit {
 
   constructor(
     private modalController: ModalController,
+    private mangaService: MangaService,
     private authService: AuthService,
     private router: Router
   ) {
@@ -29,24 +31,40 @@ export class MangaPreviewPage implements OnInit {
 
   ngOnInit() { }
 
-  dismiss() {
-    this.modalController.dismiss()
+  getMangaData() {
+    this.mangaService.getManga(this.manga.manga_id)
+      .subscribe(
+        async (res: Manga) => {
+          this.manga = res
+        }
+      )
+  }
+
+  async dismiss() {
+    await this.modalController.dismiss({
+      'dismissed': true
+    })
   }
 
   async editManga() {
-    const modal = this.modalController.create({
+    const modal = await this.modalController.create({
       component: MangaModalPage,
       componentProps: {
         edit: true,
         manga: this.manga
       }
     });
-    await (await modal).present();
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data.dismissed) {
+      this.getMangaData()
+    }
   }
 
 
   async editChapter(chapter: Chapter) {
-    const modal = this.modalController.create({
+    const modal = await this.modalController.create({
       component: ChapterFormModalPage,
       componentProps: {
         edit: true,
@@ -54,22 +72,32 @@ export class MangaPreviewPage implements OnInit {
         'chapter': chapter
       }
     });
-    await (await modal).present();
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data.dismissed) {
+      this.getMangaData()
+    }
   }
 
-  async createChapter(){
-    const modal = this.modalController.create({
+  async createChapter() {
+    const modal = await this.modalController.create({
       component: ChapterFormModalPage,
       componentProps: {
         edit: false,
         mangas: [this.manga]
       }
     });
-    await (await modal).present();
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data.dismissed) {
+      this.getMangaData();
+    }
   }
 
   openViewer(manga: Manga, chapterNumber: number) {
-    this.router.navigate(['viewer'], { queryParams: { title: manga.title, mangaID: manga.manga_id, chapterNumber: chapterNumber, backURL: this.router.url }})
+    this.router.navigate(['viewer'], { queryParams: { title: manga.title, mangaID: manga.manga_id, chapterNumber: chapterNumber, backURL: this.router.url } })
     this.dismiss()
   }
 

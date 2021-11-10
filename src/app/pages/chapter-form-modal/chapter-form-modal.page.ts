@@ -55,8 +55,8 @@ export class ChapterFormModalPage implements OnInit {
   }
 
   //closing the chapter creation modal
-  dismiss() {
-    this.modalController.dismiss({
+  async dismiss() {
+    await this.modalController.dismiss({
       'dismissed': true
     })
   }
@@ -78,8 +78,7 @@ export class ChapterFormModalPage implements OnInit {
       async (res) => {
         console.log(res)
         await loading.dismiss();
-        location.reload()
-        this.dismiss()
+        await this.dismiss()
         const alert = await this.alertController.create({
           header: 'Success',
           message: res.message,
@@ -124,8 +123,7 @@ export class ChapterFormModalPage implements OnInit {
       async (res) => {
         console.log(res)
         await loading.dismiss();
-        location.reload()
-        this.dismiss()
+        await this.dismiss()
         const alert = await this.alertController.create({
           header: 'Success',
           message: res.message,
@@ -179,8 +177,7 @@ export class ChapterFormModalPage implements OnInit {
         async (res) => {
           console.log(res)
           await loading.dismiss()
-          location.reload()
-          this.dismiss()
+          await this.dismiss()
         },
         async (res) => {
           console.log(res)

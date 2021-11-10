@@ -86,7 +86,7 @@ export class UserModalPage implements OnInit {
             buttons: ['OK'],
           });
           alert.present(),
-            this.router.navigateByUrl('/tabs/home', { replaceUrl: true }),
+            this.router.navigateByUrl('/tabs/profile', { replaceUrl: true }),
             this.dismiss()
         },
         async (res) => {
