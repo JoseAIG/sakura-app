@@ -9,7 +9,7 @@ import { MangaService } from 'src/app/services/manga.service';
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss']
 })
-export class Tab2Page implements OnInit{
+export class Tab2Page implements OnInit {
 
   allMangas: Manga[]
   searchTerm: string
@@ -17,23 +17,27 @@ export class Tab2Page implements OnInit{
   constructor(
     private mangaService: MangaService,
     private chapterService: ChapterService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getAllMangas()
   }
 
   //get all mangas uploaded on the app
-  getAllMangas(){
+  getAllMangas() {
     this.mangaService.getAllMangas()
-    .subscribe(
-      async (res) => {
-        this.allMangas = res.all_mangas
-      },
-      async (res) => {
-        console.log(res.error)
-      }
+      .subscribe(
+        async (res) => {
+          this.allMangas = res.all_mangas
+        },
+        async (res) => {
+          console.log(res.error)
+        }
+      )
+  }
 
-    )
+  doRefresh(event: any) {
+    this.getAllMangas()
+    event.target.complete();
   }
 }

@@ -6,16 +6,19 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-searchbar animated showCancelButton="focus" [(ngModel)]="searchTerm"></ion-searchbar>
   <ion-item-divider>
     <ion-label>Sakura Manga World</ion-label>
   </ion-item-divider>
 
-
-    <ion-list *ngFor="let manga of allMangas | filter:searchTerm">
-      <app-manga-list [manga]=manga></app-manga-list>
-    </ion-list>
-
+  <ion-list *ngFor="let manga of allMangas | filter:searchTerm">
+    <app-manga-list [manga]=manga (refresh)="getAllMangas()"></app-manga-list>
+  </ion-list>
 
 </ion-content>

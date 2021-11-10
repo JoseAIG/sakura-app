@@ -54,7 +54,9 @@ export class ProfilePage implements OnInit {
     this.mangaService.getUserMangas()
       .subscribe(
         async (res) => {
-          this.userMangas = res.user_mangas
+          if(this.userMangas != res.user_mangas){
+            this.userMangas = res.user_mangas
+          }
         },
         async (res) => {
           console.log(res.error)
@@ -94,41 +96,58 @@ export class ProfilePage implements OnInit {
 
   //function to manage user account
   async openSettings() {
-    const modal = this.modalController.create({
+    const modal = await this.modalController.create({
       component: UserModalPage,
       componentProps: {
         'username': this.username,
         'email': this.email
       }
     });
+    await modal.present();
 
-    await (await modal).present();
+    const { data } = await modal.onDidDismiss();
+    if (data.dismissed) {
+      this.getUserData();
+    }
   }
 
   //function for creating mangas
   async newManga() {
-    const modal = this.modalController.create({
+    const modal = await this.modalController.create({
       component: MangaModalPage,
       componentProps: {
         edit: false
       }
     });
+    await modal.present();
 
-    await (await modal).present();
+    const { data } = await modal.onDidDismiss();
+    if (data.dismissed) {
+      this.getUserMangas();
+    }
   }
 
   //function for creating chapters
   async newChapter() {
-    console.log("Create new chapter")
-    const modal = this.modalController.create({
+    const modal = await this.modalController.create({
       component: ChapterFormModalPage,
-      componentProps:{
-        'mangas':this.userMangas,
-        edit:false
+      componentProps: {
+        'mangas': this.userMangas,
+        edit: false
       }
     });
+    await modal.present();
 
-    await (await modal).present();
+    const { data } = await modal.onDidDismiss();
+    if (data.dismissed) {
+      this.getUserMangas();
+    }
+  }
+
+  doRefresh(event: any) {
+    this.getUserData();
+    this.getUserMangas();
+    event.target.complete();
   }
 
   //MANGA VIEWER READ MODE SETTINGS

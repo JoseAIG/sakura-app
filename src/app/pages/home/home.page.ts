@@ -23,6 +23,10 @@ export class HomePage implements OnInit {
   ngOnInit() { }
 
   ionViewWillEnter() {
+    this.getLastMangaRead()
+  }
+
+  private getLastMangaRead() {
     this.viewerState = this.viewerService.getViewerState()
 
     if (this.viewerState) {
@@ -30,21 +34,17 @@ export class HomePage implements OnInit {
         .subscribe(
           async (res: any) => {
             this.lastMangaRead = res
-            console.log(this.lastMangaRead)
-          },
-          async (res: any) => {
-
           }
         )
     }
   }
 
   openLastMangaRead() {
-    this.router.navigate(['viewer'], { queryParams: { title: this.lastMangaRead.title, mangaID: this.lastMangaRead.manga_id, chapterNumber: this.viewerState.chapterNumber, backURL: this.router.url }, replaceUrl:true })
+    this.router.navigate(['viewer'], { queryParams: { title: this.lastMangaRead.title, mangaID: this.lastMangaRead.manga_id, chapterNumber: this.viewerState.chapterNumber, backURL: this.router.url }, replaceUrl: true })
   }
 
   doRefresh(event: any) {
-    this.ionViewWillEnter()
+    this.getLastMangaRead()
     event.target.complete();
   }
 }

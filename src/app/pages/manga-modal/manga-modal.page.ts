@@ -84,7 +84,6 @@ export class MangaModalPage implements OnInit {
         async (res) => {
           console.log(res)
           await loading.dismiss();
-          location.reload()
           this.dismiss()
         },
         async (res) => {
@@ -124,7 +123,6 @@ export class MangaModalPage implements OnInit {
         async (res) => {
           console.log(res)
           await loading.dismiss();
-          location.reload()
           this.dismiss()
         },
         async (res) => {
@@ -169,7 +167,6 @@ export class MangaModalPage implements OnInit {
         async (res) => {
           console.log(res)
           await loading.dismiss()
-          location.reload()
           this.dismiss()
         },
         async (res) => {
