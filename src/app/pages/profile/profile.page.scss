@@ -32,10 +32,11 @@ h5{
 // display size
 .wrapper{
   padding: 2%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  grid-gap: 2%;
-  justify-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  // grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  // grid-gap: 2%;
+  justify-content: space-around;
   align-items: center;
 }
 .container{
