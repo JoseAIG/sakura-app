@@ -13,5 +13,39 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Home page"></app-explore-container>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container *ngIf="viewerState && lastMangaRead; then viewerStateTemplate else noViewerStateTemplate"></ng-container>
+
+  <ng-template #viewerStateTemplate>
+    <ion-card class="viewer-state-card" (click)="openLastMangaRead()">
+      <img src={{lastMangaRead.cover_image}} height="120px">
+      <div>
+        <h3>Continue reading</h3>
+        <h2>{{lastMangaRead.title}}</h2>
+        <h5>Chapter: {{viewerState.chapterNumber}}</h5>
+      </div>
+    </ion-card>
+  </ng-template>
+
+  <ng-template #noViewerStateTemplate>
+    <ion-card class="no-viewer-state-card">
+      <h4 class="ion-text-center">You haven't seen any manga yet!</h4>
+    </ion-card>
+  </ng-template>
+
+  <br>
+  <ion-item-divider>
+    <ion-label>
+      Mangas you follow
+    </ion-label>
+  </ion-item-divider>
+
+  <div class="ion-text-center">
+    <h5>Here you will see the mangas you follow</h5>
+    <ion-icon name="list-outline" color="medium"></ion-icon>
+  </div>
+
 </ion-content>

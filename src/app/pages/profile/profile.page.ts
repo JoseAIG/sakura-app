@@ -17,6 +17,8 @@ import { UserModalPage } from '../user-modal/user-modal.page';
 })
 export class ProfilePage implements OnInit {
 
+  userPermissions: any;
+
   email: string;
   username: string;
   userMangas: Manga[]
@@ -29,11 +31,15 @@ export class ProfilePage implements OnInit {
     private loadingController: LoadingController,
     private alertController: AlertController,
     private router: Router
-  ) { }
+  ) {
+    this.userPermissions = authService.getUserPermissions()
+  }
 
   ngOnInit() {
-    this.getUserData()
-    this.getUserMangas()
+    if(!this.userPermissions.guest && this.userPermissions.id){
+      this.getUserData()
+      this.getUserMangas()
+    }
   }
 
   //Obtain user data from the BE API
@@ -54,7 +60,9 @@ export class ProfilePage implements OnInit {
     this.mangaService.getUserMangas()
       .subscribe(
         async (res) => {
-          this.userMangas = res.user_mangas
+          if (this.userMangas != res.user_mangas) {
+            this.userMangas = res.user_mangas
+          }
         },
         async (res) => {
           console.log(res.error)
@@ -88,47 +96,65 @@ export class ProfilePage implements OnInit {
     let loading = await this.loadingController.create();
     await loading.present();
     this.authService.clearToken();
+    localStorage.removeItem('VIEWER_STATE')
     loading.dismiss();
-    this.router.navigateByUrl('/login', { replaceUrl: true })
+    this.router.navigateByUrl('/tabs/home', { replaceUrl: true })
   }
 
   //function to manage user account
   async openSettings() {
-    const modal = this.modalController.create({
+    const modal = await this.modalController.create({
       component: UserModalPage,
       componentProps: {
         'username': this.username,
         'email': this.email
       }
     });
+    await modal.present();
 
-    await (await modal).present();
+    const { data } = await modal.onDidDismiss();
+    if (data.dismissed) {
+      this.getUserData();
+    }
   }
 
   //function for creating mangas
   async newManga() {
-    const modal = this.modalController.create({
+    const modal = await this.modalController.create({
       component: MangaModalPage,
       componentProps: {
         edit: false
       }
     });
+    await modal.present();
 
-    await (await modal).present();
+    const { data } = await modal.onDidDismiss();
+    if (data.dismissed) {
+      this.getUserMangas();
+    }
   }
 
   //function for creating chapters
   async newChapter() {
-    console.log("Create new chapter")
-    const modal = this.modalController.create({
+    const modal = await this.modalController.create({
       component: ChapterFormModalPage,
-      componentProps:{
-        'mangas':this.userMangas,
-        edit:false
+      componentProps: {
+        'mangas': this.userMangas,
+        edit: false
       }
     });
+    await modal.present();
 
-    await (await modal).present();
+    const { data } = await modal.onDidDismiss();
+    if (data.dismissed) {
+      this.getUserMangas();
+    }
+  }
+
+  doRefresh(event: any) {
+    this.getUserData();
+    this.getUserMangas();
+    event.target.complete();
   }
 
   //MANGA VIEWER READ MODE SETTINGS

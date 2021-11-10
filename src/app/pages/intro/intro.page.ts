@@ -22,7 +22,8 @@ export class IntroPage implements OnInit {
 
   start() {
     localStorage.setItem('INTRO_KEY', 'true');
-    this.router.navigateByUrl('/login', { replaceUrl: true })
+    localStorage.setItem('READ_MODE','topToBottom')
+    this.router.navigateByUrl('/tabs/home', { replaceUrl: true })
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Manga } from 'src/app/interfaces/manga';
 import { MangaPreviewPage } from 'src/app/pages/manga-preview/manga-preview.page';
@@ -11,11 +11,14 @@ import { MangaPreviewPage } from 'src/app/pages/manga-preview/manga-preview.page
 export class MangaListComponent implements OnInit {
 
   @Input() manga: Manga
-  color:string
+  color: string
+
+  @Output()
+  refresh = new EventEmitter<boolean>();
 
   constructor(
     private modalController: ModalController
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.getState()
@@ -23,22 +26,26 @@ export class MangaListComponent implements OnInit {
 
   async openManga() {
     console.log("open manga", this.manga.manga_id)
-    const modal = this.modalController.create({
+    const modal = await this.modalController.create({
       component: MangaPreviewPage,
       componentProps: {
         manga: this.manga
       }
     });
+    await modal.present();
 
-    await (await modal).present();
+    const { data } = await modal.onDidDismiss();
+    if (data.dismissed) {
+      this.refresh.emit(true)
+    }
   }
 
   //this function gets the state of the manga and passes it by property binding
   //to apply color to the chips
   getState() {
-    if(this.manga.status == "Ongoing"){
+    if (this.manga.status == "Ongoing") {
       return this.color = "success"
-    }else{
+    } else {
       return this.color = "primary"
     }
   }
