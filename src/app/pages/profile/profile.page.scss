@@ -34,10 +34,8 @@ h5{
   padding: 2%;
   display: flex;
   flex-flow: row wrap;
-  // grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  // grid-gap: 2%;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
 }
 .container{
   display: flex;

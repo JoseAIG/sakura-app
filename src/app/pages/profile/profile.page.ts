@@ -21,6 +21,7 @@ export class ProfilePage implements OnInit {
 
   email: string;
   username: string;
+  dateCreated: string;
   userMangas: Manga[]
 
   constructor(
@@ -51,6 +52,7 @@ export class ProfilePage implements OnInit {
         async (res) => {
           this.username = res.username;
           this.email = res.email;
+          this.dateCreated = res.date_created;
         },
         async (res) => {
           console.log(res.error)

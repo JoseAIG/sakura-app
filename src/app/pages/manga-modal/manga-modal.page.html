@@ -41,8 +41,13 @@
           </ion-item>
           <br>
           <ion-item>
-            <ion-label position="floating">Upload Manga Cover</ion-label>
-            <ion-input class="imageInput" type="file" accept="image/*" formControlName="cover" (change)="setCoverPreview($event)"></ion-input>
+            <ion-label position="fixed">Manga cover</ion-label>
+            <br>
+            <div class="fileUpload ion-text-center">
+              <ion-text color="light">Select file</ion-text>
+              <ion-input type="file" accept="image/*" formControlName="cover" (change)="setCoverPreview($event)"></ion-input>
+            </div>
+            <br>
           </ion-item>
         </form>
       </ion-list>

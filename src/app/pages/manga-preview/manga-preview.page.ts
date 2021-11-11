@@ -19,6 +19,7 @@ export class MangaPreviewPage implements OnInit {
   @Input() chapter: Chapter
 
   userPermissions: object
+  color:string
 
   constructor(
     private modalController: ModalController,
@@ -29,7 +30,9 @@ export class MangaPreviewPage implements OnInit {
     this.userPermissions = authService.getUserPermissions()
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.getState()
+   }
 
   getMangaData() {
     this.mangaService.getManga(this.manga.manga_id)
@@ -101,4 +104,12 @@ export class MangaPreviewPage implements OnInit {
     this.dismiss()
   }
 
+  //return manga chip color by state
+  getState() {
+    if (this.manga.status == "Ongoing") {
+      return this.color = "success"
+    } else {
+      return this.color = "primary"
+    }
+  }
 }

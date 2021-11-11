@@ -37,9 +37,14 @@
           </div>
 
           <ion-item>
-            <ion-label *ngIf="!edit" position="floating">Upload the chapter images:</ion-label>
-            <ion-label *ngIf="edit" position="floating">Re-upload the chapter images:</ion-label>
-            <ion-input class="imageInput" type="file" accept="image/*" name="images[]" formControlName="images" (change)="chapterPreview($event)" multiple></ion-input>
+            <ion-label *ngIf="!edit" position="floating">Upload chapter images</ion-label>
+            <ion-label *ngIf="edit" position="floating">Re-Upload chapter images</ion-label>
+            <br>
+            <div class="fileUpload ion-text-center">
+              <ion-text color="light">Select files</ion-text>
+              <ion-input type="file" accept="image/*" name="images[]" formControlName="images" (change)="chapterPreview($event)" multiple></ion-input>
+            </div>
+            <br>
           </ion-item>
         </form>
 
@@ -48,8 +53,8 @@
         </ion-item-divider>
 
         <ion-item>
-          <div style=" align-content: center;">
-            <ng-container class="wrapper" *ngFor="let image of chapterImages">
+          <div class="wrapper">
+            <ng-container  *ngFor="let image of chapterImages">
                 <img [src]="image" width="80px" style="margin: 10px;">
             </ng-container>
           </div>

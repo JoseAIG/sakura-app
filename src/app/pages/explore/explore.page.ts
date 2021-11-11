@@ -5,11 +5,11 @@ import { ChapterService } from 'src/app/services/chapter.service';
 import { MangaService } from 'src/app/services/manga.service';
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss']
+  selector: 'app-explore',
+  templateUrl: 'explore.page.html',
+  styleUrls: ['explore.page.scss']
 })
-export class Tab2Page implements OnInit {
+export class ExplorePage implements OnInit {
 
   allMangas: Manga[]
   searchTerm: string
