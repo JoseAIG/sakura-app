@@ -19,15 +19,19 @@ ion-item.item-has-focus > ion-label{
   justify-content: center;
 }
 
-.imageInput{
-  margin-top: 10%  ;
+.imageInput {
+  margin-top: 10%;
 }
+
+.native-input.sc-ion-input-md{
+  color: aqua;
+}
+
 
 .wrapper{
   padding: 2%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
-  grid-gap: 2%;
-  justify-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
   align-items: center;
 }

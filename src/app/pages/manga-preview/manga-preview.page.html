@@ -17,6 +17,9 @@
         <ion-card-title>{{manga.title}} ({{manga.year}})</ion-card-title>
         <ion-card-subtitle>{{manga.author}}</ion-card-subtitle>
         <ion-card-subtitle>{{manga.description}}</ion-card-subtitle>
+        <div style="display: flex;justify-content: center;">
+          <ion-chip [color]="color">{{manga.status}}</ion-chip>
+        </div>
       </ion-card-content>
       <div class="ion-text-center">
         <ion-button *ngIf="userPermissions.id === manga.user_id || userPermissions.admin" shape="round" color="medium" (click)="editManga()">Edit</ion-button>
