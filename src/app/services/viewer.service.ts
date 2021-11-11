@@ -7,6 +7,10 @@ export class ViewerService {
 
   constructor() { }
 
+  orderImages(array: string[]){
+    return array.sort((a: any, b: any) => (parseInt(a.split("-")[2].match(/\d/g).join("")) > parseInt(b.split("-")[2].match(/\d/g).join(""))) ? 1 : -1)
+  }
+
   setViewerState(mangaID: number, chapterNumber: number, title: string, readMode: string, location: number) {
     // STORE VIEWER STATE IN LOCALSTORAGE
     const state = {

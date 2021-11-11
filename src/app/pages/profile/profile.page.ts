@@ -35,8 +35,10 @@ export class ProfilePage implements OnInit {
     this.userPermissions = authService.getUserPermissions()
   }
 
-  ngOnInit() {
-    if(!this.userPermissions.guest && this.userPermissions.id){
+  ngOnInit() { }
+
+  ionViewWillEnter() {
+    if (!this.userPermissions.guest && this.userPermissions.id) {
       this.getUserData()
       this.getUserMangas()
     }
