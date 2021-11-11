@@ -53,7 +53,11 @@ export class ViewerPage implements OnInit {
     this.chapterService.getChapter(this.chapterNumber, this.mangaID)
       .subscribe(
         (res: any) => {
-          this.images = res.chapter_images
+          try {
+            this.images = this.viewerService.orderImages(res.chapter_images)
+          } catch (error) {
+            this.images = res.chapter_images
+          }
           // REVERSE ARRAY IF READ MODE IS FROM BOTTOM TO TOP OR RIGHT TO LEFT
           if (this.readMode === "bottomToTop" || this.readMode === "rightToLeft") {
             this.images.reverse()
