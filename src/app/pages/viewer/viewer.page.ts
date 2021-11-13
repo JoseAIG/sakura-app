@@ -6,6 +6,7 @@ import { MangaPreviewPage } from '../manga-preview/manga-preview.page';
 import { ChapterService } from 'src/app/services/chapter.service';
 import { MangaService } from 'src/app/services/manga.service';
 import { ViewerService } from 'src/app/services/viewer.service';
+import { CommentsPage } from '../comments/comments.page';
 
 @Component({
   selector: 'app-viewer',
@@ -14,6 +15,7 @@ import { ViewerService } from 'src/app/services/viewer.service';
 })
 export class ViewerPage implements OnInit {
 
+  chapterID: number
   mangaID: number
   chapterNumber: number
   title: string
@@ -53,6 +55,7 @@ export class ViewerPage implements OnInit {
     this.chapterService.getChapter(this.chapterNumber, this.mangaID)
       .subscribe(
         (res: any) => {
+          this.chapterID = res.chapter_id
           try {
             this.images = this.viewerService.orderImages(res.chapter_images)
           } catch (error) {
@@ -126,8 +129,18 @@ export class ViewerPage implements OnInit {
       )
   }
 
-  openComments() {
-    console.log("Open comments");
+  async openComments() {
+    const modal = await this.modalController.create({
+      component: CommentsPage,
+      componentProps: {
+        chapterID: this.chapterID
+      }
+    });
+    await modal.present();
+  }
+
+  share(){
+    console.log('share')
   }
 
   // ON SCROLL EVENT FOR ADJUSTING TOOLBAR OPACITY
