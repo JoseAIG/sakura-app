@@ -1,0 +1,39 @@
+<!-- COMMENT -->
+<ion-item>
+  <ion-avatar slot="start">
+    <img src="assets/logos/sakura-logo-only.png">
+  </ion-avatar>
+  <ion-label text-wrap>
+    <h3><b>{{comment.username}}</b></h3>
+    <h3>{{comment.content}}</h3>
+    <sub *ngIf="!comment.edited">{{comment.dateCreated}}</sub>
+    <sub *ngIf="comment.edited">Edited - {{comment.dateCreated}}</sub>
+    &nbsp;
+    <sub *ngIf="!userPermissions.guest" (click)="replyComment(comment.id)" class="reply-sub">Reply</sub>
+  </ion-label>
+  <ion-button *ngIf="userPermissions.id == comment.userID" (click)="editComment(comment.id)" color="dark" fill="clear" class="no-ripple">
+    <ion-icon name="pencil-outline"></ion-icon>
+  </ion-button>
+  <ion-button *ngIf="(userPermissions.id == comment.userID) || userPermissions.admin" (click)="confirmCommentDeletion(comment.id)" color="dark" fill="clear" class="no-ripple">
+    <ion-icon name="trash-outline"></ion-icon>
+  </ion-button>
+</ion-item>
+<!-- REPLIES -->
+<ion-item *ngFor="let reply of comment.replies" class="reply">
+  <ion-avatar slot="start">
+    <img src="assets/logos/sakura-logo-only.png">
+  </ion-avatar>
+  <ion-label>
+    <h3><b>{{comment.username}}</b></h3>
+    <h3>{{reply.content}}</h3>
+    <sub *ngIf="!reply.edited">{{reply.dateCreated}}</sub>
+    <sub *ngIf="reply.edited">Edited - {{reply.dateCreated}}</sub>
+  </ion-label>
+  <ion-button *ngIf="userPermissions.id == comment.userID" (click)="editReply(reply.id)" color="dark" fill="clear" class="no-ripple">
+    <ion-icon name="pencil-outline"></ion-icon>
+  </ion-button>
+  <ion-button *ngIf="(userPermissions.id == comment.userID) || userPermissions.admin" (click)="deleteReply(reply.id)" color="dark" fill="clear" class="no-ripple">
+    <ion-icon name="trash-outline"></ion-icon>
+  </ion-button>
+</ion-item>
+<br>

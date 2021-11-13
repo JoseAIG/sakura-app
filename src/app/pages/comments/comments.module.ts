@@ -8,6 +8,7 @@ import { CommentsPageRoutingModule } from './comments-routing.module';
 
 import { CommentsPage } from './comments.page';
 import { CommentListComponentModule } from 'src/app/components/comment-list/comment-list.module';
+import { CommentInputComponentModule } from 'src/app/components/comment-input/comment-input.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { CommentListComponentModule } from 'src/app/components/comment-list/comm
     FormsModule,
     IonicModule,
     CommentsPageRoutingModule,
-    CommentListComponentModule
+    CommentListComponentModule,
+    CommentInputComponentModule
   ],
   declarations: [CommentsPage]
 })

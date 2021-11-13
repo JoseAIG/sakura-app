@@ -12,5 +12,6 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <app-comment-list *ngIf="chapterComments" [comments]="chapterComments"></app-comment-list>
+  <app-comment-list *ngIf="chapterComments" [comments]="chapterComments" (refresh)="getChapterComments()"></app-comment-list>
+  <app-comment-input chapterID="{{chapterID}}" (refresh)="getChapterComments()"></app-comment-input>
 </ion-content>

@@ -1,7 +1,6 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Comment } from 'src/app/interfaces/comment';
 import { UserPermissions } from 'src/app/interfaces/user-permissions';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-comment-list',
@@ -12,37 +11,13 @@ export class CommentListComponent implements OnChanges {
 
   @Input() comments: Comment[]
 
-  userPermissions: UserPermissions
+  @Output() refresh = new EventEmitter<boolean>();
 
-  constructor(
-    private authService: AuthService
-  ) {
-    this.userPermissions = authService.getUserPermissions()
+  constructor() { }
+
+  ngOnChanges() { }
+  
+  doRefresh(){
+    this.refresh.emit(true)
   }
-
-  ngOnChanges() {
-    console.log(this.comments)
-    console.log(this.userPermissions)
-  }
-
-  replyComment(commentID: number) {
-    console.log("reply this comment", commentID)
-  }
-
-  editComment(commentID: number) {
-    console.log('edit comment', commentID)
-  }
-
-  deleteComment(commentID: number) {
-    console.log('delete comment', commentID)
-  }
-
-  editReply(replyID: number) {
-    console.log('edit reply', replyID)
-  }
-
-  deleteReply(replyID: number) {
-    console.log('delete reply', replyID)
-  }
-
 }

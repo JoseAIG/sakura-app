@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { CommentListComponent } from './comment-list.component';
+import { CommentComponentModule } from '../comment/comment.module';
 
 @NgModule({
-  imports: [ CommonModule, FormsModule, IonicModule],
+  imports: [ CommonModule, FormsModule, IonicModule, CommentComponentModule],
   declarations: [CommentListComponent],
   exports: [CommentListComponent]
 })

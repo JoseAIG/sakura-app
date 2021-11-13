@@ -1,0 +1,8 @@
+<ion-item *ngIf="!userPermissions.guest" class="comment-input">
+  <div>
+    <ion-input placeholder="New comment" [(ngModel)]="newComment"></ion-input>
+    <ion-button shape="round" [disabled]="!newComment" (click)="postComment()">
+      <ion-icon name="send"></ion-icon>
+    </ion-button>
+  </div>
+</ion-item>
