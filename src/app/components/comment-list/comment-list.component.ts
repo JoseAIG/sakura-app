@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Comment } from 'src/app/interfaces/comment';
-import { UserPermissions } from 'src/app/interfaces/user-permissions';
 
 @Component({
   selector: 'app-comment-list',

@@ -1,12 +1,13 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ScrollDetail } from '@ionic/core';
-import { AlertController, IonContent, IonSlides, LoadingController, ModalController } from '@ionic/angular';
+import { IonContent, IonSlides } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MangaPreviewPage } from '../manga-preview/manga-preview.page';
 import { ChapterService } from 'src/app/services/chapter.service';
 import { MangaService } from 'src/app/services/manga.service';
 import { ViewerService } from 'src/app/services/viewer.service';
 import { CommentsPage } from '../comments/comments.page';
+import { ControllerService } from 'src/app/services/controller.service';
 
 @Component({
   selector: 'app-viewer',
@@ -31,13 +32,11 @@ export class ViewerPage implements OnInit {
 
   constructor(
     private router: Router,
-    private alertController: AlertController,
     private chapterService: ChapterService,
     private mangaService: MangaService,
     private viewerService: ViewerService,
     private route: ActivatedRoute,
-    private modalController: ModalController,
-    private loadingController: LoadingController
+    private controllerService: ControllerService
   ) { }
 
   ngOnInit() {
@@ -69,7 +68,7 @@ export class ViewerPage implements OnInit {
         async (res) => {
           console.log(res.error)
           this.router.navigateByUrl(this.backURL, { replaceUrl: true })
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'Error',
             message: res.error.message,
             buttons: ['OK'],
@@ -107,7 +106,7 @@ export class ViewerPage implements OnInit {
 
   // GO TO PREVIOUS PAGE INSTEAD OF A FIXED HREF ON ion-back-button
   async backButtonEvent() {
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     loading.present();
 
     this.mangaService.getManga(this.mangaID)
@@ -115,7 +114,7 @@ export class ViewerPage implements OnInit {
         async (res: any) => {
           loading.dismiss();
           this.router.navigateByUrl(this.backURL, { replaceUrl: true })
-          const modal = this.modalController.create({
+          const modal = this.controllerService.createModal({
             component: MangaPreviewPage,
             componentProps: {
               manga: res
@@ -130,7 +129,7 @@ export class ViewerPage implements OnInit {
   }
 
   async openComments() {
-    const modal = await this.modalController.create({
+    const modal = await this.controllerService.createModal({
       component: CommentsPage,
       componentProps: {
         chapterID: this.chapterID
@@ -175,9 +174,8 @@ export class ViewerPage implements OnInit {
 
   // MANGA VIEWER READ MODE SETTINGS
   async readModeSettings() {
-    //console.log(localStorage.getItem('READ_MODE'))
-    let currentReadMode = localStorage.getItem('READ_MODE')
-    const readModeSettingsAlert = this.alertController.create({
+    const currentReadMode = localStorage.getItem('READ_MODE')
+    const readModeSettingsAlert = this.controllerService.createAlert({
       header: "Set the reading direction",
       inputs: [
         {

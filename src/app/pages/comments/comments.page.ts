@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { Comment } from 'src/app/interfaces/comment';
 import { CommentService } from 'src/app/services/comment.service';
+import { ControllerService } from 'src/app/services/controller.service';
 
 @Component({
   selector: 'app-comments',
@@ -15,8 +16,7 @@ export class CommentsPage implements OnInit {
   chapterComments: Comment[]
 
   constructor(
-    private modalController: ModalController,
-    private loadingController: LoadingController,
+    private controllerService: ControllerService,
     private commentService: CommentService
   ) { }
 
@@ -25,7 +25,7 @@ export class CommentsPage implements OnInit {
   }
 
   async dismiss() {
-    await this.modalController.dismiss({
+    await this.controllerService.dismissModal({
       'dismissed': true
     })
   }
@@ -36,7 +36,7 @@ export class CommentsPage implements OnInit {
   }
 
   async getChapterComments() {
-    const loading = await this.loadingController.create();
+    const loading = await this.controllerService.createLoading();
     await loading.present();
     
     this.commentService.getChapterComments(this.chapterID)

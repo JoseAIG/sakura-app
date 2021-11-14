@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ToastController } from '@ionic/angular';
 import { UserPermissions } from 'src/app/interfaces/user-permissions';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentService } from 'src/app/services/comment.service';
+import { ControllerService } from 'src/app/services/controller.service';
 
 @Component({
   selector: 'app-comment-input',
@@ -21,7 +21,7 @@ export class CommentInputComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private commentService: CommentService,
-    private toastController: ToastController
+    private controllerService: ControllerService
   ) {
     this.userPermissions = authService.getUserPermissions()
   }
@@ -32,7 +32,7 @@ export class CommentInputComponent implements OnInit {
     this.commentService.createComment(this.chapterID, this.newComment)
       .subscribe(
         async (res: {status: number, message: string}) => {
-          const toast = await this.toastController.create({
+          const toast = await this.controllerService.createToast({
             message: res.message,
             duration: 2000
           });
@@ -41,7 +41,7 @@ export class CommentInputComponent implements OnInit {
           this.refresh.emit(true)
         },
         async (res) => {
-          const toast = await this.toastController.create({
+          const toast = await this.controllerService.createToast({
             message: `Error: ${res.error.message}`,
             duration: 2000
           });

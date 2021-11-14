@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
 import { Comment } from 'src/app/interfaces/comment';
 import { UserPermissions } from 'src/app/interfaces/user-permissions';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentService } from 'src/app/services/comment.service';
+import { ControllerService } from 'src/app/services/controller.service';
 
 @Component({
   selector: 'app-comment',
@@ -21,8 +21,7 @@ export class CommentComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private commentService: CommentService,
-    private toastController: ToastController,
-    private alertController: AlertController
+    private controllerService: ControllerService
   ) {
     this.userPermissions = authService.getUserPermissions()
   }
@@ -36,7 +35,7 @@ export class CommentComponent implements OnInit {
   }
 
   async editCommentAlert(commentID: number, content: string) {
-    const readModeSettingsAlert = await this.alertController.create({
+    const editCommentAlert = await this.controllerService.createAlert({
       header: "Edit comment",
       inputs: [
         {
@@ -57,14 +56,14 @@ export class CommentComponent implements OnInit {
         }
       ]
     });
-    await readModeSettingsAlert.present()
+    await editCommentAlert.present()
   }
 
   editComment(commentID: number, content: string) {
     this.commentService.editComment(commentID, content)
       .subscribe(
         async (res: { status: number, message: string }) => {
-          const toast = await this.toastController.create({
+          const toast = await this.controllerService.createToast({
             message: res.message,
             duration: 2000
           });
@@ -72,7 +71,7 @@ export class CommentComponent implements OnInit {
           this.refresh.emit(true)
         },
         async (res) => {
-          const toast = await this.toastController.create({
+          const toast = await this.controllerService.createToast({
             message: `Error: ${res.error.message}`,
             duration: 2000
           });
@@ -82,7 +81,7 @@ export class CommentComponent implements OnInit {
   }
 
   async confirmCommentDeletion(commentID: number) {
-    const alert = await this.alertController.create({
+    const alert = await this.controllerService.createAlert({
       header: 'Delete comment?',
       buttons: [
         {
@@ -97,7 +96,6 @@ export class CommentComponent implements OnInit {
         }
       ],
     });
-
     await alert.present();
   }
 
@@ -105,7 +103,7 @@ export class CommentComponent implements OnInit {
     this.commentService.deleteComment(commentID)
       .subscribe(
         async (res: { status: number, message: string }) => {
-          const toast = await this.toastController.create({
+          const toast = await this.controllerService.createToast({
             message: res.message,
             duration: 2000
           });
@@ -113,7 +111,7 @@ export class CommentComponent implements OnInit {
           this.refresh.emit(true)
         },
         async (res) => {
-          const toast = await this.toastController.create({
+          const toast = await this.controllerService.createToast({
             message: `Error: ${res.error.message}`,
             duration: 2000
           });
