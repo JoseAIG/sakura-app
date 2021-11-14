@@ -19,6 +19,10 @@ export class CommentService {
     return this.http.post(`${this.BASE_URL}/chapter/${chapterID}/comments`, { content: content }, this.userHeader())
   }
 
+  editComment(commentID: number, content: string) {
+    return this.http.put(`${this.BASE_URL}/comment/${commentID}`, { content: content }, this.userHeader())
+  }
+
   deleteComment(commentID: number) {
     return this.http.delete(`${this.BASE_URL}/comment/${commentID}`, this.userHeader())
   }

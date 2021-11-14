@@ -35,8 +35,50 @@ export class CommentComponent implements OnInit {
     console.log("reply this comment", commentID)
   }
 
-  editComment(commentID: number) {
-    console.log('edit comment', commentID)
+  async editCommentAlert(commentID: number, content: string) {
+    const readModeSettingsAlert = await this.alertController.create({
+      header: "Edit comment",
+      inputs: [
+        {
+          type: 'text',
+          value: content
+        }
+      ],
+      buttons: [
+        {
+          text: 'OK',
+          handler: data => {
+            this.editComment(commentID, data[0])
+          }
+        },
+        {
+          text: 'CANCEL',
+          role: 'cancel'
+        }
+      ]
+    });
+    await readModeSettingsAlert.present()
+  }
+
+  editComment(commentID: number, content: string) {
+    this.commentService.editComment(commentID, content)
+      .subscribe(
+        async (res: { status: number, message: string }) => {
+          const toast = await this.toastController.create({
+            message: res.message,
+            duration: 2000
+          });
+          await toast.present();
+          this.refresh.emit(true)
+        },
+        async (res) => {
+          const toast = await this.toastController.create({
+            message: `Error: ${res.error.message}`,
+            duration: 2000
+          });
+          await toast.present();
+        }
+      )
   }
 
   async confirmCommentDeletion(commentID: number) {

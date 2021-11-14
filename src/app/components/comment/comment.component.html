@@ -11,7 +11,7 @@
     &nbsp;
     <sub *ngIf="!userPermissions.guest" (click)="replyComment(comment.id)" class="reply-sub">Reply</sub>
   </ion-label>
-  <ion-button *ngIf="userPermissions.id == comment.userID" (click)="editComment(comment.id)" color="dark" fill="clear" class="no-ripple">
+  <ion-button *ngIf="userPermissions.id == comment.userID" (click)="editCommentAlert(comment.id, comment.content)" color="dark" fill="clear" class="no-ripple">
     <ion-icon name="pencil-outline"></ion-icon>
   </ion-button>
   <ion-button *ngIf="(userPermissions.id == comment.userID) || userPermissions.admin" (click)="confirmCommentDeletion(comment.id)" color="dark" fill="clear" class="no-ripple">

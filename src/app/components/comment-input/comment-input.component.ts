@@ -37,6 +37,7 @@ export class CommentInputComponent implements OnInit {
             duration: 2000
           });
           await toast.present();
+          this.newComment = ""
           this.refresh.emit(true)
         },
         async (res) => {
