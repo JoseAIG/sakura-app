@@ -15,6 +15,7 @@ export class CommentComponent implements OnInit {
   @Input() comment: Comment
 
   @Output() refresh = new EventEmitter<boolean>();
+  @Output() reply = new EventEmitter<{ commentID: number, username: string }>()
 
   userPermissions: UserPermissions
 
@@ -30,13 +31,13 @@ export class CommentComponent implements OnInit {
     console.log('comment', this.comment)
   }
 
-  replyComment(commentID: number) {
-    console.log("reply this comment", commentID)
+  replyComment(commentID: number, username: string) {
+    this.reply.emit({ commentID: commentID, username: username })
   }
 
-  async editCommentAlert(commentID: number, content: string) {
-    const editCommentAlert = await this.controllerService.createAlert({
-      header: "Edit comment",
+  async editAlert(reply: boolean, id: number, content: string) {
+    const editAlert = await this.controllerService.createAlert({
+      header: reply ? "Edit reply" : "Edit comment",
       inputs: [
         {
           type: 'text',
@@ -47,7 +48,11 @@ export class CommentComponent implements OnInit {
         {
           text: 'OK',
           handler: data => {
-            this.editComment(commentID, data[0])
+            if(reply){
+              this.editReply(id, data[0])
+            }else{
+              this.editComment(id, data[0])
+            }
           }
         },
         {
@@ -56,7 +61,7 @@ export class CommentComponent implements OnInit {
         }
       ]
     });
-    await editCommentAlert.present()
+    await editAlert.present()
   }
 
   editComment(commentID: number, content: string) {
@@ -80,14 +85,18 @@ export class CommentComponent implements OnInit {
       )
   }
 
-  async confirmCommentDeletion(commentID: number) {
+  async confirmDeletion(reply: boolean, id: number) {
     const alert = await this.controllerService.createAlert({
-      header: 'Delete comment?',
+      header: reply ? 'Delete reply?' : 'Delete comment?',
       buttons: [
         {
           text: 'OK',
           handler: () => {
-            this.deleteComment(commentID)
+            if (reply) {
+              this.deleteReply(id)
+            } else {
+              this.deleteComment(id)
+            }
           }
         },
         {
@@ -120,12 +129,46 @@ export class CommentComponent implements OnInit {
       )
   }
 
-  editReply(replyID: number) {
-    console.log('edit reply', replyID)
+  editReply(replyID: number, content: string) {
+    this.commentService.editReply(replyID, content)
+      .subscribe(
+        async (res: { status: number, message: string }) => {
+          const toast = await this.controllerService.createToast({
+            message: res.message,
+            duration: 2000
+          });
+          await toast.present();
+          this.refresh.emit(true)
+        },
+        async (res) => {
+          const toast = await this.controllerService.createToast({
+            message: `Error: ${res.error.message}`,
+            duration: 2000
+          });
+          await toast.present();
+        }
+      )
   }
 
   deleteReply(replyID: number) {
-    console.log('delete reply', replyID)
+    this.commentService.deleteReply(replyID)
+      .subscribe(
+        async (res: { status: number, message: string }) => {
+          const toast = await this.controllerService.createToast({
+            message: res.message,
+            duration: 2000
+          });
+          await toast.present();
+          this.refresh.emit(true)
+        },
+        async (res) => {
+          const toast = await this.controllerService.createToast({
+            message: `Error: ${res.error.message}`,
+            duration: 2000
+          });
+          await toast.present();
+        }
+      )
   }
 
 }

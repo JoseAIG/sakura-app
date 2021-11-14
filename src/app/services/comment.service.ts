@@ -27,6 +27,18 @@ export class CommentService {
     return this.http.delete(`${this.BASE_URL}/comment/${commentID}`, this.userHeader())
   }
 
+  createReply(commentID: number, content: string){
+    return this.http.post(`${this.BASE_URL}/comment/${commentID}/replies`, { content: content }, this.userHeader())
+  }
+
+  editReply(replyID: number, content: string){
+    return this.http.put(`${this.BASE_URL}/reply/${replyID}`, {content: content}, this.userHeader())
+  }
+
+  deleteReply(replyID: number){
+    return this.http.delete(`${this.BASE_URL}/reply/${replyID}`, this.userHeader())
+  }
+
   userHeader() {
     var header = {
       headers: new HttpHeaders()

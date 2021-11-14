@@ -5,6 +5,6 @@
 
 <ion-list *ngIf="comments.length" lines="none">
   <ng-container *ngFor="let comment of comments">
-    <app-comment [comment]=comment (refresh)="doRefresh()"></app-comment>
+    <app-comment [comment]=comment (refresh)="doRefresh()" (reply)="replyComment($event)"></app-comment>
   </ng-container>
 </ion-list>

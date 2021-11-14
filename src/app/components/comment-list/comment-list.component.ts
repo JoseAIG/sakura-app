@@ -11,6 +11,7 @@ export class CommentListComponent implements OnChanges {
   @Input() comments: Comment[]
 
   @Output() refresh = new EventEmitter<boolean>();
+  @Output() reply = new EventEmitter<{commentID: number, username: string}>()
 
   constructor() { }
 
@@ -18,5 +19,9 @@ export class CommentListComponent implements OnChanges {
   
   doRefresh(){
     this.refresh.emit(true)
+  }
+
+  replyComment(comment: {commentID: number, username: string}){
+    this.reply.emit(comment)
   }
 }

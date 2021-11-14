@@ -9,12 +9,12 @@
     <sub *ngIf="!comment.edited">{{comment.dateCreated}}</sub>
     <sub *ngIf="comment.edited">Edited - {{comment.dateCreated}}</sub>
     &nbsp;
-    <sub *ngIf="!userPermissions.guest" (click)="replyComment(comment.id)" class="reply-sub">Reply</sub>
+    <sub *ngIf="!userPermissions.guest" (click)="replyComment(comment.id, comment.username)" class="reply-sub">Reply</sub>
   </ion-label>
-  <ion-button *ngIf="userPermissions.id == comment.userID" (click)="editCommentAlert(comment.id, comment.content)" color="dark" fill="clear" class="no-ripple">
+  <ion-button *ngIf="userPermissions.id == comment.userID" (click)="editAlert(false, comment.id, comment.content)" color="dark" fill="clear" class="no-ripple">
     <ion-icon name="pencil-outline"></ion-icon>
   </ion-button>
-  <ion-button *ngIf="(userPermissions.id == comment.userID) || userPermissions.admin" (click)="confirmCommentDeletion(comment.id)" color="dark" fill="clear" class="no-ripple">
+  <ion-button *ngIf="(userPermissions.id == comment.userID) || userPermissions.admin" (click)="confirmDeletion(false, comment.id)" color="dark" fill="clear" class="no-ripple">
     <ion-icon name="trash-outline"></ion-icon>
   </ion-button>
 </ion-item>
@@ -24,15 +24,15 @@
     <img src="assets/logos/sakura-logo-only.png">
   </ion-avatar>
   <ion-label>
-    <h3><b>{{comment.username}}</b></h3>
+    <h3><b>{{reply.username}}</b></h3>
     <h3>{{reply.content}}</h3>
     <sub *ngIf="!reply.edited">{{reply.dateCreated}}</sub>
     <sub *ngIf="reply.edited">Edited - {{reply.dateCreated}}</sub>
   </ion-label>
-  <ion-button *ngIf="userPermissions.id == comment.userID" (click)="editReply(reply.id)" color="dark" fill="clear" class="no-ripple">
+  <ion-button *ngIf="userPermissions.id == comment.userID" (click)="editAlert(true, reply.id, reply.content)" color="dark" fill="clear" class="no-ripple">
     <ion-icon name="pencil-outline"></ion-icon>
   </ion-button>
-  <ion-button *ngIf="(userPermissions.id == comment.userID) || userPermissions.admin" (click)="deleteReply(reply.id)" color="dark" fill="clear" class="no-ripple">
+  <ion-button *ngIf="(userPermissions.id == comment.userID) || userPermissions.admin" (click)="confirmDeletion(true, reply.id)" color="dark" fill="clear" class="no-ripple">
     <ion-icon name="trash-outline"></ion-icon>
   </ion-button>
 </ion-item>

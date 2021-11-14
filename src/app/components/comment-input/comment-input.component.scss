@@ -5,6 +5,7 @@ div{
 }
 
 .comment-input{
+    display: block;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -16,4 +17,26 @@ div{
 
 ion-button{
     --background: #C22E48;
+}
+
+ion-fab-button{
+    width: 30px;
+    height: 30px;
+    --background: #C22E48;
+}
+
+.reply{
+    background: rgba(0, 0, 0, 0.25);
+    padding: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.reply ion-label{
+    color: gray;
 }

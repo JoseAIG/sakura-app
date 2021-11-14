@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { LoadingController, ModalController } from '@ionic/angular';
 import { Comment } from 'src/app/interfaces/comment';
 import { CommentService } from 'src/app/services/comment.service';
 import { ControllerService } from 'src/app/services/controller.service';
@@ -14,6 +13,7 @@ export class CommentsPage implements OnInit {
   @Input() chapterID: number
 
   chapterComments: Comment[]
+  reply: {commentID: number, username: string}
 
   constructor(
     private controllerService: ControllerService,
@@ -43,6 +43,7 @@ export class CommentsPage implements OnInit {
       .subscribe(
         async (res: { status: number, chapterComments: Comment[] }) => {
           this.chapterComments = res.chapterComments
+          console.log(this.chapterComments)
           await loading.dismiss()
         },
         async (res) => {
@@ -50,6 +51,10 @@ export class CommentsPage implements OnInit {
           await loading.dismiss()
         }
       )
+  }
+
+  replyComment(comment: {commentID: number, username: string}) {
+    this.reply = comment
   }
 
 }
