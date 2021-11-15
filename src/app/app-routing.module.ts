@@ -45,10 +45,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/viewer/viewer.module').then( m => m.ViewerPageModule)    
   },
   {
+    path: 'comments',
+    loadChildren: () => import('./pages/comments/comments.module').then( m => m.CommentsPageModule)
+  },
+  {
     path: '',
     redirectTo: '/intro',
     pathMatch: 'full'
   }
+
 
 ];
 @NgModule({
