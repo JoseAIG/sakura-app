@@ -29,10 +29,10 @@
     <sub *ngIf="!reply.edited">{{reply.dateCreated}}</sub>
     <sub *ngIf="reply.edited">Edited - {{reply.dateCreated}}</sub>
   </ion-label>
-  <ion-button *ngIf="userPermissions.id == comment.userID" (click)="editAlert(true, reply.id, reply.content)" color="dark" fill="clear" class="no-ripple">
+  <ion-button *ngIf="userPermissions.id == reply.userID" (click)="editAlert(true, reply.id, reply.content)" color="dark" fill="clear" class="no-ripple">
     <ion-icon name="pencil-outline"></ion-icon>
   </ion-button>
-  <ion-button *ngIf="(userPermissions.id == comment.userID) || userPermissions.admin" (click)="confirmDeletion(true, reply.id)" color="dark" fill="clear" class="no-ripple">
+  <ion-button *ngIf="(userPermissions.id == reply.userID) || userPermissions.admin" (click)="confirmDeletion(true, reply.id)" color="dark" fill="clear" class="no-ripple">
     <ion-icon name="trash-outline"></ion-icon>
   </ion-button>
 </ion-item>
