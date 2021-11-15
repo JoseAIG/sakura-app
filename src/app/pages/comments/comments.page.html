@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Comments</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <app-comment-list *ngIf="chapterComments" [comments]="chapterComments" (refresh)="getChapterComments()" (reply)="replyComment($event)"></app-comment-list>
+  <app-comment-input chapterID="{{chapterID}}" (refresh)="getChapterComments()" [reply]="reply"></app-comment-input>
+</ion-content>

@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, AlertInput, IonRadio, LoadingController, ModalController } from '@ionic/angular';
 import { Manga } from 'src/app/interfaces/manga';
 import { AuthService } from 'src/app/services/auth.service';
+import { ControllerService } from 'src/app/services/controller.service';
 import { MangaService } from 'src/app/services/manga.service';
 import { UserService } from 'src/app/services/user.service';
 import { ChapterFormModalPage } from '../chapter-form-modal/chapter-form-modal.page';
@@ -28,9 +27,7 @@ export class ProfilePage implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private mangaService: MangaService,
-    private modalController: ModalController,
-    private loadingController: LoadingController,
-    private alertController: AlertController,
+    private controllerService: ControllerService,
     private router: Router
   ) {
     this.userPermissions = authService.getUserPermissions()
@@ -76,7 +73,7 @@ export class ProfilePage implements OnInit {
 
   //logout confirmation prompt
   async confirmLogout() {
-    const alert = await this.alertController.create({
+    const alert = await this.controllerService.createAlert({
       header: 'Do you want to log out?',
       buttons: [
         {
@@ -97,7 +94,7 @@ export class ProfilePage implements OnInit {
 
   //logout function
   private async logout() {
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     await loading.present();
     this.authService.clearToken();
     localStorage.removeItem('VIEWER_STATE')
@@ -107,7 +104,7 @@ export class ProfilePage implements OnInit {
 
   //function to manage user account
   async openSettings() {
-    const modal = await this.modalController.create({
+    const modal = await this.controllerService.createModal({
       component: UserModalPage,
       componentProps: {
         'username': this.username,
@@ -124,7 +121,7 @@ export class ProfilePage implements OnInit {
 
   //function for creating mangas
   async newManga() {
-    const modal = await this.modalController.create({
+    const modal = await this.controllerService.createModal({
       component: MangaModalPage,
       componentProps: {
         edit: false
@@ -140,7 +137,7 @@ export class ProfilePage implements OnInit {
 
   //function for creating chapters
   async newChapter() {
-    const modal = await this.modalController.create({
+    const modal = await this.controllerService.createModal({
       component: ChapterFormModalPage,
       componentProps: {
         'mangas': this.userMangas,
@@ -165,7 +162,7 @@ export class ProfilePage implements OnInit {
   async readModeSettings() {
     //console.log(localStorage.getItem('READ_MODE'))
     let currentReadMode = localStorage.getItem('READ_MODE')
-    const readModeSettingsAlert = this.alertController.create({
+    const readModeSettingsAlert = this.controllerService.createAlert({
       header: "Set the reading direction",
       inputs: [
         {

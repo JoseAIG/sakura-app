@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { Manga } from 'src/app/interfaces/manga';
+import { ControllerService } from 'src/app/services/controller.service';
 import { MangaService } from 'src/app/services/manga.service';
 
 @Component({
@@ -19,10 +19,8 @@ export class MangaModalPage implements OnInit {
   mangaCover: string = null
 
   constructor(
-    private modalController: ModalController,
     private formBuilder: FormBuilder,
-    private loadingController: LoadingController,
-    private alertController: AlertController,
+    private controllerService: ControllerService,
     private mangaService: MangaService,
     private router: Router
   ) { }
@@ -44,7 +42,7 @@ export class MangaModalPage implements OnInit {
 
   //closing the manga creation modal
   dismiss() {
-    this.modalController.dismiss({
+    this.controllerService.dismissModal({
       'dismissed': true
     })
   }
@@ -68,7 +66,7 @@ export class MangaModalPage implements OnInit {
   }
 
   async createManga() {
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     await loading.present();
 
     let formData: FormData = new FormData();
@@ -89,7 +87,7 @@ export class MangaModalPage implements OnInit {
         async (res) => {
           console.log(res)
           await loading.dismiss()
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'Manga creation failed',
             message: res.error.message,
             buttons: ['OK'],
@@ -100,7 +98,7 @@ export class MangaModalPage implements OnInit {
   }
 
   async updateManga() {
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     await loading.present();
 
     let formData: FormData = new FormData();
@@ -128,7 +126,7 @@ export class MangaModalPage implements OnInit {
         async (res) => {
           console.log(res)
           await loading.dismiss()
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'Manga update failed',
             message: res.error.message,
             buttons: ['OK'],
@@ -139,7 +137,7 @@ export class MangaModalPage implements OnInit {
   }
 
   async confirmDeletion() {
-    const alert = await this.alertController.create({
+    const alert = await this.controllerService.createAlert({
       header: 'Delete this manga?',
       buttons: [
         {
@@ -159,7 +157,7 @@ export class MangaModalPage implements OnInit {
   }
 
   async deleteManga() {
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     await loading.present();
 
     this.mangaService.deleteManga(this.manga.manga_id)
@@ -172,7 +170,7 @@ export class MangaModalPage implements OnInit {
         async (res) => {
           console.log(res)
           await loading.dismiss()
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'Could not delete manga',
             message: res.error.message,
             buttons: ['OK'],

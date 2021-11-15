@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController, MenuController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { ControllerService } from 'src/app/services/controller.service';
 
 @Component({
   selector: 'app-login',
@@ -17,8 +17,7 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private loadingController: LoadingController,
-    private alertController: AlertController
+    private controllerService: ControllerService
   ) { }
 
   ngOnInit() {
@@ -37,7 +36,7 @@ export class LoginPage implements OnInit {
   }
 
   async login() {
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     await loading.present();
 
     let formData: FormData = new FormData();
@@ -55,7 +54,7 @@ export class LoginPage implements OnInit {
         async (res) => {
           await loading.dismiss()
           console.log(res.error);
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'Login failed',
             message: res.error.message,
             buttons: ['OK'],

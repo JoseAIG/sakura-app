@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { Chapter } from 'src/app/interfaces/chapter';
 import { Manga } from 'src/app/interfaces/manga';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChapterService } from 'src/app/services/chapter.service';
+import { ControllerService } from 'src/app/services/controller.service';
 
 @Component({
   selector: 'app-chapter-form-modal',
@@ -24,10 +24,8 @@ export class ChapterFormModalPage implements OnInit {
   userPermissions: object
 
   constructor(
-    private modalController:ModalController,
+    private controllerService: ControllerService,
     private formBuilder: FormBuilder,
-    private loadingController: LoadingController,
-    private alertController: AlertController,
     private chapterService:ChapterService,
     private authService: AuthService
   ) {
@@ -56,7 +54,7 @@ export class ChapterFormModalPage implements OnInit {
 
   //closing the chapter creation modal
   async dismiss() {
-    await this.modalController.dismiss({
+    await this.controllerService.dismissModal({
       'dismissed': true
     })
   }
@@ -64,7 +62,7 @@ export class ChapterFormModalPage implements OnInit {
   //create a new chapter
   async createChapter(){
     let mangaID = this.chapterForm.get("manga").value
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     await loading.present();
 
     let formData:FormData = new FormData();
@@ -79,7 +77,7 @@ export class ChapterFormModalPage implements OnInit {
         console.log(res)
         await loading.dismiss();
         await this.dismiss()
-        const alert = await this.alertController.create({
+        const alert = await this.controllerService.createAlert({
           header: 'Success',
           message: res.message,
           buttons: ['OK'],
@@ -89,7 +87,7 @@ export class ChapterFormModalPage implements OnInit {
       async (res) => {
         console.log(res)
         await loading.dismiss()
-        const alert = await this.alertController.create({
+        const alert = await this.controllerService.createAlert({
           header: 'Chapter creation failed',
           message: res.error.message,
           buttons: ['OK'],
@@ -105,7 +103,7 @@ export class ChapterFormModalPage implements OnInit {
     let chapterNumber:number = this.chapter.number
     let mangaID = this.mangaToEdit.manga_id
     console.log(this.mangaToEdit)
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     await loading.present();
 
     let formData:FormData = new FormData();
@@ -124,7 +122,7 @@ export class ChapterFormModalPage implements OnInit {
         console.log(res)
         await loading.dismiss();
         await this.dismiss()
-        const alert = await this.alertController.create({
+        const alert = await this.controllerService.createAlert({
           header: 'Success',
           message: res.message,
           buttons: ['OK'],
@@ -134,7 +132,7 @@ export class ChapterFormModalPage implements OnInit {
       async (res) => {
         console.log(res)
         await loading.dismiss()
-        const alert = await this.alertController.create({
+        const alert = await this.controllerService.createAlert({
           header: 'Chapter update failed',
           message: res.error.message,
           buttons: ['OK'],
@@ -146,7 +144,7 @@ export class ChapterFormModalPage implements OnInit {
   }
 
   async confirmDeletion(chapterNumber: number) {
-    const alert = await this.alertController.create({
+    const alert = await this.controllerService.createAlert({
       header: 'Delete this chapter?',
       buttons: [
         {
@@ -169,7 +167,7 @@ export class ChapterFormModalPage implements OnInit {
   async deleteChapter(chapterNumber:number){
     console.log('delete', chapterNumber)
     console.log('manga', this.mangaToEdit.manga_id)
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     await loading.present();
 
     this.chapterService.deleteChapter(chapterNumber, this.mangaToEdit.manga_id)
@@ -182,7 +180,7 @@ export class ChapterFormModalPage implements OnInit {
         async (res) => {
           console.log(res)
           await loading.dismiss()
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'Could not delete chapter',
             message: res.error.message,
             buttons: ['OK'],

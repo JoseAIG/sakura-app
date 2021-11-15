@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { Manga } from 'src/app/interfaces/manga';
 import { MangaModalPage } from 'src/app/pages/manga-modal/manga-modal.page';
 import { MangaPreviewPage } from 'src/app/pages/manga-preview/manga-preview.page';
 import { ProfilePage } from 'src/app/pages/profile/profile.page';
+import { ControllerService } from 'src/app/services/controller.service';
 
 @Component({
   selector: 'app-manga-card',
@@ -16,14 +16,14 @@ export class MangaCardComponent implements OnInit {
   @Input() editable: boolean
 
   constructor(
-    private modalController: ModalController,
+    private controllerService: ControllerService,
     private profilePage: ProfilePage
   ) { }
 
   ngOnInit() { }
 
   async openManga() {
-    const modal = await this.modalController.create({
+    const modal = await this.controllerService.createModal({
       component: MangaPreviewPage,
       componentProps: {
         manga: this.manga
@@ -39,7 +39,7 @@ export class MangaCardComponent implements OnInit {
 
   async editManga(event: Event) {
     event.stopPropagation()
-    const modal = await this.modalController.create({
+    const modal = await this.controllerService.createModal({
       component: MangaModalPage,
       componentProps: {
         edit: true,

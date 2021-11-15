@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { Manga } from 'src/app/interfaces/manga';
-import { ChapterService } from 'src/app/services/chapter.service';
 import { MangaService } from 'src/app/services/manga.service';
 
 @Component({
@@ -16,7 +14,6 @@ export class ExplorePage implements OnInit {
 
   constructor(
     private mangaService: MangaService,
-    private chapterService: ChapterService,
   ) { }
 
   ngOnInit() {

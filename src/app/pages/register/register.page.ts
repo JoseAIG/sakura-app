@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { ControllerService } from 'src/app/services/controller.service';
 
 
 @Component({
@@ -19,10 +19,8 @@ export class RegisterPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private loadingController: LoadingController,
-    private alertController: AlertController) {
-
-  }
+    private controllerService: ControllerService
+  ) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -32,7 +30,6 @@ export class RegisterPage implements OnInit {
       confirmedPassword: [null, [Validators.required, Validators.minLength(6)]]
     }, { validator: this.checkPasswords })
   }
-  //,{validator:this.checkIfMatchingPasswords('passsword','confirmedPassword')}
 
   get email() {
     return this.registerForm.get('email')
@@ -52,7 +49,7 @@ export class RegisterPage implements OnInit {
 
 
   async register() {
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     await loading.present();
 
     let formData: FormData = new FormData();
@@ -64,7 +61,7 @@ export class RegisterPage implements OnInit {
       .subscribe(
         async (res) => {
           await loading.dismiss()
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'Register completed',
             message: res.message,
             buttons: ['OK'],
@@ -75,7 +72,7 @@ export class RegisterPage implements OnInit {
         async (res) => {
           await loading.dismiss()
           console.log(res.error);
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'Register failed',
             message: res.error.message,
             buttons: ['OK'],

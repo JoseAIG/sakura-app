@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { ControllerService } from 'src/app/services/controller.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -24,9 +24,7 @@ export class UserModalPage implements OnInit {
     private userService: UserService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private modalController: ModalController,
-    private loadingController: LoadingController,
-    private alertController: AlertController
+    private controllerService: ControllerService
   ) { }
 
   ngOnInit() {
@@ -60,14 +58,14 @@ export class UserModalPage implements OnInit {
 
   //closing the user settings modal
   dismiss() {
-    this.modalController.dismiss({
+    this.controllerService.dismissModal({
       'dismissed': true
     })
   }
 
   //updating user method
   async updateUser() {
-    let loading = await this.loadingController.create();
+    let loading = await this.controllerService.createLoading();
     await loading.present();
 
     let formData: FormData = new FormData();
@@ -80,7 +78,7 @@ export class UserModalPage implements OnInit {
         async (res) => {
           this.authService.storeToken(res.token)
           await loading.dismiss()
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'Success',
             message: res.message,
             buttons: ['OK'],
@@ -91,7 +89,7 @@ export class UserModalPage implements OnInit {
         },
         async (res) => {
           await loading.dismiss()
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'User update failed',
             message: res.error.message,
             buttons: ['OK'],
@@ -102,7 +100,7 @@ export class UserModalPage implements OnInit {
   }
 
   async confirmUserDeletion() {
-    const alert = await this.alertController.create({
+    const alert = await this.controllerService.createAlert({
       header: 'Are you sure?',
       message: 'This action can not be undone.',
       buttons: [
@@ -126,7 +124,7 @@ export class UserModalPage implements OnInit {
     this.userService.deleteUser()
       .subscribe(
         async (res) => {
-          const alert = await this.alertController.create({
+          const alert = await this.controllerService.createAlert({
             header: 'User Deleted',
             message: res.message,
             buttons: ['OK'],
@@ -137,9 +135,9 @@ export class UserModalPage implements OnInit {
           this.router.navigateByUrl('/login', { replaceUrl: true })
         },
         async (res) => {
-          const alert = await this.alertController.create({
-            header: 'Could not delete user',
-            message: res.message,
+          const alert = await this.controllerService.createAlert({
+            header: 'Error',
+            message: res.error.message,
             buttons: ['OK'],
           });
           alert.present(),

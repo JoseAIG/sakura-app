@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { Manga } from 'src/app/interfaces/manga';
 import { MangaPreviewPage } from 'src/app/pages/manga-preview/manga-preview.page';
+import { ControllerService } from 'src/app/services/controller.service';
 
 @Component({
   selector: 'app-manga-list',
@@ -17,7 +17,7 @@ export class MangaListComponent implements OnInit {
   refresh = new EventEmitter<boolean>();
 
   constructor(
-    private modalController: ModalController
+    private controllerService: ControllerService
   ) { }
 
   ngOnInit() {
@@ -26,7 +26,7 @@ export class MangaListComponent implements OnInit {
 
   async openManga() {
     console.log("open manga", this.manga.manga_id)
-    const modal = await this.modalController.create({
+    const modal = await this.controllerService.createModal({
       component: MangaPreviewPage,
       componentProps: {
         manga: this.manga
