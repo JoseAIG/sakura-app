@@ -1,6 +1,11 @@
 {
-	"appId": "io.ionic.starter",
+	"appId": "com.rosinc.sakura",
 	"appName": "sakura-app",
 	"webDir": "www",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+	"plugins": {
+		"PushNotifications": {
+		  "presentationOptions": ["badge", "sound", "alert"]
+		}
+	  }
 }

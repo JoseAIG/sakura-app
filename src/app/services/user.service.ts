@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Token } from '@capacitor/push-notifications';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -22,6 +23,10 @@ export class UserService {
 
   deleteUser():Observable<any>{
     return this.http.delete(`${this.BASE_URL}`, this.userHeader())
+  }
+
+  storeNotificationToken(token: Token) {
+    return this.http.post(`${this.BASE_URL}/notifications`, token, this.userHeader())
   }
 
   userHeader(){
