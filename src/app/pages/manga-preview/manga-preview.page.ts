@@ -2,8 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Chapter } from 'src/app/interfaces/chapter';
 import { Manga } from 'src/app/interfaces/manga';
+import { UserPermissions } from 'src/app/interfaces/user-permissions';
 import { AuthService } from 'src/app/services/auth.service';
 import { ControllerService } from 'src/app/services/controller.service';
+import { FollowService } from 'src/app/services/follow.service';
 import { MangaService } from 'src/app/services/manga.service';
 import { ChapterFormModalPage } from '../chapter-form-modal/chapter-form-modal.page';
 import { MangaModalPage } from '../manga-modal/manga-modal.page';
@@ -18,12 +20,14 @@ export class MangaPreviewPage implements OnInit {
   @Input() manga: Manga
   @Input() chapter: Chapter
 
-  userPermissions: object
-  color:string
+  userPermissions: UserPermissions
+  followedMangasID: number[]
+  color: string
 
   constructor(
     private controllerService: ControllerService,
     private mangaService: MangaService,
+    private followService: FollowService,
     private authService: AuthService,
     private router: Router
   ) {
@@ -31,8 +35,9 @@ export class MangaPreviewPage implements OnInit {
   }
 
   ngOnInit() {
+    this.getFollowedMangas()
     this.getState()
-   }
+  }
 
   getMangaData() {
     this.mangaService.getManga(this.manga.manga_id)
@@ -41,6 +46,18 @@ export class MangaPreviewPage implements OnInit {
           this.manga = res
         }
       )
+  }
+
+  getFollowedMangas() {
+    //IF THE USER IS NOT A GUEST, GET MANGAS FOLLOWED BY THE USER AND STORE ITS IDS
+    if (!this.userPermissions.guest) {
+      this.followService.getFollowedMangas()
+        .subscribe(
+          (res: { status: number, followedMangas: Manga[] }) => {
+            this.followedMangasID = res.followedMangas.map(value => value.manga_id)
+          }
+        )
+    }
   }
 
   async dismiss() {
@@ -102,6 +119,48 @@ export class MangaPreviewPage implements OnInit {
   openViewer(manga: Manga, chapterNumber: number) {
     this.router.navigate(['viewer'], { queryParams: { title: manga.title, mangaID: manga.manga_id, chapterNumber: chapterNumber, backURL: this.router.url } })
     this.dismiss()
+  }
+
+  followManga(mangaID: number) {
+    this.followService.followManga(mangaID)
+      .subscribe(
+        async (res: { status: number, message: string }) => {
+          const toast = await this.controllerService.createToast({
+            message: res.message,
+            duration: 2000
+          });
+          await toast.present();
+          this.getFollowedMangas()
+        },
+        async (res) => {
+          const toast = await this.controllerService.createToast({
+            message: res.error.message,
+            duration: 2000
+          });
+          await toast.present();
+        }
+      )
+  }
+
+  unfollowManga(mangaID: number) {
+    this.followService.unfollowManga(mangaID)
+    .subscribe(
+      async (res: { status: number, message: string }) => {
+        const toast = await this.controllerService.createToast({
+          message: res.message,
+          duration: 2000
+        });
+        await toast.present();
+        this.getFollowedMangas()
+      },
+      async (res) => {
+        const toast = await this.controllerService.createToast({
+          message: res.error.message,
+          duration: 2000
+        });
+        await toast.present();
+      }
+    )
   }
 
   //return manga chip color by state

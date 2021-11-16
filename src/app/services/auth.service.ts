@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,20 @@ export class AuthService {
   register(formData: FormData): Observable<any>{
     return this.http.post<any>('https://sakura-mv.herokuapp.com/register', formData)
   }
-  //https://sakura-mv.herokuapp.com/register
+  
+  logout(){
+    if (Capacitor.getPlatform() !== 'web'){
+      return this.http.post('https://sakura-mv.herokuapp.com/logout', null, this.userHeader())
+    }
+  }
+
+  userHeader(){
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('TOKEN')}`)
+    }
+    return header;
+  }
 
   storeToken(token: string){
     localStorage.setItem('TOKEN', token)
