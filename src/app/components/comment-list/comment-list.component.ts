@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Comment } from 'src/app/interfaces/comment';
+import { UserPermissions } from 'src/app/interfaces/user-permissions';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-comment-list',
@@ -13,7 +15,11 @@ export class CommentListComponent implements OnChanges {
   @Output() refresh = new EventEmitter<boolean>();
   @Output() reply = new EventEmitter<{commentID: number, username: string}>()
 
-  constructor() { }
+  userPermissions: UserPermissions
+
+  constructor(private authService: AuthService) {
+    this.userPermissions = this.authService.getUserPermissions()
+  }
 
   ngOnChanges() { }
   

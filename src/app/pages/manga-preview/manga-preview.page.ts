@@ -49,12 +49,18 @@ export class MangaPreviewPage implements OnInit {
   }
 
   getFollowedMangas() {
-    //IF THE USER IS NOT A GUEST, GET MANGAS FOLLOWED BY THE USER AND STORE ITS IDS
     if (!this.userPermissions.guest) {
       this.followService.getFollowedMangas()
         .subscribe(
           (res: { status: number, followedMangas: Manga[] }) => {
             this.followedMangasID = res.followedMangas.map(value => value.manga_id)
+          }
+        )
+    } else {
+      this.followService.getGuestFollowedMangas()
+        .subscribe(
+          (res: { status: number, mangaList: Manga[] }) => {
+            this.followedMangasID = res.mangaList.map(value => value.manga_id)
           }
         )
     }
@@ -117,50 +123,75 @@ export class MangaPreviewPage implements OnInit {
   }
 
   openViewer(manga: Manga, chapterNumber: number) {
-    this.router.navigate(['viewer'], { queryParams: { title: manga.title, mangaID: manga.manga_id, chapterNumber: chapterNumber, backURL: this.router.url } })
+    this.router.navigate(['viewer'], { queryParams: { title: manga.title, mangaID: manga.manga_id, chapterNumber: chapterNumber, backURL: this.router.url }, replaceUrl: true })
     this.dismiss()
   }
 
-  followManga(mangaID: number) {
-    this.followService.followManga(mangaID)
-      .subscribe(
-        async (res: { status: number, message: string }) => {
-          const toast = await this.controllerService.createToast({
-            message: res.message,
-            duration: 2000
-          });
-          await toast.present();
-          this.getFollowedMangas()
-        },
-        async (res) => {
-          const toast = await this.controllerService.createToast({
-            message: res.error.message,
-            duration: 2000
-          });
-          await toast.present();
-        }
-      )
+  async followManga(mangaID: number) {
+    if (!this.userPermissions.guest) {
+      //IF USER IS NOT A GUEST, REQUEST FOLLOW TO API
+      this.followService.followManga(mangaID)
+        .subscribe(
+          async (res: { status: number, message: string }) => {
+            const toast = await this.controllerService.createToast({
+              message: res.message,
+              duration: 2000
+            });
+            await toast.present();
+            this.getFollowedMangas()
+          },
+          async (res) => {
+            const toast = await this.controllerService.createToast({
+              message: res.error.message,
+              duration: 2000
+            });
+            await toast.present();
+          }
+        )
+    } else {
+      //IF USER IS A GUEST, FOLLOW MANGA STORING THE VALUE IN LOCALSTORAGE
+      const result = this.followService.followMangaAsGuest(mangaID)
+      const toast = await this.controllerService.createToast({
+        message: result,
+        duration: 2000
+      });
+      await toast.present();
+      this.getFollowedMangas()
+    }
+
   }
 
-  unfollowManga(mangaID: number) {
-    this.followService.unfollowManga(mangaID)
-    .subscribe(
-      async (res: { status: number, message: string }) => {
-        const toast = await this.controllerService.createToast({
-          message: res.message,
-          duration: 2000
-        });
-        await toast.present();
-        this.getFollowedMangas()
-      },
-      async (res) => {
-        const toast = await this.controllerService.createToast({
-          message: res.error.message,
-          duration: 2000
-        });
-        await toast.present();
-      }
-    )
+  async unfollowManga(mangaID: number) {
+    if (!this.userPermissions.guest) {
+      //IF USER IS NOT A GUEST, REQUEST FOLLOW TO API
+      this.followService.unfollowManga(mangaID)
+        .subscribe(
+          async (res: { status: number, message: string }) => {
+            const toast = await this.controllerService.createToast({
+              message: res.message,
+              duration: 2000
+            });
+            await toast.present();
+            this.getFollowedMangas()
+          },
+          async (res) => {
+            const toast = await this.controllerService.createToast({
+              message: res.error.message,
+              duration: 2000
+            });
+            await toast.present();
+          }
+        )
+    } else {
+      //IF USER IS A GUEST, FOLLOW MANGA STORING THE VALUE IN LOCALSTORAGE
+      const result = this.followService.unfollowMangaAsGuest(mangaID)
+      const toast = await this.controllerService.createToast({
+        message: result,
+        duration: 2000
+      });
+      await toast.present();
+      this.getFollowedMangas()
+    }
   }
 
   //return manga chip color by state

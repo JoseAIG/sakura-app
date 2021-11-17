@@ -8,6 +8,8 @@ import { MangaService } from 'src/app/services/manga.service';
 import { ViewerService } from 'src/app/services/viewer.service';
 import { CommentsPage } from '../comments/comments.page';
 import { ControllerService } from 'src/app/services/controller.service';
+import { ViewerState } from 'src/app/interfaces/viewer-state';
+import { SocialShareComponent } from 'src/app/components/social-share/social-share.component';
 
 @Component({
   selector: 'app-viewer',
@@ -88,19 +90,21 @@ export class ViewerPage implements OnInit {
     }
 
     // GET VIEWER STATE AND CHECK IF SETTINGS ARE EQUAL FOR RECOVERING THE STATE
-    const viewerState: any = this.viewerService.getViewerState()
+    const viewerState: ViewerState = this.viewerService.getViewerState()
     if(viewerState){
       if((this.readMode === viewerState.readMode && (this.readMode === "topToBottom" || this.readMode === "bottomToTop")) && this.mangaID === viewerState.mangaID && this.chapterNumber === viewerState.chapterNumber){
         this.content.scrollToPoint(0, viewerState.location, 1000)
+        this.viewerService.setViewerState({mangaID: this.mangaID, chapterNumber: this.chapterNumber, title: this.title, readMode: this.readMode, location: viewerState.location, open: true})
       }
       else if((this.readMode === viewerState.readMode && (this.readMode === "leftToRight" || this.readMode === "rightToLeft")) && this.mangaID === viewerState.mangaID && this.chapterNumber === viewerState.chapterNumber){
         await this.slides.slideTo(viewerState.location, 1000)
+        this.viewerService.setViewerState({mangaID: this.mangaID, chapterNumber: this.chapterNumber, title: this.title, readMode: this.readMode, location: viewerState.location, open: true})
       }
       else{
-        this.viewerService.setViewerState(this.mangaID, this.chapterNumber, this.title, this.readMode, null)
+        this.viewerService.setViewerState({mangaID: this.mangaID, chapterNumber: this.chapterNumber, title: this.title, readMode: this.readMode, location: null, open: true})
       }
     }else{
-      this.viewerService.setViewerState(this.mangaID, this.chapterNumber, this.title, this.readMode, null)
+      this.viewerService.setViewerState({mangaID: this.mangaID, chapterNumber: this.chapterNumber, title: this.title, readMode: this.readMode, location: null, open: true})
     }
   }
 
@@ -108,6 +112,9 @@ export class ViewerPage implements OnInit {
   async backButtonEvent() {
     let loading = await this.controllerService.createLoading();
     loading.present();
+
+    const viewerState: ViewerState = this.viewerService.getViewerState()
+    this.viewerService.setViewerState({mangaID: this.mangaID, chapterNumber: this.chapterNumber, title: this.title, readMode: this.readMode, location: viewerState.location, open: false})
 
     this.mangaService.getManga(this.mangaID)
       .subscribe(
@@ -138,10 +145,6 @@ export class ViewerPage implements OnInit {
     await modal.present();
   }
 
-  share(){
-    console.log('share')
-  }
-
   // ON SCROLL EVENT FOR ADJUSTING TOOLBAR OPACITY
   onScroll($event: CustomEvent<ScrollDetail>) {
     if (this.readMode === "topToBottom") {
@@ -149,7 +152,7 @@ export class ViewerPage implements OnInit {
         const scrollTop = $event.detail.scrollTop;
         this.showToolbar = scrollTop <= this.previousScroll;
         this.previousScroll = scrollTop
-        this.viewerService.setViewerState(this.mangaID, this.chapterNumber, this.title, this.readMode, scrollTop)
+        this.viewerService.setViewerState({mangaID: this.mangaID, chapterNumber: this.chapterNumber, title: this.title, readMode: this.readMode, location: scrollTop, open: true})
       }
     }
     else if (this.readMode === "bottomToTop") {
@@ -160,7 +163,7 @@ export class ViewerPage implements OnInit {
         const scrollTop = $event.detail.scrollTop;
         this.showToolbar = scrollTop >= this.previousScroll;
         this.previousScroll = scrollTop
-        this.viewerService.setViewerState(this.mangaID, this.chapterNumber, this.title, this.readMode, scrollTop)
+        this.viewerService.setViewerState({mangaID: this.mangaID, chapterNumber: this.chapterNumber, title: this.title, readMode: this.readMode, location: scrollTop, open: true})
       }
     }
   }
@@ -168,7 +171,7 @@ export class ViewerPage implements OnInit {
   slideChanged(){
     this.slides.getActiveIndex().then(
       (index: number)=>{
-        this.viewerService.setViewerState(this.mangaID, this.chapterNumber, this.title, this.readMode, index)
+        this.viewerService.setViewerState({mangaID: this.mangaID, chapterNumber: this.chapterNumber, title: this.title, readMode: this.readMode, location: index, open: true})
      });
   }
 
@@ -221,4 +224,25 @@ export class ViewerPage implements OnInit {
     await (await readModeSettingsAlert).present()
   }
 
+  //shareFunction
+  async socialShare(){
+    console.log('share')
+    let myManga = null;
+    this.mangaService.getManga(this.mangaID)
+      .subscribe(
+        async (res: any) => {
+          myManga = res
+
+        console.log(myManga)
+        const modal = await this.controllerService.createPopover({
+        component:SocialShareComponent,
+        componentProps:{
+          manga: myManga,
+          chapter: this.chapterNumber
+        }
+      })
+      await modal.present()
+    }
+    )
+  }
 }
