@@ -23,6 +23,7 @@ export class IntroPage implements OnInit {
   start() {
     localStorage.setItem('INTRO_KEY', 'true');
     localStorage.setItem('READ_MODE','topToBottom')
+    localStorage.setItem('GUEST_FOLLOWED_MANGAS','[]')
     this.router.navigateByUrl('/tabs/home', { replaceUrl: true })
   }
 
