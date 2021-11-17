@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlertController, AlertOptions, LoadingController, ModalController, ModalOptions, ToastController, ToastOptions } from '@ionic/angular';
+import { AlertController, AlertOptions, LoadingController, ModalController, ModalOptions, PopoverController, PopoverOptions, ToastController, ToastOptions } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,8 @@ export class ControllerService {
     private alertController: AlertController,
     private toastController: ToastController,
     private modalController: ModalController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private popOverController: PopoverController
   ) { }
 
   createAlert(options: AlertOptions) {
@@ -27,6 +28,10 @@ export class ControllerService {
 
   dismissModal(data: object) {
     return this.modalController.dismiss(data)
+  }
+
+  createPopover(options: PopoverOptions) {
+    return this.popOverController.create(options)
   }
 
   createLoading() {

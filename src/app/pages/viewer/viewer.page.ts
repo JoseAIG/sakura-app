@@ -9,6 +9,7 @@ import { ViewerService } from 'src/app/services/viewer.service';
 import { CommentsPage } from '../comments/comments.page';
 import { ControllerService } from 'src/app/services/controller.service';
 import { ViewerState } from 'src/app/interfaces/viewer-state';
+import { SocialShareComponent } from 'src/app/components/social-share/social-share.component';
 
 @Component({
   selector: 'app-viewer',
@@ -144,10 +145,6 @@ export class ViewerPage implements OnInit {
     await modal.present();
   }
 
-  share(){
-    console.log('share')
-  }
-
   // ON SCROLL EVENT FOR ADJUSTING TOOLBAR OPACITY
   onScroll($event: CustomEvent<ScrollDetail>) {
     if (this.readMode === "topToBottom") {
@@ -227,4 +224,25 @@ export class ViewerPage implements OnInit {
     await (await readModeSettingsAlert).present()
   }
 
+  //shareFunction
+  async socialShare(){
+    console.log('share')
+    let myManga = null;
+    this.mangaService.getManga(this.mangaID)
+      .subscribe(
+        async (res: any) => {
+          myManga = res
+
+        console.log(myManga)
+        const modal = await this.controllerService.createPopover({
+        component:SocialShareComponent,
+        componentProps:{
+          manga: myManga,
+          chapter: this.chapterNumber
+        }
+      })
+      await modal.present()
+    }
+    )
+  }
 }
