@@ -96,7 +96,8 @@ export class ProfilePage implements OnInit {
   private async logout() {
     let loading = await this.controllerService.createLoading();
     await loading.present();
-    this.authService.clearToken();
+    this.authService.logout()?.subscribe()
+    this.authService.clearToken()
     localStorage.removeItem('VIEWER_STATE')
     loading.dismiss();
     this.router.navigateByUrl('/tabs/home', { replaceUrl: true })

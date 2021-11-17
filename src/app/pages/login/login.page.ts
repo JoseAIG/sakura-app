@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ControllerService } from 'src/app/services/controller.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private controllerService: ControllerService
+    private controllerService: ControllerService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -48,6 +50,7 @@ export class LoginPage implements OnInit {
         async (res) => {
           localStorage.removeItem('VIEWER_STATE')
           this.authService.storeToken(res.token)
+          this.notificationService.initPush()
           await loading.dismiss()
           this.router.navigateByUrl('/tabs/home', { replaceUrl: true })
         },

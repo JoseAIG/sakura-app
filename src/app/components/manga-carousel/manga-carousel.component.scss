@@ -1,0 +1,19 @@
+ion-slides {
+    height: 350px;
+    padding: 0.5em;
+    --bullet-background-active: #C22E48;
+    --bullet-background: gray;
+}
+
+img{
+    border-radius: 1em;
+    object-fit: cover;
+    height: 200px;
+    max-width: 150px;
+}
+
+h3{
+    margin-top: 0;
+    color: gray;
+    white-space: pre;
+}
