@@ -37,15 +37,24 @@
   </ng-template>
 
   <br>
+  <br>
   <ion-item-divider>
     <ion-label>
       Mangas you follow
     </ion-label>
   </ion-item-divider>
 
-  <div class="ion-text-center">
-    <h5>Here you will see the mangas you follow</h5>
-    <ion-icon name="list-outline" color="medium"></ion-icon>
-  </div>
+  <ng-container *ngIf="followedMangas && followedMangas.length; then mangaCarouselTemplate else noFollowedMangasTemplate"></ng-container>
+
+  <ng-template #noFollowedMangasTemplate>
+    <div class="ion-text-center">
+      <h5>Here you will see the mangas you follow</h5>
+      <ion-icon name="list-outline" color="medium"></ion-icon>
+    </div>
+  </ng-template>
+
+  <ng-template #mangaCarouselTemplate>
+    <app-manga-carousel [mangas]="followedMangas" (refresh)="doRefresh($event)"></app-manga-carousel>
+  </ng-template>
 
 </ion-content>

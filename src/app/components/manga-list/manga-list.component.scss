@@ -14,10 +14,8 @@ ion-chip{
 }
 
 .cover{
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 5px;
-  -moz-border-radius: 15px;
-  -webkit-border-radius: 15px;
-  -khtml-border-radius: 15px;
+  max-width: 150px;
+  height: 185px;
+  object-fit: cover;
+  border-radius: 1em;
 }

@@ -1,0 +1,10 @@
+<ion-slides [options]="sliderOptions">
+  <ng-container *ngFor="let manga of mangas">
+    <ion-slide>
+      <ion-text (click)="openManga(manga)">
+        <img src={{manga.cover_image}}>
+        <h3>{{manga.title}}</h3>
+      </ion-text>
+    </ion-slide>
+  </ng-container>
+</ion-slides>
