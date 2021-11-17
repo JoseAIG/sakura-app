@@ -1,6 +1,7 @@
 <div *ngIf="!comments.length" class="ion-margin-top ion-text-center">
   <h3>No comments yet</h3>
-  <h4>Be the first to comment this chapter</h4>
+  <h4 *ngIf="!userPermissions.guest">Be the first to comment this chapter</h4>
+  <h4 *ngIf="userPermissions.guest">Log in and be the first to comment this chapter</h4>
 </div>
 
 <ion-list *ngIf="comments.length" lines="none">

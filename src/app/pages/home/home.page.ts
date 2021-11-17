@@ -61,8 +61,18 @@ export class HomePage implements OnInit {
     if (!this.userPermissions.guest) {
       this.followService.getFollowedMangas()
         .subscribe(
-          (res: {status: number, followedMangas: Manga[]}) => {
+          (res: { status: number, followedMangas: Manga[] }) => {
             this.followedMangas = res.followedMangas
+          },
+          (res) => {
+            console.log(res.error)
+          }
+        )
+    } else {
+      this.followService.getGuestFollowedMangas()
+        .subscribe(
+          (res: { status: number, mangaList: Manga[] }) => {
+            this.followedMangas = res.mangaList
           },
           (res) => {
             console.log(res.error)
