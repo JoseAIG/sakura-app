@@ -25,7 +25,6 @@ export class MangaListComponent implements OnInit {
   }
 
   async openManga() {
-    console.log("open manga", this.manga.manga_id)
     const modal = await this.controllerService.createModal({
       component: MangaPreviewPage,
       componentProps: {
