@@ -21,9 +21,10 @@ export class SocialShareComponent implements OnInit {
   async sharing(){
     await Share.share({
       title: this.manga.title,
-      text: "Description "+this.manga.description+" .Progress: "+this.chapter,
-      // url: this.manga.cover_image,
+      text: "I'm currently reading "+this.manga.title+", Chapter "+this.chapter+". You should take a look in Sakura Manga app so you don't miss it!",
+      url: `https://sakura-mv.herokuapp.com/share/${this.manga.manga_id}/chapter/${this.chapter}`,
       dialogTitle: 'Share your progress',
     });
   }
+
 }
