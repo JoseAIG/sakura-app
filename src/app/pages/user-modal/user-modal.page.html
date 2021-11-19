@@ -14,7 +14,11 @@
     <ion-card>
       <ion-list>
         <form [formGroup]="userForm">
-          <ion-card-title class="ion-text-center">Your Credentials</ion-card-title>
+          <ion-card-title class="ion-text-center">Your data</ion-card-title>
+          <br>
+          <ion-avatar *ngIf="newPicture" style="margin: auto;">
+            <ion-img src={{newPicture}}></ion-img>
+          </ion-avatar>
           <ion-item>
             <ion-label position="floating">Username:</ion-label>
             <ion-input type="text" value={{username}} formControlName="user"></ion-input>
@@ -48,10 +52,22 @@
             <span *ngIf="!equalPasswords">Passwords do not match</span>
           </div>
         </form>
+
+        <form [formGroup]="userForm">
+          <ion-item>
+            <ion-label position="fixed">Profile picture</ion-label>
+            <br>
+            <div class="fileUpload ion-text-center">
+              <ion-text color="light">Select file</ion-text>
+              <ion-input type="file" accept="image/*" formControlName="picture" (change)="setPicturePreview($event)"></ion-input>
+            </div>
+            <br>
+          </ion-item>
+        </form>
       </ion-list>
       <br>
       <div id="updateButton">
-        <ion-button type="submit" [disabled]="userForm.valid && passwordForm.valid ? false : true" expand="block" (click)="updateUser()" shape="round" color="medium">Update your credentials</ion-button>
+        <ion-button type="submit" [disabled]="userForm.valid && passwordForm.valid ? false : true" expand="block" (click)="updateUser()" shape="round" color="medium">Update your data</ion-button>
       </div>
       <br>
       <div id="deleteButton">

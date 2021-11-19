@@ -1,7 +1,7 @@
 <!-- COMMENT -->
 <ion-item>
   <ion-avatar slot="start">
-    <img src="assets/logos/sakura-logo-only.png">
+    <img [src]="comment.userPicture ? comment.userPicture : 'assets/logos/sakura-logo-only.png'">
   </ion-avatar>
   <ion-label text-wrap>
     <h3><b>{{comment.username}}</b></h3>
@@ -21,7 +21,7 @@
 <!-- REPLIES -->
 <ion-item *ngFor="let reply of comment.replies" class="reply">
   <ion-avatar slot="start">
-    <img src="assets/logos/sakura-logo-only.png">
+    <img [src]="reply.userPicture ? reply.userPicture : 'assets/logos/sakura-logo-only.png'">
   </ion-avatar>
   <ion-label>
     <h3><b>{{reply.username}}</b></h3>
