@@ -13,18 +13,18 @@
   <div class="container">
     <ion-card>
       <ion-avatar class="ion-align-self-center">
-        <ion-img src="../../assets/logos/sakura-logo-only.png"></ion-img>
+        <ion-img [src]="user?.picture ? user?.picture : '../../assets/logos/sakura-logo-only.png'"></ion-img>
       </ion-avatar>
       <ng-container *ngIf="!userPermissions.guest">
         <ion-card-content>
           <ion-card-title>
-            {{username}}
+            {{user?.username}}
           </ion-card-title>
           <ion-card-subtitle>
-            {{email}}
+            {{user?.email}}
           </ion-card-subtitle>
           <ion-card-subtitle>
-            Member since: {{dateCreated}}
+            Member since: {{user?.date_created}}
           </ion-card-subtitle>
           <ion-chip *ngIf="userPermissions.admin" color="danger">
             <ion-label>Admin</ion-label>

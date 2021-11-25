@@ -27,9 +27,7 @@ export class CommentComponent implements OnInit {
     this.userPermissions = authService.getUserPermissions()
   }
 
-  ngOnInit() {
-    console.log('comment', this.comment)
-  }
+  ngOnInit() { }
 
   replyComment(commentID: number, username: string) {
     this.reply.emit({ commentID: commentID, username: username })

@@ -7,6 +7,9 @@
       <form (ngSubmit)="register()" [formGroup]="registerForm">
         <h3><b>Sign up to Sakura</b></h3>
         <hr />
+        <ion-avatar *ngIf="picture" style="margin: auto;">
+          <ion-img src={{picture}}></ion-img>
+        </ion-avatar>
         <ion-item>
           <ion-label position = "floating">Username:</ion-label>
           <ion-input type="text" placeholder="Username" formControlName="user">
@@ -42,6 +45,15 @@
         <div *ngIf="(confirmedPassword.dirty || confirmedPassword.touched) && !equalPasswords" class="errors">
           <span *ngIf="!equalPasswords">Passwords do not match</span>
         </div>
+        <ion-item>
+          <ion-label position="fixed">Profile picture</ion-label>
+          <br>
+          <div class="fileUpload ion-text-center">
+            <ion-text color="light">Select file</ion-text>
+            <ion-input type="file" accept="image/*" formControlName="picture" (change)="setPicturePreview($event)"></ion-input>
+          </div>
+          <br>
+        </ion-item>
         <br>
         <ion-button type="submit" [disabled]="!registerForm.valid" expand="block" shape="round" class="register-button">Sign Up!</ion-button>
       </form>
