@@ -14,6 +14,7 @@ export class RegisterPage implements OnInit {
 
   registerForm: FormGroup
   equalPasswords: boolean
+  picture: string = null
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,7 +28,8 @@ export class RegisterPage implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       user: [null, [Validators.required]],
       password: [null, [Validators.required, Validators.minLength(6)]],
-      confirmedPassword: [null, [Validators.required, Validators.minLength(6)]]
+      confirmedPassword: [null, [Validators.required, Validators.minLength(6)]],
+      picture: [null, null]
     }, { validator: this.checkPasswords })
   }
 
@@ -56,6 +58,9 @@ export class RegisterPage implements OnInit {
     formData.append("username", this.registerForm.get("user").value);
     formData.append("email", this.registerForm.get("email").value);
     formData.append("password", this.registerForm.get("password").value);
+    if(this.registerForm.get("picture").value){
+      formData.append("picture", this.registerForm.get("picture").value)
+    }
 
     this.authService.register(formData)
       .subscribe(
@@ -98,10 +103,24 @@ export class RegisterPage implements OnInit {
     } else {
       this.equalPasswords = false;
     }
-    console.log(pass, confirmPass, this.equalPasswords)
+  }
+
+  setPicturePreview(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.picture = event.target.result;
+      }
+      reader.readAsDataURL(event.target.files[0])
+    } else {
+      this.picture = null
+    }
+
+    //PATCH FILE INTO COVER FORM FIELD
+    this.registerForm.patchValue({
+      picture: event.target.files[0]
+    });
+    this.registerForm.get('picture').updateValueAndValidity()
   }
 
 }
-
-
-

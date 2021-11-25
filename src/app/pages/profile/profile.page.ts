@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Manga } from 'src/app/interfaces/manga';
+import { User } from 'src/app/interfaces/user';
+import { UserPermissions } from 'src/app/interfaces/user-permissions';
 import { AuthService } from 'src/app/services/auth.service';
 import { ControllerService } from 'src/app/services/controller.service';
 import { MangaService } from 'src/app/services/manga.service';
@@ -16,11 +18,8 @@ import { UserModalPage } from '../user-modal/user-modal.page';
 })
 export class ProfilePage implements OnInit {
 
-  userPermissions: any;
-
-  email: string;
-  username: string;
-  dateCreated: string;
+  userPermissions: UserPermissions;
+  user: User;
   userMangas: Manga[]
 
   constructor(
@@ -30,7 +29,7 @@ export class ProfilePage implements OnInit {
     private controllerService: ControllerService,
     private router: Router
   ) {
-    this.userPermissions = authService.getUserPermissions()
+    this.userPermissions = this.authService.getUserPermissions()
   }
 
   ngOnInit() { }
@@ -46,10 +45,8 @@ export class ProfilePage implements OnInit {
   getUserData() {
     this.userService.getUserData()
       .subscribe(
-        async (res) => {
-          this.username = res.username;
-          this.email = res.email;
-          this.dateCreated = res.date_created;
+        async (res: User) => {
+          this.user = res
         },
         async (res) => {
           console.log(res.error)
@@ -108,8 +105,7 @@ export class ProfilePage implements OnInit {
     const modal = await this.controllerService.createModal({
       component: UserModalPage,
       componentProps: {
-        'username': this.username,
-        'email': this.email
+        'userData': this.user,
       }
     });
     await modal.present();

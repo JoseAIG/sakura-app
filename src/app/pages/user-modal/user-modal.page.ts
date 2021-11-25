@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ControllerService } from 'src/app/services/controller.service';
 import { UserService } from 'src/app/services/user.service';
@@ -12,8 +13,9 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UserModalPage implements OnInit {
 
-  @Input() username: string;
-  @Input() email: string;
+  @Input() userData: User
+
+  newPicture: string;
 
   userForm: FormGroup;
   passwordForm: FormGroup;
@@ -29,14 +31,17 @@ export class UserModalPage implements OnInit {
 
   ngOnInit() {
     this.userForm = this.formBuilder.group({
-      email: [this.email, [Validators.required, Validators.email]],
-      user: [this.username, [Validators.required]]
+      email: [this.userData.email, [Validators.required, Validators.email]],
+      user: [this.userData.username, [Validators.required]],
+      picture: [null, null]
     })
 
     this.passwordForm = this.formBuilder.group({
       password: ["", [Validators.minLength(6)]],
       confirmedPassword: ["", [Validators.minLength(6)]]
     }, { validator: this.checkPasswords })
+
+    this.newPicture = this.userData.picture
   }
 
   //getters
@@ -72,6 +77,9 @@ export class UserModalPage implements OnInit {
     formData.append("username", this.userForm.get("user").value);
     formData.append("email", this.userForm.get("email").value);
     formData.append("password", this.passwordForm.get("password").value);
+    if(this.userForm.get("picture").value){
+      formData.append("picture", this.userForm.get("picture").value)
+    }
 
     this.userService.updateUserData(formData)
       .subscribe(
@@ -163,5 +171,23 @@ export class UserModalPage implements OnInit {
     } else {
       this.equalPasswords = false;
     }
+  }
+
+  setPicturePreview(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.newPicture = event.target.result;
+      }
+      reader.readAsDataURL(event.target.files[0])
+    } else {
+      this.newPicture = this.userData.picture
+    }
+
+    //PATCH FILE INTO COVER FORM FIELD
+    this.userForm.patchValue({
+      picture: event.target.files[0]
+    });
+    this.userForm.get('picture').updateValueAndValidity()
   }
 }
